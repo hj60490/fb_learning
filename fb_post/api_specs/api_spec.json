@@ -135,8 +135,7 @@
                     }
                 },
                 "required": [
-                    "content",
-                    "posted_by"
+                    "content"
                 ]
             }
         },
@@ -168,7 +167,16 @@
                         "format": "int64"
                     },
                     "posted_by": {
-                        "$ref": "#/definitions/User"
+                        "type": "object",
+                         "properties": {
+                             "user_id":{
+                                 "type": "integer",
+                                 "format": "int64"
+                             },
+                             "profile_pic": {
+                                 "type": "string"
+                             }
+                         }
                     },
                     "posted_at": {
                         "type": "string",
@@ -180,6 +188,7 @@
                     "reactions": {
                         "type": "array",
                         "$ref": "#/definitions/React"
+
                     },
                     "comments": {
                         "type":"array",
@@ -210,10 +219,10 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Succesfully created post"
+                        "description": "succesfully created post"
                     },
                     "401": {
-                        "description": "Invalid User Id"
+                        "description": "invalid User Id"
                     }
                 }
             }
@@ -234,6 +243,9 @@
                     },
                     "404": {
                         "description": "Post not found"
+                    },
+                    "401": {
+                        "description": "no user exist with this id"
                     }
                 }
             }
