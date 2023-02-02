@@ -196,7 +196,7 @@
     }
   },
   "paths": {
-    "/create_post/": {
+    "/post/": {
       "post": {
         "operationId": "create_post",
         "summary": "create post",
@@ -216,7 +216,7 @@
         }
       }
     },
-    "/get_posts/{user_id}/": {
+    "/posts/{user_id}/": {
       "get": {
         "operationId": "get_posts_of_user_id",
         "summary": "get posts by post id",
