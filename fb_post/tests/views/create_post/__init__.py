@@ -3,4 +3,4 @@
 APP_NAME = "fb_post"
 OPERATION_NAME = "create_post"
 REQUEST_METHOD = "post"
-URL_SUFFIX = "create_post/"
+URL_SUFFIX = "post/"
