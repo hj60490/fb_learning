@@ -1,48 +1,41 @@
 from django_swagger_utils.drf_server.utils.decorator.interface_decorator \
     import validate_decorator
 from .validator_class import ValidatorClass
+from fb_post.interactors.create_post_interactor import CreatePostInteractor
+from fb_post.storages.post_storage_implementation import \
+    PostStorageImplementation
+from fb_post.storages.user_storage_implementation import  \
+    UserStorageImplementation
+from fb_post.presenters.presenter_implementation import PresenterImplementation
+import json
+from django.http import HttpResponse
 
 
 @validate_decorator(validator_class=ValidatorClass)
 def api_wrapper(*args, **kwargs):
-    # ---------MOCK IMPLEMENTATION---------
 
-    try:
-        from fb_post.views.create_post.request_response_mocks \
-            import REQUEST_BODY_JSON
-        body = REQUEST_BODY_JSON
-    except ImportError:
-        body = {}
+    content = kwargs['content']
+    user_id = kwargs['user_id']
 
-    test_case = {
-        "path_params": {},
-        "query_params": {},
-        "header_params": {},
-        "body": body,
-        "securities": []
-    }
+    # storage implementation
+    post_storage = PostStorageImplementation()
+    user_storage = UserStorageImplementation()
 
-    from django_swagger_utils.drf_server.utils.server_gen.mock_response \
-        import mock_response
-    try:
-        response = ''
-        status_code = 200
-        if '200' in ['200', '401']:
-            from fb_post.views.create_post.request_response_mocks \
-                import RESPONSE_200_JSON
-            response = RESPONSE_200_JSON
-            status_code = 200
-        elif '201' in ['200', '401']:
-            from fb_post.views.create_post.request_response_mocks \
-                import RESPONSE_201_JSON
-            response = RESPONSE_201_JSON
-            status_code = 201
-    except ImportError:
-        response = ''
-        status_code = 200
-    response_tuple = mock_response(
-        app_name="fb_post", test_case=test_case,
-        operation_name="create_post",
-        kwargs=kwargs, default_response_body=response,
-        group_name="", status_code=status_code)
-    return response_tuple
+    # presenter implementation
+    presenter = PresenterImplementation()
+
+    # interactor implementation
+    interactor = CreatePostInteractor(
+        post_storage=post_storage,
+        user_storage=user_storage,
+        presenter=presenter
+    )
+
+    post_obj = interactor.create_post(
+        content=content, user_id=user_id
+    )
+
+    data = json.dumps(post_obj)
+    return HttpResponse(data, status=200)
+
+
