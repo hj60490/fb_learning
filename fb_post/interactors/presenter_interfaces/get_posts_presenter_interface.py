@@ -8,7 +8,6 @@ class GetPostsPresenterInterface(ABC):
     def raise_exception_for_user_not_exist(self):
         pass
 
-    def get_all_post_of_user(self, posts_details_dto: PostDetailsDto) ->\
-            response.HttpResponse:
+    def get_all_post_of_user(self, posts_details_dto: PostDetailsDto):
         pass
 

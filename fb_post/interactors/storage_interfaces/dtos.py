@@ -13,7 +13,7 @@ class UserDto:
 class PostDto:
     post_id: int
     content: str
-    posted_by_id: int
+    posted_by: UserDto
     posted_at: datetime
 
 

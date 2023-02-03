@@ -44,11 +44,11 @@ class GetPostsInteractor:
             list_of_comment_id)
 
         posts_details_dto = PostDetailsDto(
-            PostDtoList=posts,
-            ReactionPostDtoList=reactions,
-            CommentOnPostDtoList=comments,
-            RepliesDtoList=replies_on_comment,
-            ReactionOnCommentDto=reactions_on_comments
+            post_dto_list=posts,
+            reaction_post_dto_list=reactions,
+            comment_on_post_dto_list=comments,
+            replies_dto_list=replies_on_comment,
+            reaction_on_comment_dto=reactions_on_comments
         )
 
         return self.presenter.get_all_post_of_user(
