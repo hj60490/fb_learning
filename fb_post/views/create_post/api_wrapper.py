@@ -13,9 +13,9 @@ from django.http import HttpResponse
 
 @validate_decorator(validator_class=ValidatorClass)
 def api_wrapper(*args, **kwargs):
-
-    content = kwargs['content']
-    user_id = kwargs['user_id']
+    request_body = kwargs['request_body']
+    content = request_body['content']
+    user_id = request_body['user_id']
 
     # storage implementation
     post_storage = PostStorageImplementation()
@@ -31,11 +31,10 @@ def api_wrapper(*args, **kwargs):
         presenter=presenter
     )
 
-    post_obj = interactor.create_post(
+    interactor.create_post(
         content=content, user_id=user_id
     )
 
-    data = json.dumps(post_obj)
-    return HttpResponse(data, status=200)
+    return HttpResponse(status=200)
 
 

@@ -3,5 +3,9 @@ from fb_post.interactors.presenter_interfaces.presenter_interface import \
 
 
 class PresenterImplementation(PresenterInterface):
-    pass
+
+    def raise_exception_for_user_not_exist(self):
+        raise ValueError("User id not found")
+
+
 

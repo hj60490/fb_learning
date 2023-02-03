@@ -4,6 +4,8 @@ from abc import ABC
 
 class PresenterInterface(ABC):
 
-    def get_response_for_create_post(self, post_dtos):
+    def raise_exception_for_user_not_exist(self):
         pass
+
+
 
