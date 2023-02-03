@@ -1,0 +1,3 @@
+
+class InvalidUserException(Exception):
+    pass
