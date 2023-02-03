@@ -13,7 +13,9 @@ from django.http import HttpResponse
 
 @validate_decorator(validator_class=ValidatorClass)
 def api_wrapper(*args, **kwargs):
-    request_body = kwargs['request_body']
+    print("******************")
+    print(kwargs)
+    request_body = kwargs['request_data']
     content = request_body['content']
     user_id = request_body['user_id']
 

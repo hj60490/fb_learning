@@ -5,4 +5,4 @@ from fb_post.models.models import User
 class UserStorageImplementation(UserInterface):
 
     def check_is_user_exists(self, user_id: int) -> bool:
-        return User.objects.get(id=user_id).exists()
+        return User.objects.filter(id=user_id).exists()
