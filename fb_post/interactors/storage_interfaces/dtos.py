@@ -13,17 +13,17 @@ class UserDto:
 class PostDto:
     post_id: int
     content: str
-    posted_by: UserDto
+    posted_by_id: int
     posted_at: datetime
 
 
 @dataclass
 class ReactOnPostDto:
     reaction_id: int
-    post: PostDto
+    post_id: int
     reaction: str
     reacted_at: datetime
-    reacted_by: UserDto
+    reacted_by_id: int
 
 
 @dataclass
@@ -31,16 +31,16 @@ class CommentOnPostDto:
     comment_id: int
     content: str
     commented_at: datetime
-    commented_by: UserDto
-    post: PostDto
+    commented_by_id: int
+    post_id: int
 
 
 class ReactionOnCommentDto:
     reaction_id: int
-    comment: CommentOnPostDto
+    comment_id: int
     reaction: str
     reacted_at: datetime
-    reacted_by: UserDto
+    reacted_by_id: int
 
 
 @dataclass
@@ -48,8 +48,8 @@ class CommentOnCommentDto:
     comment_id: int
     content: str
     commented_at: datetime
-    commented_by: UserDto
-    comment: CommentOnPostDto
+    commented_by_id: int
+    parent_comment_id: int
 
 
 

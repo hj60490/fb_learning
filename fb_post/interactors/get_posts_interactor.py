@@ -4,8 +4,6 @@ from fb_post.interactors.storage_interfaces.user_interface import UserInterface
 from fb_post.exceptions.custom_exceptions import InvalidUserException
 from fb_post.interactors.presenter_interfaces.get_posts_presenter_interface \
     import GetPostsPresenterInterface
-from typing import List
-from fb_post.interactors.presenter_interfaces.dtos import PostDetailsDto
 
 
 class GetPostsInteractor:

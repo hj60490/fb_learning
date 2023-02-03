@@ -1,7 +1,6 @@
 from abc import ABC
-from fb_post.interactors.presenter_interfaces.dtos import PostDetailsDto, \
-    PostResponseDto
-from typing import List
+from fb_post.interactors.presenter_interfaces.dtos import PostDetailsDto
+from django.http import response
 
 
 class GetPostsPresenterInterface(ABC):
@@ -10,6 +9,6 @@ class GetPostsPresenterInterface(ABC):
         pass
 
     def get_all_post_of_user(self, posts_details_dto: PostDetailsDto) ->\
-            List[PostResponseDto]:
+            response.HttpResponse:
         pass
 
