@@ -6,15 +6,15 @@ from fb_post.storages.post_storage_implementation import \
     PostStorageImplementation
 from fb_post.storages.user_storage_implementation import  \
     UserStorageImplementation
-from fb_post.presenters.presenter_implementation import PresenterImplementation
+from fb_post.presenters.create_post_presenter_implementation import \
+    CreatePostPresenterImplementation
 import json
 from django.http import HttpResponse
 
 
 @validate_decorator(validator_class=ValidatorClass)
 def api_wrapper(*args, **kwargs):
-    print("******************")
-    print(kwargs)
+
     request_body = kwargs['request_data']
     content = request_body['content']
     user_id = request_body['user_id']
@@ -24,7 +24,7 @@ def api_wrapper(*args, **kwargs):
     user_storage = UserStorageImplementation()
 
     # presenter implementation
-    presenter = PresenterImplementation()
+    presenter = CreatePostPresenterImplementation()
 
     # interactor implementation
     interactor = CreatePostInteractor(
@@ -33,7 +33,7 @@ def api_wrapper(*args, **kwargs):
         presenter=presenter
     )
 
-    interactor.create_post(
+    interactor.create_post_wrapper(
         content=content, user_id=user_id
     )
 
