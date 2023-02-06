@@ -34,20 +34,31 @@ class GetPostsInteractor:
             raise InvalidUserException
 
         posts = self.post_storage.get_posts(user_id)
-        list_of_post_id = [post.post_id for post in posts]
+        post_ids = [post.post_id for post in posts]
 
-        reactions = self.post_storage.get_all_reactions(list_of_post_id)
+        reactions = self.post_storage.get_all_reactions(post_ids)
+        post_reactions_ids = [reaction.reaction_id for reaction in reactions]
 
-        comments = self.post_storage.get_comments(list_of_post_id)
-        list_of_comment_id = [comment.comment_id for comment in comments]
+        comments = self.post_storage.get_comments(post_ids)
+        post_comment_ids = [comment.comment_id for comment in comments]
 
         reactions_on_comments = self.post_storage.get_reactions_on_comments(
-            list_of_comment_id)
+            post_comment_ids)
+        reactions_on_comments_ids = [
+            reaction.reaction_id
+            for reaction in reactions_on_comments
+        ]
 
         replies_on_comment = self.post_storage.get_replies_on_comment(
-            list_of_comment_id)
+            post_comment_ids)
+        replies_ids = [reply.comment_id for reply in replies_on_comment]
+
+        list_of_users = self.user_storage.get_list_of_users(
+            post_ids, post_reactions_ids, post_comment_ids,
+            reactions_on_comments_ids, replies_ids)
 
         posts_details_dto = PostDetailsDto(
+            users=list_of_users,
             posts=posts,
             reactions_on_posts=reactions,
             comments_on_post=comments,

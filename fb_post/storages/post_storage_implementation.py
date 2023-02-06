@@ -20,12 +20,12 @@ class PostStorageImplementation(PostInterface):
 
         return post_dtos
 
-    def _convert_post_obj_to_dto(self, post: Post) -> PostDto:
-        user = self._get_user_dto_for_post(post.posted_by)
+    @staticmethod
+    def _convert_post_obj_to_dto(post: Post) -> PostDto:
         post_dto = PostDto(
             post_id=post.id,
             content=post.content,
-            posted_by=user,
+            posted_by_id=post.posted_by.id,
             posted_at=post.posted_at
         )
         return post_dto
@@ -81,7 +81,7 @@ class PostStorageImplementation(PostInterface):
             comment_id=comment.id,
             content=comment.content,
             commented_at=comment.commented_at,
-            commented_by=user,
+            commented_by_id=comment.commented_by_id,
             post_id=comment.post_id
         )
         return comment_dto
