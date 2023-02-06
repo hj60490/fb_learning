@@ -1,4 +1,3 @@
-
 from fb_post.interactors.storage_interfaces.post_interface import PostInterface
 from fb_post.interactors.storage_interfaces.user_interface import UserInterface
 from fb_post.exceptions.custom_exceptions import InvalidUserException
@@ -7,7 +6,7 @@ from fb_post.interactors.presenter_interfaces.get_posts_presenter_interface \
 from fb_post.interactors.presenter_interfaces.dtos import PostDetailsDto
 
 
-class GetPostsInteractor:
+class GetUserPostsInteractor:
 
     def __init__(self, post_storages: PostInterface, user_storage: UserInterface
                  , presenter: GetPostsPresenterInterface):
@@ -15,9 +14,9 @@ class GetPostsInteractor:
         self.user_storage = user_storage
         self.presenter = presenter
 
-    def get_posts_wrapper(self, user_id: int):
+    def get_user_posts_wrapper(self, user_id: int):
         try:
-            posts_details = self.get_posts(
+            posts_details = self.get_user_posts(
                 user_id=user_id
             )
 
@@ -27,7 +26,7 @@ class GetPostsInteractor:
         except InvalidUserException:
             self.presenter.raise_exception_for_user_not_exist()
 
-    def get_posts(self, user_id: int):
+    def get_user_posts(self, user_id: int):
         is_user_exists = self.user_storage.check_is_user_exists(user_id)
 
         if not is_user_exists:
@@ -57,6 +56,17 @@ class GetPostsInteractor:
             post_ids, post_reactions_ids, post_comment_ids,
             reactions_on_comments_ids, replies_ids)
 
+        user_posts_details = self._get_user_post_details_dto(list_of_users,
+                                                             posts, reactions,
+                                                             comments,
+                                                             replies_on_comment,
+                                                             reactions_on_comments)
+
+        return user_posts_details
+
+    @staticmethod
+    def _get_user_post_details_dto(list_of_users, posts, reactions, comments,
+                                   replies_on_comment, reactions_on_comments):
         posts_details_dto = PostDetailsDto(
             users=list_of_users,
             posts=posts,
@@ -65,15 +75,4 @@ class GetPostsInteractor:
             replies=replies_on_comment,
             reactions_on_comments=reactions_on_comments
         )
-
         return posts_details_dto
-
-
-
-
-
-
-
-
-
-

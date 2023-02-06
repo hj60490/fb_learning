@@ -10,7 +10,7 @@ from fb_post.interactors.storage_interfaces.dtos import PostDto, ReactOnPostDto,
     CommentOnPostDto, CommentOnCommentDto, ReactionOnCommentDto
 
 
-class GetPostsPresenterImplementation(GetPostsPresenterInterface):
+class GetUserPostsPresenterImplementation(GetPostsPresenterInterface):
 
     def raise_exception_for_user_not_exist(self):
         raise BadRequest(*INVALID_USER_ID)
