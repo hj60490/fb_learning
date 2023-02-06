@@ -192,4 +192,6 @@ class GetUserPostsPresenterImplementation(GetPostsPresenterInterface):
             "count": len(reaction_on_comments),
             "type": list_of_types
         }
+        if reactions_dict['count'] == 0:
+            reactions_dict['type'] = []
         return reactions_dict
