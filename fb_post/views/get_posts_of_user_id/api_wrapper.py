@@ -7,7 +7,7 @@ from fb_post.storages.user_storage_implementation import \
     UserStorageImplementation
 from fb_post.presenters.get_user_posts_presenter_implementation import \
     GetUserPostsPresenterImplementation
-from fb_post.interactors.get_posts_interactor import GetUserPostsInteractor
+from fb_post.interactors.get_user_posts_interactor import GetUserPostsInteractor
 import json
 from django.http import HttpResponse
 

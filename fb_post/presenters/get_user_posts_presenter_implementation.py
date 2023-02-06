@@ -47,16 +47,14 @@ class GetUserPostsPresenterImplementation(GetPostsPresenterInterface):
                 }
         return dict_of_users
 
-    def _get_dict_for_post_details(self, post_dto: PostDto,
-                                   reactions_on_post_dtos_list: List[
-                                       ReactOnPostDto],
-                                   comments_on_post: List[CommentOnPostDto],
-                                   replies: List[CommentOnCommentDto],
-                                   reaction_on_comments: List[
-                                       ReactionOnCommentDto],
-                                   users_details_dict):
-        print("*****************")
-        # print(users_details_dict[post_dto.posted_by_id])
+    def _get_dict_for_post_details(
+            self, post_dto: PostDto,
+            reactions_on_post_dtos_list: List[ReactOnPostDto],
+            comments_on_post: List[CommentOnPostDto],
+            replies: List[CommentOnCommentDto],
+            reaction_on_comments: List[ReactionOnCommentDto],
+            users_details_dict):
+
         post_dict = {
             "post_id": post_dto.post_id,
             "posted_by": users_details_dict[post_dto.posted_by_id],
@@ -69,9 +67,6 @@ class GetUserPostsPresenterImplementation(GetPostsPresenterInterface):
                                                 users_details_dict),
         }
         post_dict['comments_count'] = len(post_dict['comments'])
-        # print("***************** THIS IS REPLY v1*********************")
-        # print(post_dto.post_id)
-        # print(len(replies))
         return post_dict
 
     def _get_comments_list(self, comments_on_post, replies,
