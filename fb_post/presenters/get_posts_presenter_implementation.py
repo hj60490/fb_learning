@@ -76,7 +76,7 @@ class GetPostsPresenterImplementation(GetPostsPresenterInterface):
         comment_dict = {
             "comment_id": comment_dto.comment_id,
             "commentator": {
-                "user_id": comment_dto.commented_by.id,
+                "user_id": comment_dto.commented_by.user_id,
                 "name": comment_dto.commented_by.name,
                 "profile_pic": comment_dto.commented_by.profile_pic
             },
@@ -114,18 +114,28 @@ class GetPostsPresenterImplementation(GetPostsPresenterInterface):
                 reactions_count += 1
         return reactions_count
 
-    @staticmethod
-    def _get_reactions_dict_of_comments(reaction_on_comments, comment_dto):
+    def _get_reactions_dict_of_comments(self, reaction_on_comments, comment_dto):
         reaction_type_set = set()
         for reaction_dto in reaction_on_comments:
             if reaction_dto.comment_id == comment_dto.comment_id:
                 reaction_type_set.add(reaction_dto.reaction)
         list_of_types = list(reaction_type_set)
         reactions_dict = {
-            "count": len(reaction_on_comments),
+            "count": self._get_counts_of_reaction_on_comments(
+                reaction_on_comments, comment_dto),
             "type": list_of_types
         }
+        if not len(list_of_types):
+            reactions_dict['types'] = []
         return reactions_dict
+
+    @staticmethod
+    def _get_counts_of_reaction_on_comments(reaction_on_comments, comment_dto):
+        reactions_count = 0
+        for reaction in reaction_on_comments:
+            if reaction.comment_id == comment_dto.comment_id_id:
+                reactions_count += 1
+        return reactions_count
 
     def _get_list_of_replies(self, replies, comment_dto, reaction_on_comment):
         list_of_replies = [
@@ -144,7 +154,7 @@ class GetPostsPresenterImplementation(GetPostsPresenterInterface):
         reply_dict = {
             "comment_id": comment_on_comment.comment_id,
             "commentator": {
-                "user_id": comment_dto.commented_by.id,
+                "user_id": comment_dto.commented_by.user_id,
                 "name": comment_dto.commented_by.name,
                 "profile_pic": comment_dto.commented_by.profile_pic
             },
