@@ -25,7 +25,7 @@ class PostStorageImplementation(PostInterface):
         post_dto = PostDto(
             post_id=post.id,
             content=post.content,
-            posted_by_id=post.posted_by.id,
+            posted_by_id=post.posted_by_id,
             posted_at=post.posted_at
         )
         return post_dto

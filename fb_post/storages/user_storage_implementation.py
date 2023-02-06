@@ -9,31 +9,13 @@ class UserStorageImplementation(UserInterface):
     def check_is_user_exists(self, user_id: int) -> bool:
         return User.objects.filter(id=user_id).exists()
 
-    def get_list_of_users(self, post_ids: List[int],
-                          post_reactions_ids: List[int],
-                          post_comment_ids: List[int],
-                          reactions_on_comments_ids: List[int],
-                          replies_ids: List[int]) -> List[UserDto]:
-
-        all_reactions = []
-        all_reactions.append(post_reactions_ids)
-        all_reactions.append(reactions_on_comments_ids)
-        union_list_of_all_reactions = list(set().union(*all_reactions))
-
-        all_comments = []
-        all_comments.append(post_comment_ids)
-        all_comments.append(replies_ids)
-        union_list_of_comments = list(set().union(*all_comments))
-        users_for_post = User.objects.filter(post__id__in=post_ids,
-                                    react__id__in=union_list_of_all_reactions,
-                                    comment__id__in=union_list_of_comments)
-
-        list_of_users = [
+    def get_users_dto(self, user_union_list: List[int]) -> List[UserDto]:
+        users = User.objects.filter(id__in=user_union_list)
+        users = [
             self._convert_user_object_to_dto(user)
-            for user in users_for_post
+            for user in users
         ]
-
-        return list_of_users
+        return users
 
     @staticmethod
     def _convert_user_object_to_dto(user):

@@ -8,12 +8,9 @@ class UserInterface(ABC):
     def check_is_user_exists(self, user_id: int) -> bool:
         pass
 
-    def get_list_of_users(self, post_ids: List[int],
-                          post_reactions_ids: List[int],
-                          post_comment_ids: List[int],
-                          reactions_on_comments_ids: List[int],
-                          replies_ids: List[int]) -> List[UserDto]:
+    def get_users_dto(self, user_union_list: List[int]) -> List[UserDto]:
         pass
+
 
 
 
