@@ -1,5 +1,5 @@
 from fb_post.interactors.storage_interfaces.post_interface import PostInterface
-from fb_post.interactors.storage_interfaces.dtos import PostDto, ReactOnPostDto,\
+from fb_post.interactors.storage_interfaces.dtos import PostDto, ReactOnPostDto, \
     CommentOnPostDto, ReactionOnCommentDto, CommentOnCommentDto
 from typing import List
 from fb_post.models.models import Post, Comment, React
@@ -41,12 +41,13 @@ class PostStorageImplementation(PostInterface):
 
         return reaction_on_post_dtos
 
-    def _convert_react_obj_to_dto(self, react: React) -> \
+    @staticmethod
+    def _convert_react_obj_to_dto(react: React) -> \
             ReactOnPostDto:
         react_dto = ReactOnPostDto(
-            reaction_id=react.reaction_id,
+            reaction_id=react.id,
             post_id=react.post_id,
-            reaction=react.reacted_at,
+            reaction=react.reaction,
             reacted_at=react.reacted_at,
             reacted_by_id=react.reacted_by_id
         )
@@ -64,7 +65,8 @@ class PostStorageImplementation(PostInterface):
 
         return comment_dtos
 
-    def _convert_comment_obj_to_dto(self, comment: Comment) -> \
+    @staticmethod
+    def _convert_comment_obj_to_dto(comment: Comment) -> \
             CommentOnPostDto:
         comment_dto = CommentOnPostDto(
             comment_id=comment.id,
@@ -77,7 +79,8 @@ class PostStorageImplementation(PostInterface):
 
     def get_reactions_on_comments(self, list_of_comment_id: List[int]) -> \
             List[ReactionOnCommentDto]:
-        react_on_comments_objs = React.objects.filter(comment_id__in=list_of_comment_id)
+        react_on_comments_objs = React.objects.filter(
+            comment_id__in=list_of_comment_id)
 
         react_on_comment_dtos = [
             self._convert_comment_react_obj_to_dto(react)
@@ -86,7 +89,8 @@ class PostStorageImplementation(PostInterface):
 
         return react_on_comment_dtos
 
-    def _convert_comment_react_obj_to_dto(self, react: React) -> \
+    @staticmethod
+    def _convert_comment_react_obj_to_dto(react: React) -> \
             ReactionOnCommentDto:
         react_on_comment_dto = ReactionOnCommentDto(
             reaction_id=react.id,
@@ -100,7 +104,8 @@ class PostStorageImplementation(PostInterface):
 
     def get_replies_on_comment(self, list_of_comment_id) -> \
             List[CommentOnCommentDto]:
-        comment_on_comment_obj = Comment.objects.filter(parent_comment_id__in=list_of_comment_id)
+        comment_on_comment_obj = Comment.objects.filter(
+            parent_comment_id__in=list_of_comment_id)
 
         replies_dtos = [
             self._convert_replies_obj_to_dto(comment)

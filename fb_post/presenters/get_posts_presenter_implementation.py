@@ -5,6 +5,9 @@ from django_swagger_utils.drf_server.exceptions import (
 )
 from fb_post.constants.exception_messages import INVALID_USER_ID
 from fb_post.interactors.presenter_interfaces.dtos import PostDetailsDto
+from typing import List
+from fb_post.interactors.storage_interfaces.dtos import PostDto, ReactOnPostDto, \
+    CommentOnPostDto, CommentOnCommentDto, ReactionOnCommentDto
 
 
 class GetPostsPresenterImplementation(GetPostsPresenterInterface):
@@ -21,17 +24,21 @@ class GetPostsPresenterImplementation(GetPostsPresenterInterface):
         reaction_on_comments = posts_details_dto.reaction_on_comment_dto
 
         list_of_post_dict = [
-            self._get_dict_for_post_details(post_dto, reactions_on_post, comments_on_post,
-                                            replies, reaction_on_comments)
+            self._get_dict_for_post_details(post_dto, reactions_on_post,
+                                            comments_on_post, replies,
+                                            reaction_on_comments)
             for post_dto in posts_dto_list
         ]
 
         return list_of_post_dict
 
-    def _get_dict_for_post_details(self,
-                                   post_dto, reactions_on_post_dtos_list,
-                                   comments_on_post, replies,
-                                   reaction_on_comments):
+    def _get_dict_for_post_details(self, post_dto: PostDto,
+                                   reactions_on_post_dtos_list: List[
+                                       ReactOnPostDto],
+                                   comments_on_post: List[CommentOnPostDto],
+                                   replies: List[CommentOnCommentDto],
+                                   reaction_on_comments: List[
+                                       ReactionOnCommentDto]):
         post_dict = {
             "post_id": post_dto.post_id,
             "posted_by": {
@@ -155,4 +162,3 @@ class GetPostsPresenterImplementation(GetPostsPresenterInterface):
             "type": list_of_types
         }
         return reactions_dict
-
