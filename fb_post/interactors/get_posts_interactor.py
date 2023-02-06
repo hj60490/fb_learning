@@ -17,8 +17,12 @@ class GetPostsInteractor:
 
     def get_posts_wrapper(self, user_id: int):
         try:
-            return self.get_posts(
+            posts_details = self.get_posts(
                 user_id=user_id
+            )
+
+            return self.presenter.get_all_post_of_user(
+                posts_details_dto=posts_details
             )
         except InvalidUserException:
             self.presenter.raise_exception_for_user_not_exist()
@@ -44,16 +48,14 @@ class GetPostsInteractor:
             list_of_comment_id)
 
         posts_details_dto = PostDetailsDto(
-            post_dto_list=posts,
-            reaction_post_dto_list=reactions,
-            comment_on_post_dto_list=comments,
-            replies_dto_list=replies_on_comment,
-            reaction_on_comment_dto=reactions_on_comments
+            posts=posts,
+            reactions_on_posts=reactions,
+            comments_on_post=comments,
+            replies=replies_on_comment,
+            reactions_on_comments=reactions_on_comments
         )
 
-        return self.presenter.get_all_post_of_user(
-            posts_details_dto=posts_details_dto
-        )
+        return posts_details_dto
 
 
 

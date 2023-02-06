@@ -7,9 +7,9 @@ from fb_post.interactors.storage_interfaces.dtos import PostDto, ReactOnPostDto,
 
 @dataclass
 class PostDetailsDto:
-    post_dto_list: List[PostDto]
-    reaction_post_dto_list: List[ReactOnPostDto]
-    comment_on_post_dto_list: List[CommentOnPostDto]
-    replies_dto_list: List[CommentOnCommentDto]
-    reaction_on_comment_dto: List[ReactionOnCommentDto]
+    posts: List[PostDto]
+    reactions_on_posts: List[ReactOnPostDto]
+    comments_on_post: List[CommentOnPostDto]
+    replies: List[CommentOnCommentDto]
+    reactions_on_comments: List[ReactionOnCommentDto]
 

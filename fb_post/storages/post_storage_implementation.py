@@ -1,8 +1,8 @@
 from fb_post.interactors.storage_interfaces.post_interface import PostInterface
 from fb_post.interactors.storage_interfaces.dtos import PostDto, ReactOnPostDto, \
-    CommentOnPostDto, ReactionOnCommentDto, CommentOnCommentDto
+    CommentOnPostDto, ReactionOnCommentDto, CommentOnCommentDto, UserDto
 from typing import List
-from fb_post.models.models import Post, Comment, React
+from fb_post.models.models import Post, Comment, React, User
 
 
 class PostStorageImplementation(PostInterface):
@@ -20,15 +20,24 @@ class PostStorageImplementation(PostInterface):
 
         return post_dtos
 
-    @staticmethod
-    def _convert_post_obj_to_dto(post: Post) -> PostDto:
+    def _convert_post_obj_to_dto(self, post: Post) -> PostDto:
+        user = self._get_user_dto_for_post(post.posted_by)
         post_dto = PostDto(
             post_id=post.id,
             content=post.content,
-            posted_by=post.posted_by,
+            posted_by=user,
             posted_at=post.posted_at
         )
         return post_dto
+
+    @staticmethod
+    def _get_user_dto_for_post(posted_by: User) -> UserDto:
+        user = UserDto(
+            user_id=posted_by.id,
+            name=posted_by.name,
+            profile_pic=posted_by.profile_pic
+        )
+        return user
 
     def get_all_reactions(self, list_of_post_id: List[int]) -> \
             List[ReactOnPostDto]:
