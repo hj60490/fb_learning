@@ -13,7 +13,7 @@ class UserDto:
 class PostDto:
     post_id: int
     content: str
-    posted_by: UserDto
+    posted_by_id: int
     posted_at: datetime
 
 
@@ -35,6 +35,7 @@ class CommentOnPostDto:
     post_id: int
 
 
+@dataclass
 class ReactionOnCommentDto:
     reaction_id: int
     comment_id: int

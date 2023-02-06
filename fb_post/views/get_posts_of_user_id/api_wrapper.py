@@ -38,4 +38,3 @@ def api_wrapper(*args, **kwargs):
     return HttpResponse(data, status=200)
 
 
-
