@@ -43,12 +43,12 @@ class PostStorageImplementation(PostInterface):
             List[ReactOnPostDto]:
         react_objs = React.objects.filter(post_id__in=list_of_post_id)
 
-        reaction_on_post_dtos = [
+        reaction_on_post = [
             self._convert_react_obj_to_dto(react)
             for react in react_objs
         ]
 
-        return reaction_on_post_dtos
+        return reaction_on_post
 
     @staticmethod
     def _convert_react_obj_to_dto(react: React) -> \

@@ -14,6 +14,7 @@ class UserStorageImplementation(UserInterface):
                           post_comment_ids: List[int],
                           reactions_on_comments_ids: List[int],
                           replies_ids: List[int]) -> List[UserDto]:
+
         all_reactions = []
         all_reactions.append(post_reactions_ids)
         all_reactions.append(reactions_on_comments_ids)
@@ -24,8 +25,8 @@ class UserStorageImplementation(UserInterface):
         all_comments.append(replies_ids)
         union_list_of_comments = list(set().union(*all_comments))
         users_for_post = User.objects.filter(post__id__in=post_ids,
-                                                react__id__in=union_list_of_all_reactions,
-                                                comment__id__in=union_list_of_comments)
+                                    react__id__in=union_list_of_all_reactions,
+                                    comment__id__in=union_list_of_comments)
 
         list_of_users = [
             self._convert_user_object_to_dto(user)
