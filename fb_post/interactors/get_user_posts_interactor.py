@@ -46,11 +46,11 @@ class GetUserPostsInteractor:
 
         # reaction dtos
         reactions_dtos = self.post_storage.get_all_reactions(post_ids)
-        user_ids.append(self._get_user_id_from_reaction(reactions_dtos))
+        user_ids.extend(self._get_user_id_from_reaction(reactions_dtos))
 
         # comments dtos
         comments_dtos = self.post_storage.get_comments(post_ids)
-        user_ids.append(self._get_user_id_from_comments(comments_dtos))
+        user_ids.extend(self._get_user_id_from_comments(comments_dtos))
         post_comment_ids = [comment.comment_id for comment in comments_dtos]
 
         # replies dtos
@@ -63,16 +63,14 @@ class GetUserPostsInteractor:
         # reaction on comments dtos
         reactions_on_comments_dtos = self.post_storage.get_reactions_on_comments(
             post_comment_ids)
-        user_ids.append(
+        user_ids.extend(
             self._get_user_id_from_reaction_on_comment(
                 reactions_on_comments_dtos))
 
-
-
-        user_ids.append(self._get_user_id_from_replies(replies_on_comment_dtos))
+        user_ids.extend(self._get_user_id_from_replies(replies_on_comment_dtos))
 
         # user dtos
-        user_dtos = self._get_unique_user_ids(user_ids)
+        user_dtos = self.user_storage.get_users_dto(user_ids)
 
         user_posts_details_dto = PostDetailsDto(
             users=user_dtos,
