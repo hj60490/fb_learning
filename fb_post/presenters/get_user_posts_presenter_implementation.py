@@ -6,8 +6,8 @@ from django_swagger_utils.drf_server.exceptions import (
 from fb_post.constants.exception_messages import INVALID_USER_ID
 from fb_post.interactors.presenter_interfaces.dtos import PostDetailsDto, \
     PostReactionCommentDto, ReactionAndCommentDto
-from typing import List, Dict
-from fb_post.interactors.storage_interfaces.dtos import PostDto, ReactOnPostDto, \
+from typing import List
+from fb_post.interactors.storage_interfaces.dtos import PostDto, ReactOnPostDto,\
     CommentOnPostDto, CommentOnCommentDto, ReactionOnCommentDto, UserDto
 
 
@@ -30,6 +30,7 @@ class GetUserPostsPresenterImplementation(GetPostsPresenterInterface):
 
         list_of_posts_dict = self._prepare_user_posts_dict(
             posts_comments_and_reactions_dto, users_details_dict)
+
 
         return list_of_posts_dict
 
@@ -54,7 +55,7 @@ class GetUserPostsPresenterImplementation(GetPostsPresenterInterface):
                 self._get_dict_for_post_details(reactions_and_comment_dto,
                                                 users_details_dict))
 
-            return list_of_posts
+        return list_of_posts
 
     @staticmethod
     def _make_users_details_dict(users: List[UserDto]):
@@ -71,8 +72,6 @@ class GetUserPostsPresenterImplementation(GetPostsPresenterInterface):
     def _get_dict_for_post_details(self,
                                    reactions_and_comments_dto: ReactionAndCommentDto,
                                    users_details_dict):
-        # print("*****************")
-        # print(users_details_dict[post_dto.posted_by_id])
         post_dict = {
             "post_id": reactions_and_comments_dto.post.post_id,
             "posted_by": users_details_dict[
@@ -90,9 +89,6 @@ class GetUserPostsPresenterImplementation(GetPostsPresenterInterface):
                 users_details_dict),
         }
         post_dict['comments_count'] = len(post_dict['comments'])
-        # print("***************** THIS IS REPLY v1*********************")
-        # print(post_dto.post_id)
-        # print(len(replies))
         return post_dict
 
     def _get_comments_list(self, comments_on_post: List[CommentOnPostDto],
@@ -147,13 +143,12 @@ class GetUserPostsPresenterImplementation(GetPostsPresenterInterface):
                                         comment_dto):
         reaction_type_set = set()
         reactions_count = 0
-        # print("*******************")
+
         for reaction_dto in reaction_on_comments:
             if reaction_dto.comment_id == comment_dto.comment_id:
                 reactions_count += 1
                 reaction_type_set.add(reaction_dto.reaction)
-                # print("*******************")
-                # print(reaction_dto.reaction)
+
         list_of_types = list(reaction_type_set)
         reactions_dict = {
             "count": reactions_count,
@@ -167,7 +162,7 @@ class GetUserPostsPresenterImplementation(GetPostsPresenterInterface):
                              users_details_list):
         list_of_replies = [
             self._prepare_replies_list_of_dict(reply,
-                                               comment_dto, reaction_on_comment,
+                                                reaction_on_comment,
                                                users_details_list)
             for reply in replies if reply.parent_comment_id == comment_dto.comment_id
         ]
@@ -176,7 +171,6 @@ class GetUserPostsPresenterImplementation(GetPostsPresenterInterface):
 
     def _prepare_replies_list_of_dict(self,
                                       reply: CommentOnCommentDto,
-                                      comment_dto,
                                       reaction_on_comments, users_details_list):
         reply_dict = {
             "comment_id": reply.comment_id,
@@ -192,10 +186,6 @@ class GetUserPostsPresenterImplementation(GetPostsPresenterInterface):
     @staticmethod
     def _get_reactions_dict_of_replies(reaction_on_comments,
                                        comment_on_comment):
-        print("****************This is comment on comment******************")
-        print(comment_on_comment)
-        print("****************This is comment on reactions******************")
-        print(reaction_on_comments)
         reaction_type_list = []
         reactions_count = 0
         for reaction_dto in reaction_on_comments:

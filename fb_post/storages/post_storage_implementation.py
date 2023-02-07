@@ -17,7 +17,6 @@ class PostStorageImplementation(PostInterface):
             self._convert_post_obj_to_dto(post)
             for post in post_objs
         ]
-
         return post_dtos
 
     @staticmethod
