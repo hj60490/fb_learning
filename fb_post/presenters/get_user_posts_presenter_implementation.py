@@ -55,7 +55,7 @@ class GetUserPostsPresenterImplementation(GetPostsPresenterInterface):
                                    reaction_on_comments: List[
                                        ReactionOnCommentDto],
                                    users_details_dict):
-        # print("*****************")
+        print("*****************")
         # print(users_details_dict[post_dto.posted_by_id])
         post_dict = {
             "post_id": post_dto.post_id,
@@ -105,8 +105,7 @@ class GetUserPostsPresenterImplementation(GetPostsPresenterInterface):
         return comment_dict
 
     @staticmethod
-    def _get_reactions_dict(reactions_on_post: List[ReactOnPostDto],
-                            post_dto: PostDto):
+    def _get_reactions_dict(reactions_on_post, post_dto):
         reaction_type_set = set()
         reactions_count = 0
         for reaction in reactions_on_post:
@@ -118,8 +117,8 @@ class GetUserPostsPresenterImplementation(GetPostsPresenterInterface):
             "count": reactions_count,
             "types": list_of_types
         }
-        # if not len(list_of_types):
-        #     reactions_dict['types'] = []
+        if not len(list_of_types):
+            reactions_dict['types'] = []
         return reactions_dict
 
     @staticmethod

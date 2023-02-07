@@ -74,9 +74,9 @@ class PostStorageImplementation(PostInterface):
 
         return comment_dtos
 
-    def _convert_comment_obj_to_dto(self, comment: Comment) -> \
+    @staticmethod
+    def _convert_comment_obj_to_dto(comment: Comment) -> \
             CommentOnPostDto:
-        user = self._get_user_dto_for_comment(comment.commented_by)
         comment_dto = CommentOnPostDto(
             comment_id=comment.id,
             content=comment.content,
