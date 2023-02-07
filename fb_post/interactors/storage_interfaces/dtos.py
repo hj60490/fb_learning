@@ -1,3 +1,4 @@
+import typing
 from dataclasses import dataclass
 from datetime import datetime
 
@@ -53,6 +54,11 @@ class CommentOnCommentDto:
     parent_comment_id: int
 
 
-
-
-
+@dataclass
+class CommentDTO:
+    comment_id: int
+    content: str
+    commented_at: datetime
+    commented_by_id: int
+    parent_comment_id: typing.Optional[int]
+    post_id: typing.Optional[int]

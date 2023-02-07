@@ -6,8 +6,7 @@ from fb_post.interactors.presenter_interfaces.get_user_posts_presenter_interface
 from fb_post.interactors.presenter_interfaces.dtos import PostDetailsDto
 from fb_post.interactors.storage_interfaces.dtos import ReactOnPostDto, \
     CommentOnPostDto, ReactionOnCommentDto, CommentOnCommentDto, UserDto
-from typing import List
-from fb_post.models import User, React
+from typing import List, Dict, Any
 
 
 class GetUserPostsInteractor:
@@ -56,6 +55,7 @@ class GetUserPostsInteractor:
         # replies dtos
         replies_on_comment_dtos = self.post_storage.get_replies_on_comment(
             post_comment_ids)
+        user_ids.extend(self._get_user_id_from_replies(replies_on_comment_dtos))
         replies_ids = [comment.comment_id for comment in
                        replies_on_comment_dtos]
         post_comment_ids.extend(replies_ids)
@@ -67,10 +67,9 @@ class GetUserPostsInteractor:
             self._get_user_id_from_reaction_on_comment(
                 reactions_on_comments_dtos))
 
-        user_ids.extend(self._get_user_id_from_replies(replies_on_comment_dtos))
-
         # user dtos
-        user_dtos = self.user_storage.get_users_dto(user_ids)
+        user_dtos = self.user_storage.get_users_details(
+            list(set(user_ids)))
 
         user_posts_details_dto = PostDetailsDto(
             users=user_dtos,
@@ -83,8 +82,8 @@ class GetUserPostsInteractor:
         return user_posts_details_dto
 
     @staticmethod
-    def _get_user_id_from_reaction(reactions: List[ReactOnPostDto]) -> \
-            List[int]:
+    def _get_user_id_from_reaction(
+            reactions: List[ReactOnPostDto]) -> List[int]:
         list_of_user_ids = [
             react.reacted_by_id
             for react in reactions
@@ -92,8 +91,8 @@ class GetUserPostsInteractor:
         return list_of_user_ids
 
     @staticmethod
-    def _get_user_id_from_comments(comments: List[CommentOnPostDto]) -> List[
-        int]:
+    def _get_user_id_from_comments(
+            comments: List[CommentOnPostDto]) -> List[int]:
         list_of_user_ids = [
             comment.commented_by_id
             for comment in comments
@@ -101,8 +100,8 @@ class GetUserPostsInteractor:
         return list_of_user_ids
 
     @staticmethod
-    def _get_user_id_from_replies(replies_on_comment: List[CommentOnCommentDto]
-                                  ) -> List[int]:
+    def _get_user_id_from_replies(
+            replies_on_comment: List[CommentOnCommentDto]) -> List[int]:
         list_of_user_ids = [
             comment.commented_by_id
             for comment in replies_on_comment
@@ -119,9 +118,16 @@ class GetUserPostsInteractor:
         ]
         return list_of_user_ids
 
-    def _get_unique_user_ids(self, user_ids) -> List[UserDto]:
+    def _get_comments_for_posts(
+            self, post_ids: List[int]) -> Dict[str, Any]:
+        comments_dtos = self.post_storage.get_comments(post_ids)
+        post_comment_ids = [
+            comment.comment_id for comment in comments_dtos]
 
-        user_union_list = list(set().union(*user_ids))
+        replies_on_comment_dtos = self.post_storage.get_replies_on_comment(
+            post_comment_ids)
 
-        users = self.user_storage.get_users_dto(user_union_list)
-        return users
+        return {
+            "comments": comments_dtos,
+            "replies_for_comments": replies_on_comment_dtos
+        }

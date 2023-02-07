@@ -9,7 +9,7 @@ class UserStorageImplementation(UserInterface):
     def check_is_user_exists(self, user_id: int) -> bool:
         return User.objects.filter(id=user_id).exists()
 
-    def get_users_dto(self, user_union_list: List[int]) -> List[UserDto]:
+    def get_users_details(self, user_union_list: List[int]) -> List[UserDto]:
         users = User.objects.filter(id__in=user_union_list)
         users = [
             self._convert_user_object_to_dto(user)
