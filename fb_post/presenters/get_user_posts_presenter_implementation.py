@@ -19,7 +19,7 @@ class GetUserPostsPresenterImplementation(GetPostsPresenterInterface):
     def get_all_posts_of_user(self, posts_details_dto: PostDetailsDto):
         users_details_dict = self._make_users_details_dict(
             posts_details_dto.users)
-
+        posts_dict = {}
         posts_comments_and_reactions_dto = PostReactionCommentDto(
             posts=posts_details_dto.posts,
             reactions_on_post=posts_details_dto.reactions_on_posts,
@@ -28,11 +28,10 @@ class GetUserPostsPresenterImplementation(GetPostsPresenterInterface):
             reactions_on_comment=posts_details_dto.reactions_on_comments
         )
 
-        list_of_posts_dict = self._prepare_user_posts_dict(
+        posts_dict["user_posts_details"] = self._prepare_user_posts_dict(
             posts_comments_and_reactions_dto, users_details_dict)
 
-
-        return list_of_posts_dict
+        return posts_dict
 
     def _prepare_user_posts_dict(self,
                                  posts_comments_and_reactions_dto: PostReactionCommentDto,

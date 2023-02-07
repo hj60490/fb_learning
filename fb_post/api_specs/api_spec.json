@@ -144,7 +144,10 @@
     "UserPostsDescription": {
       "description": "Details of all Posts",
       "schema": {
-        "type": "array",
+        "type": "object",
+        "properties": {
+          "user_posts_details": {
+             "type": "array",
         "items": {
           "type": "object",
           "properties": {
@@ -192,6 +195,9 @@
             "comments_count"
           ]
         }
+          }
+        }
+
       }
     }
   },
