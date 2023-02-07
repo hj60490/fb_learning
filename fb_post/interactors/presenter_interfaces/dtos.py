@@ -14,3 +14,21 @@ class PostDetailsDto:
     replies: List[CommentOnCommentDto]
     reactions_on_comments: List[ReactionOnCommentDto]
 
+
+@dataclass
+class PostReactionCommentDto:
+    posts: List[PostDto]
+    reactions_on_post: List[ReactOnPostDto]
+    comments_on_post: List[CommentOnPostDto]
+    comments_on_comment: List[CommentOnCommentDto]
+    reactions_on_comment: List[ReactionOnCommentDto]
+
+
+@dataclass
+class ReactionAndCommentDto:
+    post: PostDto
+    reactions_on_post: List[ReactOnPostDto]
+    comments_on_post: List[CommentOnPostDto]
+    comments_on_comment: List[CommentOnCommentDto]
+    reactions_on_comment: List[ReactionOnCommentDto]
+
