@@ -19,8 +19,8 @@ def api_wrapper(*args, **kwargs):
     query_params = kwargs['query_params']
     offset = query_params['offset']
     limit = query_params['limit']
-    sort_order = query_params['sort_order']
-    post_content = query_params['post_content']
+    sort_order = query_params.get('sort_order', "DESC")
+    post_content = query_params.get('post_content')
 
     requests_parameters_dto = RequestsParametersDTO(
         offset=offset,

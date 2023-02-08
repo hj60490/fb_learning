@@ -43,7 +43,7 @@ class GetUserPostsInteractor:
     def get_user_posts(
             self, user_id: int, requests_parameters_dto: RequestsParametersDTO
     ) -> PostDetailsDto:
-        self._validate_limit_or_offset(requests_parameters_dto)
+        self._validate_limit_and_offset(requests_parameters_dto)
         self._validate_user(user_id)
         user_ids = [user_id]
 
@@ -87,7 +87,7 @@ class GetUserPostsInteractor:
         return user_posts_details_dto
 
     @staticmethod
-    def _validate_limit_or_offset(
+    def _validate_limit_and_offset(
             requests_parameters_dto: RequestsParametersDTO):
         offset = requests_parameters_dto.offset
         limit = requests_parameters_dto.limit

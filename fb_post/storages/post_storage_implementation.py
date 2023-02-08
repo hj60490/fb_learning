@@ -24,8 +24,7 @@ class PostStorageImplementation(PostInterface):
         posts_objs = Post.objects.filter(posted_by_id=user_id)
         if post_content:
             # print("********Post Content***********")
-            posts_objs = Post.objects.filter(Q(content__icontains=post_content) &
-                                             Q(posted_by_id=user_id))
+            posts_objs = posts_objs.filter(content__icontains=post_content)
 
         if sort_order:
             if sort_order == "ASC":
@@ -33,8 +32,8 @@ class PostStorageImplementation(PostInterface):
             else:
                 posts_objs = posts_objs.order_by('-posted_at')
 
-        # print("************This*****************")
-        # print(post_objs)
+        print("************This*****************")
+        print(posts_objs)
 
         posts_objs = posts_objs[offset: limit+offset]
 
