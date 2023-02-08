@@ -2,7 +2,8 @@ import pytest
 from unittest.mock import create_autospec
 from fb_post.interactors.storage_interfaces.user_interface import UserInterface
 from fb_post.interactors.storage_interfaces.post_interface import PostInterface
-from fb_post.interactors.presenter_interfaces.get_user_posts_presenter_interface import GetPostsPresenterInterface
+from fb_post.interactors.presenter_interfaces.get_user_posts_presenter_interface import \
+    GetPostsPresenterInterface
 from fb_post.interactors.get_user_posts_interactor import GetUserPostsInteractor
 from django_swagger_utils.drf_server.exceptions import BadRequest, NotFound
 
@@ -72,9 +73,3 @@ def test_get_user_posts_interactor_when_user_not_found_raise_exception(
 
     user_storage.check_is_user_exists.assert_called_once_with(user_id=user_id)
     presenter.raise_exception_for_user_not_exist.assert_called_once()
-
-
-
-
-
-
