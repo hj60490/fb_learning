@@ -35,3 +35,4 @@ def api_wrapper(*args, **kwargs):
     data = json.dumps(post_details, sort_keys=True, default=str)
 
     return HttpResponse(data, status=200)
+

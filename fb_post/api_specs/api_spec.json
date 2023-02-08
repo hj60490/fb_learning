@@ -138,6 +138,38 @@
       "description": "id of user",
       "type": "integer",
       "format": "int64"
+    },
+    "OffsetRequest": {
+      "name": "offset",
+      "in": "query",
+      "description": "offset value",
+      "required": true,
+      "type": "integer",
+      "format": "int64"
+    },
+    "LimitRequest": {
+      "name": "limit",
+      "in": "query",
+      "description": "limit value",
+      "required": true,
+      "type": "integer",
+      "format": "int64"
+    },
+    "PostsCreatedAtSortOrder": {
+      "name": "sort order created at",
+      "in": "query",
+      "description": "sort order created at",
+      "type": "string",
+      "enum": [
+        "ASC",
+        "DESC"
+      ]
+    },
+    "ContentContainsFilter": {
+      "name": "filter by content contains",
+      "in": "body",
+      "description": "content contains",
+      "type": "string"
     }
   },
   "responses": {
@@ -147,57 +179,56 @@
         "type": "object",
         "properties": {
           "user_posts_details": {
-             "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "post_id": {
-              "type": "integer",
-              "format": "int64"
-            },
-            "posted_by": {
-              "$ref": "#/definitions/User"
-            },
-            "posted_at": {
-              "type": "string",
-              "format": "date-time"
-            },
-            "post_content": {
-              "type": "string"
-            },
-            "reactions": {
-              "$ref": "#/definitions/Reaction"
-            },
-            "comments": {
-              "type": "array",
-              "items": {
-                "allOf": [
-                  {
-                    "$ref": "#/definitions/Comment"
-                  },
-                  {
-                    "$ref": "#/definitions/Replies"
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "post_id": {
+                  "type": "integer",
+                  "format": "int64"
+                },
+                "posted_by": {
+                  "$ref": "#/definitions/User"
+                },
+                "posted_at": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "post_content": {
+                  "type": "string"
+                },
+                "reactions": {
+                  "$ref": "#/definitions/Reaction"
+                },
+                "comments": {
+                  "type": "array",
+                  "items": {
+                    "allOf": [
+                      {
+                        "$ref": "#/definitions/Comment"
+                      },
+                      {
+                        "$ref": "#/definitions/Replies"
+                      }
+                    ]
                   }
-                ]
-              }
-            },
-            "comments_count": {
-              "type": "integer",
-              "format": "int64"
+                },
+                "comments_count": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              },
+              "required": [
+                "post_id",
+                "posted_by",
+                "posted_at",
+                "post_content",
+                "reactions",
+                "comments_count"
+              ]
             }
-          },
-          "required": [
-            "post_id",
-            "posted_by",
-            "posted_at",
-            "post_content",
-            "reactions",
-            "comments_count"
-          ]
-        }
           }
         }
-
       }
     }
   },
@@ -230,6 +261,18 @@
         "parameters": [
           {
             "$ref": "#/parameters/UserId"
+          },
+          {
+            "$ref": "#/parameters/OffsetRequest"
+          },
+          {
+            "$ref": "#/parameters/LimitRequest"
+          },
+          {
+            "$ref": "#/parameters/PostsCreatedAtSortOrder"
+          },
+          {
+            "$ref": "#/parameters/ContentContainsFilter"
           }
         ],
         "responses": {
