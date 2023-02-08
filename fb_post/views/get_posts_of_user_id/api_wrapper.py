@@ -14,6 +14,8 @@ from django.http import HttpResponse
 
 @validate_decorator(validator_class=ValidatorClass)
 def api_wrapper(*args, **kwargs):
+    print("******************************")
+    print(kwargs)
     user_id = kwargs['user_id']
 
     # storge implementation

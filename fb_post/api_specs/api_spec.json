@@ -156,7 +156,7 @@
       "format": "int64"
     },
     "PostsCreatedAtSortOrder": {
-      "name": "sort order created at",
+      "name": "SortOrderCreatedAt",
       "in": "query",
       "description": "sort order created at",
       "type": "string",
@@ -166,8 +166,8 @@
       ]
     },
     "ContentContainsFilter": {
-      "name": "filter by content contains",
-      "in": "body",
+      "name": "FilterByContentContains",
+      "in": "query",
       "description": "content contains",
       "type": "string"
     }
