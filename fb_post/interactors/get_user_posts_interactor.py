@@ -1,6 +1,6 @@
 from fb_post.interactors.storage_interfaces.post_interface import PostInterface
 from fb_post.interactors.storage_interfaces.user_interface import UserInterface
-from fb_post.exceptions.custom_exceptions import InvalidUserException
+from fb_post.exceptions.custom_exceptions import InvalidUserException, InvalidOffsetValue , InvalidLimitValue
 from fb_post.interactors.presenter_interfaces.get_user_posts_presenter_interface \
     import GetPostsPresenterInterface
 from fb_post.interactors.presenter_interfaces.dtos import PostDetailsDto
@@ -29,6 +29,10 @@ class GetUserPostsInteractor:
             )
         except InvalidUserException:
             self.presenter.raise_exception_for_user_not_exist()
+        except InvalidOffsetValue:
+            self.presenter.raise_exception_for_invalid_offset_length()
+        except InvalidLimitValue:
+            self.presenter.raise_exception_for_invalid_limit_length()
 
     def _validate_user(self, user_id: int):
         is_user_exists = self.user_storage.check_is_user_exists(user_id)
@@ -43,7 +47,8 @@ class GetUserPostsInteractor:
         self._validate_user(user_id)
         user_ids = [user_id]
 
-        posts_dtos = self.post_storage.get_posts(user_id)
+        posts_dtos = self.post_storage.get_posts(
+            user_id, requests_parameters_dto)
         post_ids = [post.post_id for post in posts_dtos]
 
         reactions_dtos = self.post_storage.get_all_reactions(post_ids)
@@ -81,18 +86,17 @@ class GetUserPostsInteractor:
         )
         return user_posts_details_dto
 
+    @staticmethod
     def _validate_limit_or_offset(
-            self, requests_parameters_dto: RequestsParametersDTO):
+            requests_parameters_dto: RequestsParametersDTO):
         offset = requests_parameters_dto.offset
         limit = requests_parameters_dto.limit
 
         if offset < 0:
-            self.presenter.raise_exception_for_invalid_offset_length()
-            return
+            raise InvalidOffsetValue
 
         if limit < 0:
-            self.presenter.raise_exception_for_invalid_limit_length()
-            return
+            raise InvalidLimitValue
 
     @staticmethod
     def _get_user_id_from_reaction(

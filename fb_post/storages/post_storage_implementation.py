@@ -1,8 +1,10 @@
 from fb_post.interactors.storage_interfaces.post_interface import PostInterface
 from fb_post.interactors.storage_interfaces.dtos import PostDto, ReactOnPostDto, \
-    CommentOnPostDto, ReactionOnCommentDto, CommentOnCommentDto, UserDto
+    CommentOnPostDto, ReactionOnCommentDto, CommentOnCommentDto, UserDto, \
+    RequestsParametersDTO
 from typing import List
 from fb_post.models.models import Post, Comment, React, User
+from django.db.models import Q
 
 
 class PostStorageImplementation(PostInterface):
@@ -10,12 +12,35 @@ class PostStorageImplementation(PostInterface):
         Post.objects.create(content=content, posted_by_id=user_id)
         return
 
-    def get_posts(self, user_id: int) -> List[PostDto]:
-        post_objs = Post.objects.filter(posted_by_id=user_id)
+    def get_posts(
+            self, user_id: int, requests_parameters_dto: RequestsParametersDTO
+    ) -> List[PostDto]:
+        limit = requests_parameters_dto.limit
+        offset = requests_parameters_dto.offset
+        sort_order = requests_parameters_dto.sort_order
+        post_content = requests_parameters_dto.post_content
+        # print("*****************")
+        # print(post_content)
+        posts_objs = Post.objects.filter(posted_by_id=user_id)
+        if post_content:
+            # print("********Post Content***********")
+            posts_objs = Post.objects.filter(Q(content__icontains=post_content) &
+                                             Q(posted_by_id=user_id))
+
+        if sort_order:
+            if sort_order == "ASC":
+                posts_objs = posts_objs.order_by('posted_at')
+            else:
+                posts_objs = posts_objs.order_by('-posted_at')
+
+        # print("************This*****************")
+        # print(post_objs)
+
+        posts_objs = posts_objs[offset: limit+offset]
 
         post_dtos = [
             self._convert_post_obj_to_dto(post)
-            for post in post_objs
+            for post in posts_objs
         ]
         return post_dtos
 

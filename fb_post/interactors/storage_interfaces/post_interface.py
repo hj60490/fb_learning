@@ -1,6 +1,6 @@
 from abc import ABC
 from .dtos import PostDto, ReactOnPostDto, CommentOnPostDto, \
-    ReactionOnCommentDto, CommentOnCommentDto
+    ReactionOnCommentDto, CommentOnCommentDto, RequestsParametersDTO
 from typing import List
 from fb_post.interactors.presenter_interfaces.dtos import PostDetailsDto
 
@@ -10,7 +10,9 @@ class PostInterface(ABC):
     def create_post(self, content: str, user_id: int):
         pass
 
-    def get_posts(self, user_id: int) -> List[PostDto]:
+    def get_posts(
+            self, user_id: int, requests_parameters_dto: RequestsParametersDTO
+    ) -> List[PostDto]:
         pass
 
     def get_all_reactions(self, list_of_post_id: List[int]) -> \

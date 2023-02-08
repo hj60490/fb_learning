@@ -3,7 +3,8 @@ from fb_post.interactors.presenter_interfaces.get_user_posts_presenter_interface
 from django_swagger_utils.drf_server.exceptions import (
     BadRequest
 )
-from fb_post.constants.exception_messages import INVALID_USER_ID
+from fb_post.constants.exception_messages import INVALID_USER_ID,\
+    INVALID_LIMIT_LENGTH, INVALID_OFFSET_LENGTH
 from fb_post.interactors.presenter_interfaces.dtos import PostDetailsDto, \
     PostReactionCommentDto, ReactionAndCommentDto
 from typing import List
@@ -15,6 +16,12 @@ class GetUserPostsPresenterImplementation(GetPostsPresenterInterface):
 
     def raise_exception_for_user_not_exist(self):
         raise BadRequest(*INVALID_USER_ID)
+
+    def raise_exception_for_invalid_limit_length(self):
+        raise BadRequest(*INVALID_LIMIT_LENGTH)
+
+    def raise_exception_for_invalid_offset_length(self):
+        raise BadRequest(*INVALID_OFFSET_LENGTH)
 
     def get_all_posts_of_user(self, posts_details_dto: PostDetailsDto):
         users_details_dict = self._make_users_details_dict(
