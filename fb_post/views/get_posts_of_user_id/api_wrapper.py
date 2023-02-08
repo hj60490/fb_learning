@@ -43,7 +43,9 @@ def api_wrapper(*args, **kwargs):
         presenter=presenter
     )
 
-    post_details = interactor.get_user_posts_wrapper(user_id=user_id)
+    post_details = interactor.get_user_posts_wrapper(
+        user_id=user_id, requests_parameters_dto=requests_parameters_dto
+    )
 
     data = json.dumps(post_details, sort_keys=True, default=str)
 

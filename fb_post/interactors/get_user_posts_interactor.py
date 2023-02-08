@@ -5,7 +5,7 @@ from fb_post.interactors.presenter_interfaces.get_user_posts_presenter_interface
     import GetPostsPresenterInterface
 from fb_post.interactors.presenter_interfaces.dtos import PostDetailsDto
 from fb_post.interactors.storage_interfaces.dtos import ReactOnPostDto, \
-    CommentOnPostDto, ReactionOnCommentDto, CommentOnCommentDto, UserDto
+    CommentOnPostDto, ReactionOnCommentDto, CommentOnCommentDto, UserDto, RequestsParametersDTO
 from typing import List, Dict, Any
 
 
@@ -17,10 +17,11 @@ class GetUserPostsInteractor:
         self.user_storage = user_storage
         self.presenter = presenter
 
-    def get_user_posts_wrapper(self, user_id: int):
+    def get_user_posts_wrapper(
+            self, user_id: int, requests_parameters_dto: RequestsParametersDTO):
         try:
             posts_details = self.get_user_posts(
-                user_id=user_id
+                user_id=user_id, requests_parameters_dto=requests_parameters_dto
             )
 
             return self.presenter.get_all_posts_of_user(
@@ -35,7 +36,10 @@ class GetUserPostsInteractor:
         if not is_user_exists:
             raise InvalidUserException
 
-    def get_user_posts(self, user_id: int) -> PostDetailsDto:
+    def get_user_posts(
+            self, user_id: int, requests_parameters_dto: RequestsParametersDTO
+    ) -> PostDetailsDto:
+        self._validate_limit_or_offset(requests_parameters_dto)
         self._validate_user(user_id)
         user_ids = [user_id]
 
@@ -76,6 +80,19 @@ class GetUserPostsInteractor:
             reactions_on_comments=reactions_on_comments_dtos
         )
         return user_posts_details_dto
+
+    def _validate_limit_or_offset(
+            self, requests_parameters_dto: RequestsParametersDTO):
+        offset = requests_parameters_dto.offset
+        limit = requests_parameters_dto.limit
+
+        if offset < 0:
+            self.presenter.raise_exception_for_invalid_offset_length()
+            return
+
+        if limit < 0:
+            self.presenter.raise_exception_for_invalid_limit_length()
+            return
 
     @staticmethod
     def _get_user_id_from_reaction(
