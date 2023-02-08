@@ -62,3 +62,11 @@ class CommentDTO:
     commented_by_id: int
     parent_comment_id: typing.Optional[int]
     post_id: typing.Optional[int]
+
+
+@dataclass
+class RequestsParametersDTO:
+    offset: int
+    limit: int
+    sort_order: str
+    post_content: str

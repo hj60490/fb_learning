@@ -10,13 +10,24 @@ from fb_post.presenters.get_user_posts_presenter_implementation import \
 from fb_post.interactors.get_user_posts_interactor import GetUserPostsInteractor
 import json
 from django.http import HttpResponse
+from fb_post.interactors.storage_interfaces.dtos import RequestsParametersDTO
 
 
 @validate_decorator(validator_class=ValidatorClass)
 def api_wrapper(*args, **kwargs):
-    print("******************************")
-    print(kwargs)
     user_id = kwargs['user_id']
+    query_params = kwargs['query_params']
+    offset = query_params['offset']
+    limit = query_params['limit']
+    sort_order = query_params['sort_order']
+    post_content = query_params['post_content']
+
+    requests_parameters_dto = RequestsParametersDTO(
+        offset=offset,
+        limit=limit,
+        sort_order=sort_order,
+        post_content=post_content
+    )
 
     # storge implementation
     user_storage = UserStorageImplementation()
