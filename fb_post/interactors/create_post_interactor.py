@@ -3,7 +3,7 @@ from fb_post.interactors.presenter_interfaces.presenter_interface import\
     CreatePostPresenterInterface
 from fb_post.interactors.storage_interfaces.post_interface import PostInterface
 from fb_post.interactors.storage_interfaces.user_interface import UserInterface
-from fb_post.exceptions.custom_exceptions import InvalidUserException
+from fb_post.exceptions.custom_exceptions import InvalidUserException, InvalidContentException
 
 
 class CreatePostInteractor:
@@ -21,12 +21,17 @@ class CreatePostInteractor:
             )
         except InvalidUserException:
             self.presenter.raise_exception_for_user_not_exist()
+        except InvalidUserException:
+            self.presenter.raise_exception_for_invalid_content()
 
     def create_post(self, content: str, user_id: int):
         is_user_exists = self.user_storage.check_is_user_exists(user_id)
 
         if not is_user_exists:
             raise InvalidUserException
+
+        if not content:
+            raise InvalidContentException
 
         self.post_storage.create_post(
             content=content, user_id=user_id

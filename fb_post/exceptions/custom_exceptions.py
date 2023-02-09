@@ -9,3 +9,9 @@ class InvalidOffsetValue(Exception):
 
 class InvalidLimitValue(Exception):
     pass
+
+
+class InvalidContentException(Exception):
+    pass
+
+
