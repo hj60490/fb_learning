@@ -32,6 +32,30 @@ def test_create_post_interactor_when_user_not_found_raise_exception():
     presenter.raise_exception_for_user_not_exist.assert_called_once()
 
 
+def test_create_post_interactor_when_content_is_not_given_raise_exception():
+    content = ""
+    user_id = 1
+
+    user_storage = create_autospec(UserInterface)
+    post_storage = create_autospec(PostInterface)
+    presenter = create_autospec(CreatePostPresenterInterface)
+    interactor = CreatePostInteractor(
+        user_storage=user_storage,
+        post_storage=post_storage,
+        presenter=presenter
+    )
+    user_storage.check_is_user_exists.return_value = True
+    presenter.raise_exception_for_invalid_content.side_effect = BadRequest
+
+    with pytest.raises(BadRequest):
+        interactor.create_post_wrapper(
+            content, user_id
+        )
+
+    user_storage.check_is_user_exists.assert_called_once_with(user_id=user_id)
+    presenter.raise_exception_for_invalid_content.assert_called_once()
+
+
 def test_create_post_interactor_with_valid_details_creates_post():
     user_id = 1
     content = "hello"
@@ -71,3 +95,4 @@ def test_create_post_interactor_post_storage():
         user_id=user_id,
         content=content
     )
+

@@ -73,3 +73,5 @@ def test_get_user_posts_interactor_when_user_not_found_raise_exception(
 
     user_storage.check_is_user_exists.assert_called_once_with(user_id=user_id)
     presenter.raise_exception_for_user_not_exist.assert_called_once()
+
+

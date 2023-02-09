@@ -21,7 +21,7 @@ class CreatePostInteractor:
             )
         except InvalidUserException:
             self.presenter.raise_exception_for_user_not_exist()
-        except InvalidUserException:
+        except InvalidContentException:
             self.presenter.raise_exception_for_invalid_content()
 
     def create_post(self, content: str, user_id: int):
