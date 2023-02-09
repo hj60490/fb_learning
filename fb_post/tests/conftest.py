@@ -406,3 +406,30 @@ def comments():
     )
     comment_obj.save()
     return comment_obj
+
+
+@pytest.fixture()
+@freeze_time("2023-02-08 11:57:29")
+def reacts_on_comments():
+    comment_obj = React.objects.create(
+        reaction="HAHA",
+        reacted_by_id=1,
+        comment_id=1,
+        reacted_at=datetime.now()
+    )
+    comment_obj.save()
+    return comment_obj
+
+
+@pytest.fixture()
+@freeze_time("2023-02-08 11:57:29")
+def reaction_on_comments_details_dto():
+    comments_details_dto = [ReactionOnCommentDto(
+        reaction_id=1,
+        reaction="HAHA",
+        reacted_by_id=1,
+        reacted_at=datetime.now(),
+        comment_id=1
+
+    )]
+    return comments_details_dto

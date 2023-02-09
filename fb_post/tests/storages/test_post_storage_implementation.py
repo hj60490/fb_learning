@@ -54,7 +54,7 @@ def test_get_all_comments_on_post(users, posts, comments_details_dto, comments):
 
 
 @pytest.mark.django_db
-def test_get_all_comments_on_post_no_commentt_return_empty(users, posts):
+def test_get_all_comments_on_post_no_comment_return_empty(users, posts):
     posts_id = [1]
     expected_output = []
     post_storage = PostStorageImplementation()
@@ -62,4 +62,10 @@ def test_get_all_comments_on_post_no_commentt_return_empty(users, posts):
     assert actual_output == expected_output
 
 
-
+@pytest.mark.django_db
+def test_get_reactions_on_comments(users, posts, comments, reacts_on_comments, reaction_on_comments_details_dto):
+    comments_id = [1]
+    expected_output = reaction_on_comments_details_dto
+    post_storage = PostStorageImplementation()
+    actual_output = post_storage.get_reactions_on_comments(list_of_comment_id=comments_id)
+    assert actual_output == expected_output
