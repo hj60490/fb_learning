@@ -1,49 +1,78 @@
 import pytest
-from fb_post.presenters.get_user_posts_presenter_implementation import GetUserPostsPresenterImplementation
+from fb_post.presenters.get_user_posts_presenter_implementation import \
+    GetUserPostsPresenterImplementation
 from fb_post.interactors.presenter_interfaces.dtos import PostDetailsDto
+import json
 
 
 def test_get_all_posts_of_user_for_user_having_zero_post_return_empty(
-        get_user_dto):
-    expected_output = {
-        "user_posts_details": []
-    }
+        get_no_posts_dto, snapshot):
     presenter = GetUserPostsPresenterImplementation()
-    user_posts_details_dto = PostDetailsDto(
-        users=[get_user_dto],
-        posts=[],
-        reactions_on_posts=[],
-        comments_on_post=[],
-        replies=[],
-        reactions_on_comments=[]
-    )
-
     actual_output = presenter.get_all_posts_of_user(
-        posts_details_dto=user_posts_details_dto
+        posts_details_dto=get_no_posts_dto
     )
 
-    assert actual_output == expected_output
+    snapshot.assert_match(actual_output)
 
 
-def test_get_all_posts_of_user_for_user_having_only_posts(
-        get_user_dto):
-    expected_output = {
-        "user_posts_details": []
-    }
+def test_get_all_posts_of_user_for_user_having_post_but_no_reaction_and_comments(
+        get_posts_with_no_reaction_and_comments_dto, snapshot):
     presenter = GetUserPostsPresenterImplementation()
-    user_posts_details_dto = PostDetailsDto(
-        users=[get_user_dto],
-        posts=[],
-        reactions_on_posts=[],
-        comments_on_post=[],
-        replies=[],
-        reactions_on_comments=[]
-    )
-
     actual_output = presenter.get_all_posts_of_user(
-        posts_details_dto=user_posts_details_dto
+        posts_details_dto=get_posts_with_no_reaction_and_comments_dto
     )
 
-    assert actual_output == expected_output
+    snapshot.assert_match(actual_output)
+
+
+def test_get_all_posts_of_user_for_user_having_posts_only_reactions(
+        get_posts_with_only_reactions, snapshot):
+    presenter = GetUserPostsPresenterImplementation()
+    actual_output = presenter.get_all_posts_of_user(
+        posts_details_dto=get_posts_with_only_reactions
+    )
+
+    snapshot.assert_match(actual_output)
+
+
+def test_get_all_posts_of_user_for_user_having_posts_only_comments(
+       get_posts_with_only_comments, snapshot):
+    presenter = GetUserPostsPresenterImplementation()
+    actual_output = presenter.get_all_posts_of_user(
+        posts_details_dto=get_posts_with_only_comments
+    )
+
+    snapshot.assert_match(actual_output)
+
+
+def test_get_all_posts_of_user_for_user_having_posts_only_comments_and_replies(
+       get_posts_with_only_comments_with_reply, snapshot):
+    presenter = GetUserPostsPresenterImplementation()
+    actual_output = presenter.get_all_posts_of_user(
+        posts_details_dto=get_posts_with_only_comments_with_reply
+    )
+
+    snapshot.assert_match(actual_output)
+
+
+def test_get_all_posts_of_user_for_user_having_posts_only_comments_with_reaction_and_replies(
+       get_posts_with_only_comments_with_reaction, snapshot):
+    presenter = GetUserPostsPresenterImplementation()
+    actual_output = presenter.get_all_posts_of_user(
+        posts_details_dto=get_posts_with_only_comments_with_reaction
+    )
+
+    snapshot.assert_match(actual_output)
+
+
+def test_get_all_posts_of_user_return_posts_dict(
+        get_posts_details, snapshot):
+    presenter = GetUserPostsPresenterImplementation()
+    actual_output = presenter.get_all_posts_of_user(
+        posts_details_dto=get_posts_details
+    )
+
+    snapshot.assert_match(actual_output)
+
 
 

@@ -45,6 +45,5 @@ def test_create_post_interactor_with_valid_details_creates_post():
     )
     user_storage.check_is_user_exists.return_value = True
 
-    assert interactor.create_post_wrapper(user_id=user_id, content=content) is None
-
-
+    assert interactor.create_post_wrapper(user_id=user_id,
+                                          content=content) is None

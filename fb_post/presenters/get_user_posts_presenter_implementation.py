@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from fb_post.interactors.presenter_interfaces.get_user_posts_presenter_interface \
     import GetPostsPresenterInterface
 from django_swagger_utils.drf_server.exceptions import (
@@ -10,6 +12,7 @@ from fb_post.interactors.presenter_interfaces.dtos import PostDetailsDto, \
 from typing import List
 from fb_post.interactors.storage_interfaces.dtos import PostDto, ReactOnPostDto,\
     CommentOnPostDto, CommentOnCommentDto, ReactionOnCommentDto, UserDto
+from fb_post.constants.constants import DEFAULT_DATETIME_FORMAT
 
 
 class GetUserPostsPresenterImplementation(GetPostsPresenterInterface):
@@ -82,7 +85,9 @@ class GetUserPostsPresenterImplementation(GetPostsPresenterInterface):
             "post_id": reactions_and_comments_dto.post.post_id,
             "posted_by": users_details_dict[
                 reactions_and_comments_dto.post.posted_by_id],
-            "posted_at": reactions_and_comments_dto.post.posted_at,
+            "posted_at": datetime.strftime(
+                reactions_and_comments_dto.post.posted_at,
+                DEFAULT_DATETIME_FORMAT),
             "post_content": reactions_and_comments_dto.post.content,
             "reactions": self._get_reactions_dict(
                 reactions_and_comments_dto.reactions_on_post,
@@ -116,7 +121,9 @@ class GetUserPostsPresenterImplementation(GetPostsPresenterInterface):
         comment_dict = {
             "comment_id": comment_dto.comment_id,
             "commentator": users_details_list[comment_dto.commented_by_id],
-            "commented_at": comment_dto.commented_at,
+            "commented_at": datetime.strftime(
+                comment_dto.commented_at,
+                DEFAULT_DATETIME_FORMAT),
             "comment_content": comment_dto.content,
             "reactions": self._get_reactions_dict_of_comments(
                 reaction_on_comments, comment_dto),
@@ -182,7 +189,9 @@ class GetUserPostsPresenterImplementation(GetPostsPresenterInterface):
             "comment_id": reply.comment_id,
             "commentator": users_details_list[
                 reply.commented_by_id],
-            "commented_at": reply.commented_at,
+            "commented_at": datetime.strftime(
+                reply.commented_at,
+                DEFAULT_DATETIME_FORMAT),
             "comment_content": reply.content,
             "reactions": self._get_reactions_dict_of_replies(
                 reaction_on_comments, reply)
