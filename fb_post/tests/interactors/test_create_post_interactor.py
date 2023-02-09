@@ -1,5 +1,5 @@
 import pytest
-from unittest.mock import create_autospec
+from unittest.mock import create_autospec, patch
 from fb_post.interactors.storage_interfaces.user_interface import UserInterface
 from fb_post.interactors.storage_interfaces.post_interface import PostInterface
 from fb_post.interactors.presenter_interfaces.presenter_interface import \
@@ -47,3 +47,27 @@ def test_create_post_interactor_with_valid_details_creates_post():
 
     assert interactor.create_post_wrapper(user_id=user_id,
                                           content=content) is None
+
+
+def test_create_post_interactor_post_storage():
+    user_id = 1
+    content = "hello"
+    user_storage = create_autospec(UserInterface)
+    post_storage = create_autospec(PostInterface)
+    presenter = create_autospec(CreatePostPresenterInterface)
+    interactor = CreatePostInteractor(
+        user_storage=user_storage,
+        post_storage=post_storage,
+        presenter=presenter
+    )
+    user_storage.check_is_user_exists.return_value = True
+
+    interactor.create_post(
+        user_id=user_id,
+        content=content
+    )
+
+    post_storage.create_post.assert_called_once_with(
+        user_id=user_id,
+        content=content
+    )
