@@ -5,6 +5,48 @@ from fb_post.interactors.storage_interfaces.dtos import RequestsParametersDTO, \
 from fb_post.interactors.presenter_interfaces.dtos import PostDetailsDto
 from datetime import datetime
 from freezegun import freeze_time
+from fb_post.models import User
+
+
+@pytest.fixture()
+def user():
+    user = User.objects.create(
+        name="Harsh",
+        profile_pic="www.google.com"
+    )
+    user.save()
+    return user
+
+
+@pytest.fixture()
+def users():
+    users = [
+        {
+            "name": "User 1",
+        },
+        {
+            "name": "User 2",
+        },
+        {
+            "name": "User 3",
+        }
+    ]
+
+    users_list = []
+    for user in users:
+        users_list.append(
+            User(name=user['name'])
+        )
+    User.objects.bulk_create(users_list)
+
+
+@pytest.fixture()
+def user_details_dto():
+    users_list = [UserDto(user_id=1,
+                          name="Harsh",
+                          profile_pic="www.google.com"
+                          )]
+    return users_list
 
 
 @pytest.fixture()
