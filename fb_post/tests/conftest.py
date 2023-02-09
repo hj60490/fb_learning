@@ -5,7 +5,7 @@ from fb_post.interactors.storage_interfaces.dtos import RequestsParametersDTO, \
 from fb_post.interactors.presenter_interfaces.dtos import PostDetailsDto
 from datetime import datetime
 from freezegun import freeze_time
-from fb_post.models import User
+from fb_post.models import User, Post, React, Comment
 
 
 @pytest.fixture()
@@ -316,3 +316,93 @@ def get_posts_details():
             )]
     )
     return user_posts_details_dto
+
+
+@pytest.fixture()
+@freeze_time("2023-02-08 11:57:29")
+def posts_details_dto():
+    posts_details = [PostDto(
+        post_id=1,
+        content="Hello",
+        posted_at=datetime.now(),
+        posted_by_id=1
+    )]
+    return posts_details
+
+
+@pytest.fixture()
+@freeze_time("2023-02-08 11:57:29")
+def posts():
+    post_obj = Post.objects.create(
+        content="Hello",
+        posted_at=datetime.now(),
+        posted_by_id=1
+
+    )
+    post_obj.save()
+    return post_obj
+
+
+@pytest.fixture()
+def request_parameters_dto():
+    request_parameters_dto = RequestsParametersDTO(
+        offset=0,
+        limit=10,
+        sort_order="ASC",
+        post_content="Hello"
+    )
+    return request_parameters_dto
+
+
+@pytest.fixture()
+@freeze_time("2023-02-08 11:57:29")
+def reaction_details_dto():
+    reactions_details_dto = [ReactOnPostDto(
+        reaction_id=1,
+        post_id=1,
+        reaction="HAHA",
+        reacted_by_id=1,
+        reacted_at=datetime.now()
+    )]
+    return reactions_details_dto
+
+
+@pytest.fixture()
+@freeze_time("2023-02-08 11:57:29")
+def reacts():
+    reacts_obj = React.objects.create(
+        post_id=1,
+        reaction="HAHA",
+        reacted_by_id=1,
+        reacted_at=datetime.now()
+
+    )
+    reacts_obj.save()
+    return reacts_obj
+
+
+@pytest.fixture()
+@freeze_time("2023-02-08 11:57:29")
+def comments_details_dto():
+    comments_details_dto = [CommentOnPostDto(
+        comment_id=1,
+        content="nice",
+        post_id=1,
+        commented_at=datetime.now(),
+        commented_by_id=1,
+
+    )]
+    return comments_details_dto
+
+
+@pytest.fixture()
+@freeze_time("2023-02-08 11:57:29")
+def comments():
+    comment_obj = Comment.objects.create(
+        content="nice",
+        commented_by_id=1,
+        post_id=1,
+        commented_at=datetime.now()
+    )
+    comment_obj.save()
+    return comment_obj

@@ -68,5 +68,5 @@ class CommentDTO:
 class RequestsParametersDTO:
     offset: int
     limit: int
-    sort_order: str
-    post_content: str
+    sort_order: typing.Optional[str]
+    post_content: typing.Optional[str]
