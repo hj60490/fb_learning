@@ -10,18 +10,15 @@ snapshots = Snapshot()
 snapshots['TestCase01GetPostsOfUserIdAPITestCase.test_case status_code'] = '400'
 
 snapshots['TestCase01GetPostsOfUserIdAPITestCase.test_case body'] = {
-    'limit': [
-        'This field is required.'
-    ],
     'offset': [
         'This field is required.'
     ]
 }
 
-snapshots['TestCase03GetPostsOfUserIdAPITestCase.test_case status_code'] = '400'
+snapshots['TestCase02GetPostsOfUserIdAPITestCase.test_case status_code'] = '400'
 
-snapshots['TestCase03GetPostsOfUserIdAPITestCase.test_case body'] = {
-    'limit': [
+snapshots['TestCase02GetPostsOfUserIdAPITestCase.test_case body'] = {
+    'offset': [
         'This field is required.'
     ]
 }

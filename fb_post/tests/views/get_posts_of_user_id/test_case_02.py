@@ -1,12 +1,12 @@
 """
-here we check for when only offset is  given
+here we check for when only limit is given
 """
 import pytest
 from django_swagger_utils.utils.test_utils import TestUtils
 from . import APP_NAME, OPERATION_NAME, REQUEST_METHOD, URL_SUFFIX
 
 
-class TestCase03GetPostsOfUserIdAPITestCase(TestUtils):
+class TestCase02GetPostsOfUserIdAPITestCase(TestUtils):
     APP_NAME = APP_NAME
     OPERATION_NAME = OPERATION_NAME
     REQUEST_METHOD = REQUEST_METHOD
@@ -17,7 +17,7 @@ class TestCase03GetPostsOfUserIdAPITestCase(TestUtils):
     def test_case(self, snapshot):
         body = {}
         path_params = {"user_id": "1234"}
-        query_params = {"offset": 0}
+        query_params = {"limit": "10"}
         headers = {}
         response = self.make_api_call(body=body,
                                       path_params=path_params,

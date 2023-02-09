@@ -5,6 +5,32 @@ import pytest
 from django_swagger_utils.utils.test_utils import TestUtils
 from . import APP_NAME, OPERATION_NAME, REQUEST_METHOD, URL_SUFFIX
 
+REQUEST_BODY = """"
+{
+   "content":"string",
+   "user_id":"integer"
+}
+"""
+TEST_CASE = {
+    "request": {
+        "path_params": {},
+        "query_params": {},
+        "header_params": {},
+        "securities": {"oauth": {
+            "tokenUrl": "http://auth.ibtspl.com/oauth2/",
+            "flow": "password",
+            "scopes": {
+                "read": "read users",
+                "write": "create users",
+                "update": "update users",
+                "delete": "delete users"
+            },
+            "type": "oauth2"
+        }},
+        "body": REQUEST_BODY,
+    },
+}
+
 
 class TestCase01CreatePostAPITestCase(TestUtils):
     APP_NAME = APP_NAME
