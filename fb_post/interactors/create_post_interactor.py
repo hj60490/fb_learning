@@ -30,9 +30,6 @@ class CreatePostInteractor:
         if not is_user_exists:
             raise InvalidUserException
 
-        if not content:
-            raise InvalidContentException
-
         self.post_storage.create_post(
             content=content, user_id=user_id
         )
