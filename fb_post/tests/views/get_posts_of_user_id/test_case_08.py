@@ -1,12 +1,12 @@
 """
-here we check for when limit , offset , sort_order and post_content is given
+invalid offset
 """
 import pytest
 from django_swagger_utils.utils.test_utils import TestUtils
 from . import APP_NAME, OPERATION_NAME, REQUEST_METHOD, URL_SUFFIX
 
 
-class TestCase05GetPostsOfUserIdAPITestCase(TestUtils):
+class TestCase08GetPostsOfUserIdAPITestCase(TestUtils):
     APP_NAME = APP_NAME
     OPERATION_NAME = OPERATION_NAME
     REQUEST_METHOD = REQUEST_METHOD
@@ -16,7 +16,7 @@ class TestCase05GetPostsOfUserIdAPITestCase(TestUtils):
     @pytest.mark.django_db
     def test_case(self, snapshot, users):
         body = {}
-        path_params = {"user_id": "1"}
+        path_params = {"user_id": "10"}
         query_params = {"limit": "10", "offset": 0, "sort_order": "ASC",
                         "post_content": "string"}
         headers = {}

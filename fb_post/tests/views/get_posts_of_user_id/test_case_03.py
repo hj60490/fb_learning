@@ -6,7 +6,7 @@ from django_swagger_utils.utils.test_utils import TestUtils
 from . import APP_NAME, OPERATION_NAME, REQUEST_METHOD, URL_SUFFIX
 
 
-class TestCase02GetPostsOfUserIdAPITestCase(TestUtils):
+class TestCase03GetPostsOfUserIdAPITestCase(TestUtils):
     APP_NAME = APP_NAME
     OPERATION_NAME = OPERATION_NAME
     REQUEST_METHOD = REQUEST_METHOD
@@ -14,10 +14,10 @@ class TestCase02GetPostsOfUserIdAPITestCase(TestUtils):
     SECURITY = {}
 
     @pytest.mark.django_db
-    def test_case(self, snapshot):
+    def test_case(self, snapshot, users):
         body = {}
-        path_params = {"user_id": "1234"}
-        query_params = {"limit": "10"}
+        path_params = {"user_id": "1"}
+        query_params = {}
         headers = {}
         response = self.make_api_call(body=body,
                                       path_params=path_params,

@@ -75,3 +75,4 @@ def test_get_user_posts_interactor_when_user_not_found_raise_exception(
     presenter.raise_exception_for_user_not_exist.assert_called_once()
 
 
+

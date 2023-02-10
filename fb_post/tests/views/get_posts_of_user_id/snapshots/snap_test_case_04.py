@@ -7,10 +7,9 @@ from snapshottest import Snapshot
 
 snapshots = Snapshot()
 
-snapshots['TestCase04GetPostsOfUserIdAPITestCase.test_case status_code'] = '400'
+snapshots['TestCase04GetPostsOfUserIdAPITestCase.test_case status_code'] = '200'
 
 snapshots['TestCase04GetPostsOfUserIdAPITestCase.test_case body'] = {
-    'http_status_code': 400,
-    'res_status': 'INVALID_USER_ID',
-    'response': 'User Not Found'
+    'user_posts_details': [
+    ]
 }

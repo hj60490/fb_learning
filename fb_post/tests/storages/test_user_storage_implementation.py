@@ -25,13 +25,28 @@ def test_user_not_exists_return_false(users):
     assert expected_output == actual_output
 
 
-
 @pytest.mark.django_db
 def test_get_user_details_with_users_id_return_users_details_dto(
         user, user_details_dto):
     # Arrange
     user_ids = [1]
     expected_user_details_dto = user_details_dto
+    storage = UserStorageImplementation()
+
+    # Act
+    actual_user_details_dto = storage.get_users_details(
+        user_union_list=user_ids)
+
+    # Assert
+    assert expected_user_details_dto == actual_user_details_dto
+
+
+@pytest.mark.django_db
+def test_get_user_details_with_users_id_not_exists_return_users_details_dto(
+        user):
+    # Arrange
+    user_ids = [8]
+    expected_user_details_dto = []
     storage = UserStorageImplementation()
 
     # Act
