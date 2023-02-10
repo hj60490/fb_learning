@@ -151,6 +151,6 @@ class GetUserPostsInteractor:
             "comments": comments_dtos,
             "replies_for_comments": replies_on_comment_dtos,
             "post_comment_ids": post_comment_ids,
-            "replies_on_comment_dtos":replies_on_comment_dtos
+            "replies_on_comment_dtos": replies_on_comment_dtos
         }
 

@@ -24,3 +24,4 @@ class TestCase03GetPostsOfUserIdAPITestCase(TestUtils):
                                       query_params=query_params,
                                       headers=headers,
                                       snapshot=snapshot)
+        return response

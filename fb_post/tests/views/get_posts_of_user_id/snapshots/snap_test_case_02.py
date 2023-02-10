@@ -7,14 +7,6 @@ from snapshottest import Snapshot
 
 snapshots = Snapshot()
 
-snapshots['TestCase01GetPostsOfUserIdAPITestCase.test_case status_code'] = '400'
-
-snapshots['TestCase01GetPostsOfUserIdAPITestCase.test_case body'] = {
-    'offset': [
-        'This field is required.'
-    ]
-}
-
 snapshots['TestCase02GetPostsOfUserIdAPITestCase.test_case status_code'] = '400'
 
 snapshots['TestCase02GetPostsOfUserIdAPITestCase.test_case body'] = {

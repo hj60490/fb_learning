@@ -73,6 +73,3 @@ def test_get_all_posts_of_user_return_posts_dict(
     )
 
     snapshot.assert_match(actual_output)
-
-
-
