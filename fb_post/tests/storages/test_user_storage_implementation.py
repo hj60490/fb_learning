@@ -15,6 +15,18 @@ def test_user_exists_return_true(users):
 
 
 @pytest.mark.django_db
+def test_user_not_exists_return_false(users):
+    user_id = 7
+    expected_output = False
+    user_storage = UserStorageImplementation()
+
+    actual_output = user_storage.check_is_user_exists(user_id=user_id)
+
+    assert expected_output == actual_output
+
+
+
+@pytest.mark.django_db
 def test_get_user_details_with_users_id_return_users_details_dto(
         user, user_details_dto):
     # Arrange

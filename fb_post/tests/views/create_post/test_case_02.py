@@ -32,7 +32,7 @@ TEST_CASE = {
 }
 
 
-class TestCase01CreatePostAPITestCase(TestUtils):
+class TestCase02CreatePostAPITestCase(TestUtils):
     APP_NAME = APP_NAME
     OPERATION_NAME = OPERATION_NAME
     REQUEST_METHOD = REQUEST_METHOD
@@ -41,7 +41,7 @@ class TestCase01CreatePostAPITestCase(TestUtils):
 
     @pytest.mark.django_db
     def test_case(self, snapshot, users):
-        body = {'content': 'string', 'user_id': 7}
+        body = {'content': '', 'user_id': 1}
         path_params = {}
         query_params = {}
         headers = {}

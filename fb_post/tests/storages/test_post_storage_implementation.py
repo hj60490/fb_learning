@@ -16,6 +16,16 @@ def test_get_all_posts_with_posts_return_users_dto(users, posts,
 
 
 @pytest.mark.django_db
+def test_create_post(users):
+    user_id = 1
+    content = "Hello"
+    expected_output = None
+    post_storage = PostStorageImplementation()
+    actual_output = post_storage.create_post(user_id=user_id, content=content)
+    assert actual_output == expected_output
+
+
+@pytest.mark.django_db
 def test_get_all_posts_without_posts_return_empty(users,
                                                   request_parameters_dto):
     user_id = 1
