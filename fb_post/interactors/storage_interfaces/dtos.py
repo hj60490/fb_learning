@@ -7,7 +7,7 @@ from datetime import datetime
 class UserDto:
     user_id: int
     name: str
-    profile_pic: str
+    profile_pic: typing.Optional[str]
 
 
 @dataclass
@@ -70,3 +70,8 @@ class RequestsParametersDTO:
     limit: int
     sort_order: typing.Optional[str]
     post_content: typing.Optional[str]
+
+
+@dataclass
+class PostsCountDTO:
+    posts_count: int

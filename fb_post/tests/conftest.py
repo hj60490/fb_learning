@@ -1,21 +1,11 @@
 import pytest
 from fb_post.interactors.storage_interfaces.dtos import RequestsParametersDTO, \
     UserDto, PostDto, ReactOnPostDto, CommentOnPostDto, CommentOnCommentDto, \
-    ReactionOnCommentDto
+    ReactionOnCommentDto, PostsCountDTO
 from fb_post.interactors.presenter_interfaces.dtos import PostDetailsDto
 from datetime import datetime
 from freezegun import freeze_time
 from fb_post.models import User, Post, React, Comment
-
-
-@pytest.fixture()
-def user():
-    user = User.objects.create(
-        name="Harsh",
-        profile_pic="www.google.com"
-    )
-    user.save()
-    return user
 
 
 @pytest.fixture()
@@ -40,14 +30,131 @@ def users():
     User.objects.bulk_create(users_list)
 
 
+@freeze_time("2023-02-08 11:57:29")
+@pytest.fixture()
+def posts():
+    posts_details = [
+        {
+            "content": "Hello",
+            "posted_by_id": "1"
+        },
+        {
+            "content": "Hello 1",
+            "posted_by_id": "1"
+        },
+        {
+            "content": "Harsh",
+            "posted_by_id": "1"
+        },
+
+    ]
+    list_posts = []
+    for post in posts_details:
+        list_posts.append(Post(
+            content=post['content'],
+            posted_at="2023-02-08 11:57:29",
+            posted_by_id=post['posted_by_id']
+
+        ))
+    Post.objects.bulk_create(list_posts)
+
+
+@pytest.fixture()
+def request_parameters_dto():
+    request_parameters_dto = RequestsParametersDTO(
+        offset=0,
+        limit=1,
+        sort_order="ASC",
+        post_content="Hello"
+    )
+    return request_parameters_dto
+
+
+@pytest.fixture()
+def request_parameters_dto_for_content():
+    request_parameters_dto = RequestsParametersDTO(
+        offset=0,
+        limit=1,
+        sort_order="ASC",
+        post_content="1"
+    )
+    return request_parameters_dto
+
+
+@freeze_time("2023-02-08 11:57:29")
+@pytest.fixture()
+def posts_details_dto():
+    posts_details = [PostDto(
+        post_id=1,
+        content="Hello",
+        posted_at=datetime.now(),
+        posted_by_id=1
+    )]
+    return posts_details
+
+
+@freeze_time("2023-02-08 11:57:29")
+@pytest.fixture()
+def posts_details_dto_for_content():
+    posts_details = [PostDto(
+        post_id=2,
+        content="Hello 1",
+        posted_at=datetime.now(),
+        posted_by_id=1
+    )]
+    return posts_details
+
+
+
+
+@pytest.fixture()
+def get_requests_parameters_dto():
+    get_requests_parameters_dto = RequestsParametersDTO(
+        offset=0, limit=1, sort_order="", post_content="")
+    return get_requests_parameters_dto
+
+
+@pytest.fixture()
+@freeze_time("2023-02-08 11:57:29")
+def reacts():
+    reacts_obj = React.objects.create(
+        post_id=1,
+        reaction="HAHA",
+        reacted_by_id=1,
+        reacted_at=datetime.now()
+
+    )
+    reacts_obj.save()
+    return reacts_obj
+
+
+@pytest.fixture()
+@freeze_time("2023-02-08 11:57:29")
+def reaction_details_dto():
+    reactions_details_dto = [ReactOnPostDto(
+        reaction_id=1,
+        post_id=1,
+        reaction="HAHA",
+        reacted_by_id=1,
+        reacted_at=datetime.now()
+    )]
+    return reactions_details_dto
+
+
+
 @pytest.fixture()
 def user_details_dto():
     users_list = [UserDto(user_id=1,
-                          name="Harsh",
+                          name="User 1",
                           profile_pic="www.google.com"
                           )]
     return users_list
 
+
+@pytest.fixture()
+def user():
+    user_obj = User.objects.create(name="User 1", profile_pic="www.google.com")
+    return user_obj
 
 @pytest.fixture()
 def get_requests_parameters_dto_with_invalid_offset():
@@ -62,9 +169,8 @@ def get_requests_parameters_dto_with_invalid_limit():
         offset=1, limit=-1, sort_order="", post_content="")
     return get_requests_parameters_dto
 
-
 @pytest.fixture()
-def get_requests_parameters_dto():
+def get_requests_parameters_dto1():
     get_requests_parameters_dto = RequestsParametersDTO(
         offset=0, limit=2, sort_order="", post_content="")
     return get_requests_parameters_dto
@@ -318,53 +424,43 @@ def get_posts_details():
     return user_posts_details_dto
 
 
+
 @pytest.fixture()
 @freeze_time("2023-02-08 11:57:29")
 def posts_details_dto():
     posts_details = [PostDto(
-        post_id=1,
         content="Hello",
+        posted_by_id=1,
         posted_at=datetime.now(),
-        posted_by_id=1
+        post_id=1,
     )]
     return posts_details
 
 
 @pytest.fixture()
-@freeze_time("2023-02-08 11:57:29")
-def posts():
+def posts2():
     post_obj = Post.objects.create(
         content="Hello",
-        posted_at=datetime.now(),
         posted_by_id=1
-
     )
     post_obj.save()
     return post_obj
 
 
+
+
+
 @pytest.fixture()
-def request_parameters_dto():
+def request_parameters_dto1():
     request_parameters_dto = RequestsParametersDTO(
         offset=0,
-        limit=10,
+        limit=1,
         sort_order="ASC",
         post_content="Hello"
     )
     return request_parameters_dto
 
 
-@pytest.fixture()
-@freeze_time("2023-02-08 11:57:29")
-def reaction_details_dto():
-    reactions_details_dto = [ReactOnPostDto(
-        reaction_id=1,
-        post_id=1,
-        reaction="HAHA",
-        reacted_by_id=1,
-        reacted_at=datetime.now()
-    )]
-    return reactions_details_dto
 
 
 @pytest.fixture()
@@ -433,3 +529,16 @@ def reaction_on_comments_details_dto():
 
     )]
     return comments_details_dto
+
+
+@freeze_time("2023-02-08 11:59:29")
+@pytest.fixture()
+def posts_details_with_all_filter():
+    post_details_dots = [PostDto(
+        post_id=1,
+        content="Hello",
+        posted_by_id=1,
+        posted_at=datetime.now()
+    )
+    ]
+    return post_details_dots

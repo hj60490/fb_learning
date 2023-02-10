@@ -19,11 +19,9 @@ class PostStorageImplementation(PostInterface):
         offset = requests_parameters_dto.offset
         sort_order = requests_parameters_dto.sort_order
         post_content = requests_parameters_dto.post_content
-        # print("*****************")
-        # print(post_content)
+
         posts_objs = Post.objects.filter(posted_by_id=user_id)
         if post_content:
-            # print("********Post Content***********")
             posts_objs = posts_objs.filter(content__icontains=post_content)
 
         if sort_order:
@@ -31,9 +29,6 @@ class PostStorageImplementation(PostInterface):
                 posts_objs = posts_objs.order_by('posted_at')
             else:
                 posts_objs = posts_objs.order_by('-posted_at')
-
-        print("************This*****************")
-        print(posts_objs)
 
         posts_objs = posts_objs[offset: limit+offset]
 
