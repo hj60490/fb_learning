@@ -3,7 +3,7 @@ from fb_post.interactors.presenter_interfaces.presenter_interface import\
     CreatePostPresenterInterface
 from fb_post.interactors.storage_interfaces.post_interface import PostInterface
 from fb_post.interactors.storage_interfaces.user_interface import UserInterface
-from fb_post.exceptions.custom_exceptions import InvalidUserException, InvalidContentException
+from fb_post.exceptions.custom_exceptions import InvalidUserException
 
 
 class CreatePostInteractor:
