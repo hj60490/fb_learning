@@ -119,7 +119,7 @@ def get_requests_parameters_dto():
 @freeze_time("2023-02-08 11:57:29")
 def replies():
     comment_obj = Comment.objects.create(
-        parent_comment_id=2,
+        parent_comment_id=1,
         content="reply",
         commented_by_id=1,
         commented_at=datetime.datetime(2023, 2, 13, 11, 20, 0, 405098)

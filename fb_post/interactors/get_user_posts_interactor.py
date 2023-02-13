@@ -67,7 +67,7 @@ class GetUserPostsInteractor:
 
         # reaction on comments dtos
         reactions_on_comments_dtos = self.post_storage.get_reactions_on_comments(
-            dict_of_comments_and_replies["post_comment_ids"])
+            list(set(dict_of_comments_and_replies["post_comment_ids"])))
         user_ids.extend(
             self._get_user_id_from_reaction_on_comment(
                 reactions_on_comments_dtos))
@@ -142,7 +142,7 @@ class GetUserPostsInteractor:
             comment.comment_id for comment in comments_dtos]
 
         replies_on_comment_dtos = self.post_storage.get_replies_on_comment(
-            post_comment_ids)
+            list(set(post_comment_ids)))
 
         replies_ids = [comment.comment_id for comment in
                        replies_on_comment_dtos]

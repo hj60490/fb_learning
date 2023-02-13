@@ -122,8 +122,15 @@ def test_get_user_posts_interactor_when_valid_details_given_return_posts_details
                                                    request_parameter_dto)
     post_storage.get_all_reactions.assert_called_once_with([1, 2])
     post_storage.get_comments.assert_called_once_with([1, 2])
-    post_storage.get_replies_on_comment.assert_called_once_with([1, 2, 2])
-    post_storage.get_reactions_on_comments.assert_called_once_with([1, 2, 2])
+    post_storage.get_replies_on_comment.assert_called_once_with([1])
+    post_storage.get_reactions_on_comments.assert_called_once_with([1, 2])
     user_storage.get_users_details.assert_called_once_with([1])
+
     assert expected_output == actual_output
+
+
+
+
+
+
 
