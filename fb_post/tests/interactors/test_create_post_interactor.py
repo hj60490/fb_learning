@@ -35,7 +35,7 @@ def test_create_post_interactor_when_user_not_found_raise_exception():
 def test_create_post_interactor_with_valid_details_creates_post():
     user_id = 1
     content = "hello"
-    expected_output = None
+
     user_storage = create_autospec(UserInterface)
     post_storage = create_autospec(PostInterface)
     presenter = create_autospec(CreatePostPresenterInterface)
@@ -44,14 +44,15 @@ def test_create_post_interactor_with_valid_details_creates_post():
         post_storage=post_storage,
         presenter=presenter
     )
+
     user_storage.check_is_user_exists.return_value = True
 
-    actual_output = interactor.create_post_wrapper(user_id=user_id,
+    interactor.create_post_wrapper(user_id=user_id,
                                           content=content)
 
+    user_storage.check_is_user_exists.assert_called_once_with(user_id)
     post_storage.create_post.assert_called_once_with(
         user_id=user_id,
         content=content
     )
 
-    assert actual_output == expected_output

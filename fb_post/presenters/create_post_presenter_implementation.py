@@ -11,7 +11,5 @@ class CreatePostPresenterImplementation(CreatePostPresenterInterface):
     def raise_exception_for_user_not_exist(self):
         raise BadRequest(*INVALID_USER_ID)
 
-    def raise_exception_for_invalid_content(self):
-        raise BadRequest(*INVALID_CONTENT)
 
 

@@ -4,7 +4,6 @@ from fb_post.interactors.storage_interfaces.dtos import PostDto, ReactOnPostDto,
     RequestsParametersDTO
 from typing import List
 from fb_post.models.models import Post, Comment, React, User
-from django.db.models import Q
 
 
 class PostStorageImplementation(PostInterface):

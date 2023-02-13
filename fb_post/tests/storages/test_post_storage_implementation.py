@@ -18,18 +18,17 @@ def test_get_all_posts_with_limit_offset_posts_return_posts_dto(users, posts,
     assert len(actual_output) == request_parameters_dto.limit
 
 
-@freeze_time("2023-02-08 11:57:29")
+
 @pytest.mark.django_db
-def test_get_all_posts_posts_with_post_content_return_posts_dto(users, posts,
-                                                                posts_details_dto_for_content,
-                                                                request_parameters_dto_for_content):
+def test_get_all_posts_posts_with_post_content_return_posts_dto(
+        users, posts, posts_details_dto_for_content,
+        request_parameters_dto_for_content
+):
     user_id = 1
-    posts_details_dto_for_content[0].posted_at = "2023-02-08 11:57:29"
     expected_output = posts_details_dto_for_content
     post_storage = PostStorageImplementation()
     actual_output = post_storage.get_posts(user_id=user_id,
                                            requests_parameters_dto=request_parameters_dto_for_content)
-    actual_output[0].posted_at = "2023-02-08 11:57:29"
     assert actual_output == expected_output
 
 

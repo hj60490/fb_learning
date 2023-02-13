@@ -6,6 +6,7 @@ from fb_post.interactors.presenter_interfaces.dtos import PostDetailsDto
 from datetime import datetime
 from freezegun import freeze_time
 from fb_post.models import User, Post, React, Comment
+import datetime
 
 
 @pytest.fixture()
@@ -13,24 +14,26 @@ def users():
     users = [
         {
             "name": "User 1",
+            "profile_pic": "www.google.com"
         },
         {
             "name": "User 2",
+            "profile_pic": "www.google.com"
         },
         {
             "name": "User 3",
+            "profile_pic": "www.google.com"
         }
     ]
 
     users_list = []
     for user in users:
         users_list.append(
-            User(name=user['name'])
+            User(name=user['name'], profile_pic=user['profile_pic'])
         )
     User.objects.bulk_create(users_list)
 
 
-@freeze_time("2023-02-08 11:57:29")
 @pytest.fixture()
 def posts():
     posts_details = [
@@ -52,7 +55,7 @@ def posts():
     for post in posts_details:
         list_posts.append(Post(
             content=post['content'],
-            posted_at="2023-02-08 11:57:29",
+            posted_at=datetime.datetime(2023, 2, 13, 11, 20, 0, 405098),
             posted_by_id=post['posted_by_id']
 
         ))
@@ -99,12 +102,10 @@ def posts_details_dto_for_content():
     posts_details = [PostDto(
         post_id=2,
         content="Hello 1",
-        posted_at=datetime.now(),
+        posted_at=datetime.datetime(2023, 2, 13, 11, 20, 0, 405098),
         posted_by_id=1
     )]
     return posts_details
-
-
 
 
 @pytest.fixture()
@@ -116,12 +117,24 @@ def get_requests_parameters_dto():
 
 @pytest.fixture()
 @freeze_time("2023-02-08 11:57:29")
+def replies():
+    comment_obj = Comment.objects.create(
+        parent_comment_id=2,
+        content="reply",
+        commented_by_id=1,
+        commented_at=datetime.datetime(2023, 2, 13, 11, 20, 0, 405098)
+    )
+    comment_obj.save()
+    return comment_obj
+
+
+@pytest.fixture()
 def reacts():
     reacts_obj = React.objects.create(
         post_id=1,
         reaction="HAHA",
         reacted_by_id=1,
-        reacted_at=datetime.now()
+        reacted_at=datetime.datetime(2023, 2, 13, 11, 20, 0, 405098)
 
     )
     reacts_obj.save()
@@ -130,16 +143,27 @@ def reacts():
 
 @pytest.fixture()
 @freeze_time("2023-02-08 11:57:29")
+def reacts_on_comments():
+    reacts_obj = React.objects.create(
+        reaction="HAHA",
+        reacted_by_id=1,
+        reacted_at=datetime.datetime(2023, 2, 13, 11, 20, 0, 405098),
+        comment_id=1,
+    )
+    reacts_obj.save()
+    return reacts_obj
+
+
+@pytest.fixture()
 def reaction_details_dto():
     reactions_details_dto = [ReactOnPostDto(
         reaction_id=1,
         post_id=1,
         reaction="HAHA",
         reacted_by_id=1,
-        reacted_at=datetime.now()
+        reacted_at=datetime.datetime(2023, 2, 13, 11, 20, 0, 405098)
     )]
     return reactions_details_dto
-
 
 
 @pytest.fixture()
@@ -156,6 +180,7 @@ def user():
     user_obj = User.objects.create(name="User 1", profile_pic="www.google.com")
     return user_obj
 
+
 @pytest.fixture()
 def get_requests_parameters_dto_with_invalid_offset():
     get_requests_parameters_dto = RequestsParametersDTO(
@@ -168,6 +193,7 @@ def get_requests_parameters_dto_with_invalid_limit():
     get_requests_parameters_dto = RequestsParametersDTO(
         offset=1, limit=-1, sort_order="", post_content="")
     return get_requests_parameters_dto
+
 
 @pytest.fixture()
 def get_requests_parameters_dto1():
@@ -204,7 +230,6 @@ def get_no_posts_dto():
 
 
 @pytest.fixture()
-@freeze_time("2023-02-08 11:57:29")
 def get_posts_with_no_reaction_and_comments_dto():
     user_posts_details_dto = PostDetailsDto(
         users=[UserDto(
@@ -215,7 +240,7 @@ def get_posts_with_no_reaction_and_comments_dto():
         posts=[PostDto(
             post_id=1,
             content="hello",
-            posted_at=datetime.now(),
+            posted_at=datetime.datetime(2023, 2, 13, 11, 20, 0, 405098),
             posted_by_id=5
 
         )],
@@ -228,7 +253,6 @@ def get_posts_with_no_reaction_and_comments_dto():
 
 
 @pytest.fixture()
-@freeze_time("2023-02-08 11:57:29")
 def get_posts_with_only_reactions():
     user_posts_details_dto = PostDetailsDto(
         users=[UserDto(
@@ -239,7 +263,7 @@ def get_posts_with_only_reactions():
         posts=[PostDto(
             post_id=1,
             content="hello",
-            posted_at=datetime.now(),
+            posted_at=datetime.datetime(2023, 2, 13, 11, 20, 0, 405098),
             posted_by_id=5
 
         )],
@@ -247,7 +271,7 @@ def get_posts_with_only_reactions():
             reaction_id=1,
             post_id=1,
             reaction="HAHA",
-            reacted_at=datetime.now(),
+            reacted_at=datetime.datetime(2023, 2, 13, 11, 20, 0, 405098),
             reacted_by_id=5
         )],
         comments_on_post=[],
@@ -258,7 +282,6 @@ def get_posts_with_only_reactions():
 
 
 @pytest.fixture()
-@freeze_time("2023-02-08 11:57:29")
 def get_posts_with_only_comments():
     user_posts_details_dto = PostDetailsDto(
         users=[UserDto(
@@ -269,7 +292,7 @@ def get_posts_with_only_comments():
         posts=[PostDto(
             post_id=1,
             content="hello",
-            posted_at=datetime.now(),
+            posted_at=datetime.datetime(2023, 2, 13, 11, 20, 0, 405098),
             posted_by_id=5
 
         )],
@@ -279,7 +302,7 @@ def get_posts_with_only_comments():
             commented_by_id=5,
             content="comment",
             post_id=1,
-            commented_at=datetime.now()
+            commented_at=datetime.datetime(2023, 2, 13, 11, 20, 0, 405098)
 
         )],
         replies=[],
@@ -300,7 +323,7 @@ def get_posts_with_only_comments_with_reply():
         posts=[PostDto(
             post_id=1,
             content="hello",
-            posted_at=datetime.now(),
+            posted_at=datetime.datetime(2023, 2, 13, 11, 20, 0, 405098),
             posted_by_id=5
 
         )],
@@ -310,11 +333,11 @@ def get_posts_with_only_comments_with_reply():
             commented_by_id=5,
             content="comment",
             post_id=1,
-            commented_at=datetime.now()
+            commented_at=datetime.datetime(2023, 2, 13, 11, 20, 0, 405098)
 
         )],
         replies=[CommentOnCommentDto(
-            commented_at=datetime.now(),
+            commented_at=datetime.datetime(2023, 2, 13, 11, 20, 0, 405098),
             comment_id=2,
             commented_by_id=5,
             content="reply",
@@ -326,7 +349,6 @@ def get_posts_with_only_comments_with_reply():
 
 
 @pytest.fixture()
-@freeze_time("2023-02-08 11:57:29")
 def get_posts_with_only_comments_with_reaction():
     user_posts_details_dto = PostDetailsDto(
         users=[UserDto(
@@ -337,7 +359,7 @@ def get_posts_with_only_comments_with_reaction():
         posts=[PostDto(
             post_id=1,
             content="hello",
-            posted_at=datetime.now(),
+            posted_at=datetime.datetime(2023, 2, 13, 11, 20, 0, 405098),
             posted_by_id=5
 
         )],
@@ -347,11 +369,11 @@ def get_posts_with_only_comments_with_reaction():
             commented_by_id=5,
             content="comment",
             post_id=1,
-            commented_at=datetime.now()
+            commented_at=datetime.datetime(2023, 2, 13, 11, 20, 0, 405098)
 
         )],
         replies=[CommentOnCommentDto(
-            commented_at=datetime.now(),
+            commented_at=datetime.datetime(2023, 2, 13, 11, 20, 0, 405098),
             comment_id=2,
             commented_by_id=5,
             content="reply",
@@ -361,7 +383,7 @@ def get_posts_with_only_comments_with_reaction():
             reaction_id=1,
             reaction="WOW",
             comment_id=1,
-            reacted_at=datetime.now(),
+            reacted_at=datetime.datetime(2023, 2, 13, 11, 20, 0, 405098),
             reacted_by_id=5
         )]
     )
@@ -369,7 +391,6 @@ def get_posts_with_only_comments_with_reaction():
 
 
 @pytest.fixture()
-@freeze_time("2023-02-08 11:57:29")
 def get_posts_details():
     user_posts_details_dto = PostDetailsDto(
         users=[UserDto(
@@ -380,7 +401,7 @@ def get_posts_details():
         posts=[PostDto(
             post_id=1,
             content="hello",
-            posted_at=datetime.now(),
+            posted_at=datetime.datetime(2023, 2, 13, 11, 20, 0, 405098),
             posted_by_id=5
 
         )],
@@ -388,7 +409,7 @@ def get_posts_details():
             reaction_id=1,
             post_id=1,
             reaction="HAHA",
-            reacted_at=datetime.now(),
+            reacted_at=datetime.datetime(2023, 2, 13, 11, 20, 0, 405098),
             reacted_by_id=5
         )],
         comments_on_post=[CommentOnPostDto(
@@ -396,11 +417,11 @@ def get_posts_details():
             commented_by_id=5,
             content="comment",
             post_id=1,
-            commented_at=datetime.now()
+            commented_at=datetime.datetime(2023, 2, 13, 11, 20, 0, 405098)
 
         )],
         replies=[CommentOnCommentDto(
-            commented_at=datetime.now(),
+            commented_at=datetime.datetime(2023, 2, 13, 11, 20, 0, 405098),
             comment_id=2,
             commented_by_id=5,
             content="reply",
@@ -410,19 +431,18 @@ def get_posts_details():
             reaction_id=1,
             reaction="WOW",
             comment_id=1,
-            reacted_at=datetime.now(),
+            reacted_at=datetime.datetime(2023, 2, 13, 11, 20, 0, 405098),
             reacted_by_id=5
         ),
             ReactionOnCommentDto(
                 reaction_id=2,
                 reaction="SAD",
                 comment_id=2,
-                reacted_at=datetime.now(),
+                reacted_at=datetime.datetime(2023, 2, 13, 11, 20, 0, 405098),
                 reacted_by_id=5,
             )]
     )
     return user_posts_details_dto
-
 
 
 @pytest.fixture()
@@ -447,9 +467,6 @@ def posts2():
     return post_obj
 
 
-
-
-
 @pytest.fixture()
 def request_parameters_dto1():
     request_parameters_dto = RequestsParametersDTO(
@@ -461,16 +478,13 @@ def request_parameters_dto1():
     return request_parameters_dto
 
 
-
-
 @pytest.fixture()
-@freeze_time("2023-02-08 11:57:29")
 def reacts():
     reacts_obj = React.objects.create(
         post_id=1,
         reaction="HAHA",
         reacted_by_id=1,
-        reacted_at=datetime.now()
+        reacted_at=datetime.datetime(2023, 2, 13, 11, 20, 0, 405098)
 
     )
     reacts_obj.save()
@@ -484,7 +498,7 @@ def comments_details_dto():
         comment_id=1,
         content="nice",
         post_id=1,
-        commented_at=datetime.now(),
+        commented_at=datetime.datetime(2023, 2, 13, 11, 20, 0, 405098),
         commented_by_id=1,
 
     )]
@@ -492,26 +506,24 @@ def comments_details_dto():
 
 
 @pytest.fixture()
-@freeze_time("2023-02-08 11:57:29")
 def comments():
     comment_obj = Comment.objects.create(
         content="nice",
         commented_by_id=1,
         post_id=1,
-        commented_at=datetime.now()
+        commented_at=datetime.datetime(2023, 2, 13, 11, 20, 0, 405098)
     )
     comment_obj.save()
     return comment_obj
 
 
 @pytest.fixture()
-@freeze_time("2023-02-08 11:57:29")
 def reacts_on_comments():
     comment_obj = React.objects.create(
         reaction="HAHA",
         reacted_by_id=1,
         comment_id=1,
-        reacted_at=datetime.now()
+        reacted_at=datetime.datetime(2023, 2, 13, 11, 20, 0, 405098)
     )
     comment_obj.save()
     return comment_obj
@@ -524,7 +536,7 @@ def reaction_on_comments_details_dto():
         reaction_id=1,
         reaction="HAHA",
         reacted_by_id=1,
-        reacted_at=datetime.now(),
+        reacted_at=datetime.datetime(2023, 2, 13, 11, 20, 0, 405098),
         comment_id=1
 
     )]
@@ -542,3 +554,142 @@ def posts_details_with_all_filter():
     )
     ]
     return post_details_dots
+
+
+@pytest.fixture()
+def posts_details():
+    post_details = [
+        PostDto(
+            post_id=1,
+            posted_at=datetime.datetime(2023, 2, 13, 11, 20, 0, 405098),
+            posted_by_id=1,
+            content="Hello"
+        ),
+        PostDto(
+            post_id=2,
+            posted_at=datetime.datetime(2023, 2, 13, 11, 20, 0, 405098),
+            posted_by_id=1,
+            content="Hello 1"
+        )
+    ]
+    return post_details
+
+
+
+@pytest.fixture()
+def reaction_details():
+    reaction_details = [ReactOnPostDto(
+        reaction_id=1,
+        post_id=1,
+        reaction="HAHA",
+        reacted_by_id=1,
+        reacted_at=datetime.datetime(2023, 2, 13, 11, 20, 0, 405098)
+    )]
+    return reaction_details
+
+
+@pytest.fixture()
+def comment_details():
+    comment_details = [CommentOnPostDto(
+        comment_id=1,
+        content="nice",
+        post_id=1,
+        commented_at=datetime.datetime(2023, 2, 13, 11, 20, 0, 405098),
+        commented_by_id=1,
+
+    )]
+    return comment_details
+
+
+@pytest.fixture()
+def replies_details():
+    replies_details = [CommentOnCommentDto(
+        content="reply",
+        comment_id=2,
+        parent_comment_id=1,
+        commented_by_id=1,
+        commented_at=datetime.datetime(2023, 2, 13, 11, 20, 0, 405098)
+    )]
+    return replies_details
+
+
+@pytest.fixture()
+def reaction_on_comment_details():
+    reaction_on_comment_details =[ReactionOnCommentDto(
+            reaction_id=2,
+            reaction="HAHA",
+            reacted_by_id=1,
+            reacted_at=datetime.datetime(2023, 2, 13, 11, 20, 0, 405098),
+            comment_id=1
+
+        )]
+    return reaction_on_comment_details
+
+
+@freeze_time("2023-02-08 11:59:29")
+@pytest.fixture()
+def user_details():
+    user_details = [UserDto(
+        user_id=1,
+        name="User 1",
+        profile_pic="www.google.com"
+    )]
+    return user_details
+
+
+@freeze_time(datetime.datetime(2023, 2, 13, 11, 20, 0, 405098))
+@pytest.fixture()
+def posts_details_response():
+    post_details = PostDetailsDto(
+        users=[UserDto(
+            user_id=1,
+            name="User 1",
+            profile_pic="www.google.com"
+        )],
+        posts=[
+            PostDto(
+                post_id=1,
+                posted_at=datetime.datetime(2023, 2, 13, 11, 20, 0, 405098),
+                posted_by_id=1,
+                content="Hello"
+            ),
+            PostDto(
+                post_id=2,
+                posted_at=datetime.datetime(2023, 2, 13, 11, 20, 0, 405098),
+                posted_by_id=1,
+                content="Hello 1"
+            )
+        ],
+        reactions_on_posts=[ReactOnPostDto(
+            reaction_id=1,
+            post_id=1,
+            reaction="HAHA",
+            reacted_by_id=1,
+            reacted_at=datetime.datetime(2023, 2, 13, 11, 20, 0, 405098)
+        )],
+        comments_on_post=[CommentOnPostDto(
+            comment_id=1,
+            content="nice",
+            post_id=1,
+            commented_at=datetime.datetime(2023, 2, 13, 11, 20, 0, 405098),
+            commented_by_id=1,
+
+        )],
+        replies=[CommentOnCommentDto(
+            content="reply",
+            comment_id=2,
+            parent_comment_id=1,
+            commented_by_id=1,
+            commented_at=datetime.datetime(2023, 2, 13, 11, 20, 0, 405098)
+        )],
+        reactions_on_comments=[ReactionOnCommentDto(
+            reaction_id=2,
+            reaction="HAHA",
+            reacted_by_id=1,
+            reacted_at=datetime.datetime(2023, 2, 13, 11, 20, 0, 405098),
+            comment_id=1
+
+        )]
+    )
+    return post_details
+
