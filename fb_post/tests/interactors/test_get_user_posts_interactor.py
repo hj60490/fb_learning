@@ -1,134 +1,179 @@
-import unittest
-from fb_post.tests.factories.models import UserFactory
+
+from unittest import mock
+from fb_post.tests.factories import storage_dtos
 import pytest
-from unittest.mock import create_autospec
-from fb_post.interactors.storage_interfaces.dtos import RequestsParametersDTO
-from fb_post.interactors.storage_interfaces.user_interface import UserInterface
-from fb_post.interactors.storage_interfaces.post_interface import PostInterface
-from fb_post.interactors.presenter_interfaces.get_user_posts_presenter_interface import \
-    GetPostsPresenterInterface
-from fb_post.interactors.get_user_posts_interactor import GetUserPostsInteractor
-from django_swagger_utils.drf_server.exceptions import BadRequest, NotFound
+from django_swagger_utils.drf_server.exceptions import BadRequest
 
 
-# class TestGetPostInteractor(unittest.TestCase):
+class TestGetUserPostsInteractor:
 
-def test_get_user_posts_interactor_with_invalid_offset_raise_exception(
-        get_requests_parameters_dto_with_invalid_offset):
-    user_id = 1
+    @pytest.fixture
+    def user_storage_mock(self):
+        from fb_post.interactors.storage_interfaces.user_interface import \
+            UserInterface
+        return mock.create_autospec(UserInterface)
 
-    user_storage = create_autospec(UserInterface)
-    post_storage = create_autospec(PostInterface)
-    presenter = create_autospec(GetPostsPresenterInterface)
-    interactor = GetUserPostsInteractor(
-        user_storage=user_storage,
-        post_storages=post_storage,
-        presenter=presenter
-    )
-    presenter.raise_exception_for_invalid_offset_length.side_effect = BadRequest
+    @pytest.fixture
+    def post_storage_mock(self):
+        from fb_post.interactors.storage_interfaces.post_interface import \
+            PostInterface
+        return mock.create_autospec(PostInterface)
 
-    with pytest.raises(BadRequest):
-        interactor.get_user_posts_wrapper(
-            user_id, get_requests_parameters_dto_with_invalid_offset
+    @pytest.fixture
+    def presenter_mock(self):
+        from fb_post.interactors.presenter_interfaces. \
+            get_user_posts_presenter_interface import \
+            GetPostsPresenterInterface
+        return mock.create_autospec(GetPostsPresenterInterface)
+
+    @pytest.fixture
+    def interactor(self, post_storage_mock, user_storage_mock, presenter_mock):
+        from fb_post.interactors.get_user_posts_interactor import \
+            GetUserPostsInteractor
+        return GetUserPostsInteractor(
+            post_storages=post_storage_mock,
+            user_storage=user_storage_mock,
+            presenter=presenter_mock)
+
+    def test_user_has_posts_will_give_posts_details(
+            self, interactor, user_storage_mock,
+            post_storage_mock, presenter_mock
+    ):
+        # Arrange
+        user_id = 1
+        requests_parameters_dto = storage_dtos.RequestsParametersDTOFactory(
+            offset=0,
+            limit=1,
+            sort_order="ASC",
+            post_content="Hello"
+        )
+        users_dtos = [
+            storage_dtos.UserDTOFactory(user_id=1),
+            storage_dtos.UserDTOFactory(user_id=2)
+        ]
+        post_dtos = [
+            storage_dtos.PostDTOFactory(
+                post_id=1,
+                content="Hello",
+                posted_by_id=1)
+        ]
+        post_reactions_dtos = [
+            storage_dtos.ReactOnPostDTOFactory(
+                post_id=1)
+        ]
+        post_comments = [
+            storage_dtos.CommentOnPostDTOFactory(
+                post_id=post_dtos[0].post_id,
+                comment_id=1)
+        ]
+        comment_replies = [
+            storage_dtos.CommentOnCommentDTOFactory(
+                comment_id=2,
+                commented_by_id=2,
+                parent_comment_id=1
+            )
+        ]
+        reactions_on_comments = [
+            storage_dtos.ReactOnCommentDTOFactory(comment_id=1),
+            storage_dtos.ReactOnCommentDTOFactory(comment_id=2)
+        ]
+
+        posts_details_dto = storage_dtos.PostDetailsDtoFactory(
+            users=users_dtos,
+            posts=post_dtos,
+            reactions_on_posts=post_reactions_dtos,
+            comments_on_post=post_comments,
+            replies=comment_replies,
+            reactions_on_comments=reactions_on_comments
+
         )
 
-    presenter.raise_exception_for_invalid_offset_length.assert_called_once()
+        user_storage_mock.check_is_user_exists.return_value = True
+        post_storage_mock.get_posts.return_value = post_dtos
+        post_storage_mock.get_all_reactions.return_value = post_reactions_dtos
+        post_storage_mock.get_comments.return_value = post_comments
+        post_storage_mock.get_replies_on_comment.return_value = comment_replies
+        post_storage_mock.get_reactions_on_comments.return_value = reactions_on_comments
+        user_storage_mock.get_users_details.return_value = users_dtos
 
-def test_get_user_posts_interactor_with_invalid_limit_raise_exception(
-        get_requests_parameters_dto_with_invalid_limit):
-    user_id = 1
+        # Act
+        interactor.get_user_posts_wrapper(user_id, requests_parameters_dto)
 
-    user_storage = create_autospec(UserInterface)
-    post_storage = create_autospec(PostInterface)
-    presenter = create_autospec(GetPostsPresenterInterface)
-    interactor = GetUserPostsInteractor(
-        user_storage=user_storage,
-        post_storages=post_storage,
-        presenter=presenter
-    )
-    presenter.raise_exception_for_invalid_limit_length.side_effect = BadRequest
+        # Assert
+        user_storage_mock.check_is_user_exists.assert_called_once_with(
+            user_id=user_id)
+        post_storage_mock.get_posts.assert_called_once_with(
+            user_id=user_id, requests_parameters_dto=requests_parameters_dto)
+        post_storage_mock.get_all_reactions.assert_called_once_with(
+            list_of_post_id=[post_dtos[0].post_id])
+        post_storage_mock.get_comments.assert_called_once_with(
+            [post_dtos[0].post_id])
+        post_storage_mock.get_replies_on_comment.assert_called_once_with(
+            [post_comments[0].comment_id])
+        post_storage_mock.get_reactions_on_comments.assert_called_once_with(
+            [post_comments[0].comment_id, comment_replies[0].comment_id])
+        user_storage_mock.get_users_details.assert_called_once_with(
+            [users_dtos[0].user_id, users_dtos[1].user_id])
+        presenter_mock.get_all_posts_of_user.assert_called_once_with(
+            posts_details_dto=posts_details_dto)
 
-    with pytest.raises(BadRequest):
-        interactor.get_user_posts_wrapper(
-            user_id, get_requests_parameters_dto_with_invalid_limit)
+    def test_get_user_posts_interactor_with_invalid_offset_raise_exception(
+            self, presenter_mock, interactor):
+        user_id = 1
 
-    presenter.raise_exception_for_invalid_limit_length.assert_called_once()
-
-def test_get_user_posts_interactor_when_user_not_found_raise_exception(
-        get_requests_parameters_dto):
-    user_id = 1
-
-    user_storage = create_autospec(UserInterface)
-    post_storage = create_autospec(PostInterface)
-    presenter = create_autospec(GetPostsPresenterInterface)
-    interactor = GetUserPostsInteractor(
-        user_storage=user_storage,
-        post_storages=post_storage,
-        presenter=presenter
-    )
-    user_storage.check_is_user_exists.return_value = False
-    presenter.raise_exception_for_user_not_exist.side_effect = BadRequest
-
-    with pytest.raises(BadRequest):
-        interactor.get_user_posts_wrapper(
-            user_id, get_requests_parameters_dto
+        requests_parameters_dto = storage_dtos.RequestsParametersDTOFactory(
+            offset=-1,
+            limit=1,
         )
 
-    user_storage.check_is_user_exists.assert_called_once_with(
-        user_id=user_id)
-    presenter.raise_exception_for_user_not_exist.assert_called_once()
+        presenter_mock.raise_exception_for_invalid_offset_length.side_effect = BadRequest
 
-@pytest.mark.django_db
-def test_get_user_posts_interactor_when_valid_details_given_return_posts_details(
-        users, posts,
-        reacts, comments, replies, reacts_on_comments,
-        posts_details_response,
-        user_details,
-        posts_details, reaction_details, comment_details, replies_details,
-        reaction_on_comment_details
-        ):
-    user_id = 1
-    limit = 2
-    offset = 0
+        with pytest.raises(BadRequest):
+            interactor.get_user_posts_wrapper(
+                user_id, requests_parameters_dto
+            )
 
-    user_storage = create_autospec(UserInterface)
-    post_storage = create_autospec(PostInterface)
-    presenter = create_autospec(GetPostsPresenterInterface)
+        presenter_mock.raise_exception_for_invalid_offset_length.assert_called_once()
 
-    user_storage.check_is_user_exists.return_value = True
-    post_storage.get_posts.return_value = posts_details
-    post_storage.get_all_reactions.return_value = reaction_details
-    post_storage.get_comments.return_value = comment_details
-    post_storage.get_replies_on_comment.return_value = replies_details
-    post_storage.get_reactions_on_comments.return_value = \
-        reaction_on_comment_details
-    user_storage.get_users_details.return_value = user_details
+    def test_get_user_posts_interactor_with_invalid_limit_raise_exception(self,
+                                                                          presenter_mock,
+                                                                          interactor):
+        user_id = 1
 
-    interactor = GetUserPostsInteractor(
-        user_storage=user_storage,
-        post_storages=post_storage,
-        presenter=presenter
-    )
+        requests_parameters_dto = storage_dtos.RequestsParametersDTOFactory(
+            offset=0,
+            limit=-1,
+        )
 
-    request_parameter_dto = RequestsParametersDTO(
-        offset=offset,
-        limit=limit,
-        sort_order="DESC",
-        post_content="Hello"
-    )
+        presenter_mock.raise_exception_for_invalid_limit_length.side_effect = BadRequest
 
-    actual_output = interactor.get_user_posts(user_id,
-                                              request_parameter_dto)
+        with pytest.raises(BadRequest):
+            interactor.get_user_posts_wrapper(
+                user_id, requests_parameters_dto
+            )
 
-    # assert
-    user_storage.check_is_user_exists.assert_called_once_with(user_id)
-    post_storage.get_posts.assert_called_once_with(user_id,
-                                                   request_parameter_dto)
-    post_storage.get_all_reactions.assert_called_once_with([3, 4])
-    post_storage.get_comments.assert_called_once_with([3, 4])
-    post_storage.get_replies_on_comment.assert_called_once_with([2])
-    post_storage.get_reactions_on_comments.assert_called_once_with([2])
-    user_storage.get_users_details.assert_called_once_with([1, 2])
-    presenter.get_all_posts_of_user(
-        actual_output
-    )
+        presenter_mock.raise_exception_for_invalid_limit_length.assert_called_once()
+
+    def test_get_user_posts_interactor_when_user_not_found_raise_exception(self,
+                                                                           presenter_mock,
+                                                                           interactor,
+                                                                           user_storage_mock
+                                                                           ):
+        user_id = 1
+        requests_parameters_dto = storage_dtos.RequestsParametersDTOFactory(
+            offset=0,
+            limit=0,
+        )
+
+        user_storage_mock.check_is_user_exists.return_value = False
+        presenter_mock.raise_exception_for_user_not_exist.side_effect = BadRequest
+
+        with pytest.raises(BadRequest):
+            interactor.get_user_posts_wrapper(
+                user_id, requests_parameters_dto
+            )
+
+        user_storage_mock.check_is_user_exists.assert_called_once_with(
+            user_id=user_id)
+        presenter_mock.raise_exception_for_user_not_exist.assert_called_once()
+

@@ -18,7 +18,7 @@ class PostFactory(factory.django.DjangoModelFactory):
         model = Post
 
     content = factory.sequence(lambda n: f"post_{n + 1}")
-    posted_at = datetime.datetime(2023, 2, 13, 11, 20, 0, 405098)
+    posted_at = datetime.datetime(2023, 2, 13, 11, 20, 0)
     posted_by = factory.SubFactory(UserFactory)
 
 
@@ -26,7 +26,7 @@ class CommentFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Comment
 
-    commented_at = datetime.datetime(2023, 2, 13, 11, 20, 0, 405098)
+    commented_at = datetime.datetime(2023, 2, 13, 11, 20)
     commented_by = factory.SubFactory(UserFactory)
     post = factory.SubFactory(PostFactory)
     parent_comment = None
@@ -37,7 +37,7 @@ class ReactFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = React
 
-    reacted_at = datetime.datetime(2023, 2, 13, 11, 20, 0, 405098)
+    reacted_at = datetime.datetime(2023, 2, 13, 11, 20)
     post = factory.SubFactory(PostFactory)
     comment = None
     reacted_by = factory.SubFactory(UserFactory)

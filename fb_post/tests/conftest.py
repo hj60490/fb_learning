@@ -9,7 +9,9 @@ from fb_post.models import User, Post, React, Comment
 import datetime
 from fb_post.tests.factories.models import UserFactory, PostFactory, \
     ReactFactory, CommentFactory
-from fb_post.tests.factories.storage_dtos import PostDTOFactory, UserDTOFactory, ReactOnPostDTOFactory, ReactOnCommentDTOFactory, CommentOnCommentDTOFactory, CommentOnPostDTOFactory
+from fb_post.tests.factories.storage_dtos import PostDTOFactory, UserDTOFactory, \
+    ReactOnPostDTOFactory, ReactOnCommentDTOFactory, CommentOnCommentDTOFactory, \
+    CommentOnPostDTOFactory
 
 
 @pytest.fixture()
@@ -19,18 +21,18 @@ def users():
 
 @pytest.fixture()
 def posts():
-    return PostFactory.create_batch(size=3)
-
-
-@pytest.fixture()
-def request_parameters_dto():
-    request_parameters_dto = RequestsParametersDTO(
-        offset=0,
-        limit=0,
-        sort_order="ASC",
-        post_content=""
-    )
-    return request_parameters_dto
+    return [
+        PostFactory(content="Hello", posted_by_id=1),
+        PostFactory(content="Hello",
+                    posted_by_id=1,
+                    posted_at=datetime.datetime(2023, 2, 13, 11, 20, 15)),
+        PostFactory(content="Hello",
+                    posted_by_id=1,
+                    posted_at=datetime.datetime(2023, 2, 13, 11, 20, 20)),
+        PostFactory(content="Harsh",
+                    posted_by_id=1,
+                    posted_at=datetime.datetime(2023, 2, 13, 11, 20, 25))
+    ]
 
 
 @pytest.fixture()
@@ -93,7 +95,7 @@ def reacts_on_comments():
 
 @pytest.fixture()
 def reaction_details_dto():
-    reactions_details_dto = [ReactOnPostDto(
+    reactions_details_dto = [ReactOnPostDTOFactory(
         reaction_id=1,
         post_id=1,
         reaction="HAHA",
@@ -112,20 +114,6 @@ def user_details_dto():
 @pytest.fixture()
 def user():
     return UserFactory()
-
-
-@pytest.fixture()
-def get_requests_parameters_dto_with_invalid_offset():
-    get_requests_parameters_dto = RequestsParametersDTO(
-        offset=-1, limit=2, sort_order="", post_content="")
-    return get_requests_parameters_dto
-
-
-@pytest.fixture()
-def get_requests_parameters_dto_with_invalid_limit():
-    get_requests_parameters_dto = RequestsParametersDTO(
-        offset=1, limit=-1, sort_order="", post_content="")
-    return get_requests_parameters_dto
 
 
 @pytest.fixture()
@@ -527,8 +515,8 @@ def posts_details_response():
     post_details = PostDetailsDto(
         users=[UserDTOFactory(user_id=2)],
         posts=[
-           PostDTOFactory(post_id=1),
-           PostDTOFactory(post_id=2)
+            PostDTOFactory(post_id=1),
+            PostDTOFactory(post_id=2)
         ],
         reactions_on_posts=[ReactOnPostDTOFactory()],
         comments_on_post=[CommentOnPostDTOFactory()],
