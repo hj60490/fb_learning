@@ -2,9 +2,9 @@ from django.db import models
 from datetime import datetime
 
 
-class User(models.Model):
-    name = models.CharField(max_length=100)
-    profile_pic = models.TextField(null=True, blank=True)
+# class User(models.Model):
+#     name = models.CharField(max_length=100)
+#     profile_pic = models.TextField(null=True, blank=True)
 
 
 class Post(models.Model):

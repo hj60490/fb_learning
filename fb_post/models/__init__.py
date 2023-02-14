@@ -1,7 +1,6 @@
-from fb_post.models.models import User, Post, Comment, React
+from fb_post.models.models import Post, Comment, React
 
 __all__ = [
-    "User",
     "Post",
     "Comment",
     "React"
