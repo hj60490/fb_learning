@@ -1,3 +1,5 @@
+import datetime
+
 import pytest
 from fb_post.presenters.get_user_posts_presenter_implementation import \
     GetUserPostsPresenterImplementation
@@ -9,108 +11,160 @@ from django_swagger_utils.drf_server.exceptions import (
     BadRequest
 )
 
-
-def test_get_all_posts_of_user_for_user_having_zero_post_return_empty(
-        get_no_posts_dto, snapshot):
-    presenter = GetUserPostsPresenterImplementation()
-    actual_output = presenter.get_all_posts_of_user(
-        posts_details_dto=get_no_posts_dto
-    )
-
-    snapshot.assert_match(actual_output)
+from fb_post.tests.factories.storage_dtos import UserDTOFactory, PostDTOFactory, \
+    ReactOnPostDTOFactory, CommentOnPostDTOFactory, CommentOnCommentDTOFactory, \
+    ReactOnCommentDTOFactory
 
 
-def test_get_all_posts_of_user_for_user_having_post_but_no_reaction_and_comments(
-        get_posts_with_no_reaction_and_comments_dto, snapshot):
-    presenter = GetUserPostsPresenterImplementation()
-    actual_output = presenter.get_all_posts_of_user(
-        posts_details_dto=get_posts_with_no_reaction_and_comments_dto
-    )
+class TestsCreatePostPresenter:
 
-    snapshot.assert_match(actual_output)
+    def test_get_all_posts_of_user_for_user_having_zero_post_return_empty(
+           self, snapshot):
+        user_posts_details_dto = PostDetailsDto(
+            users=[UserDTOFactory()],
+            posts=[],
+            reactions_on_posts=[],
+            comments_on_post=[],
+            replies=[],
+            reactions_on_comments=[]
+        )
+        presenter = GetUserPostsPresenterImplementation()
+        actual_output = presenter.get_all_posts_of_user(
+            posts_details_dto=user_posts_details_dto
+        )
 
+        snapshot.assert_match(actual_output)
 
-def test_get_all_posts_of_user_for_user_having_posts_only_reactions(
-        get_posts_with_only_reactions, snapshot):
-    presenter = GetUserPostsPresenterImplementation()
-    actual_output = presenter.get_all_posts_of_user(
-        posts_details_dto=get_posts_with_only_reactions
-    )
+    def test_get_all_posts_of_user_for_user_having_post_but_no_reaction_and_comments(
+            self, snapshot):
+        user_posts_details_dto = PostDetailsDto(
+            users=[UserDTOFactory()],
+            posts=[PostDTOFactory()],
+            reactions_on_posts=[],
+            comments_on_post=[],
+            replies=[],
+            reactions_on_comments=[]
+        )
+        presenter = GetUserPostsPresenterImplementation()
+        actual_output = presenter.get_all_posts_of_user(
+            posts_details_dto=user_posts_details_dto
+        )
 
-    snapshot.assert_match(actual_output)
+        snapshot.assert_match(actual_output)
 
+    def test_get_all_posts_of_user_for_user_having_posts_only_reactions(
+            self, snapshot):
+        user_posts_details_dto = PostDetailsDto(
+            users=[UserDTOFactory()],
+            posts=[PostDTOFactory()],
+            reactions_on_posts=[ReactOnPostDTOFactory()],
+            comments_on_post=[],
+            replies=[],
+            reactions_on_comments=[]
+        )
+        presenter = GetUserPostsPresenterImplementation()
+        actual_output = presenter.get_all_posts_of_user(
+            posts_details_dto=user_posts_details_dto
+        )
 
-def test_get_all_posts_of_user_for_user_having_posts_only_comments(
-        get_posts_with_only_comments, snapshot):
-    presenter = GetUserPostsPresenterImplementation()
-    actual_output = presenter.get_all_posts_of_user(
-        posts_details_dto=get_posts_with_only_comments
-    )
+        snapshot.assert_match(actual_output)
 
-    snapshot.assert_match(actual_output)
+    def test_get_all_posts_of_user_for_user_having_posts_only_comments(
+            self, snapshot):
+        user_posts_details_dto = PostDetailsDto(
+            users=[UserDTOFactory()],
+            posts=[PostDTOFactory()],
+            reactions_on_posts=[],
+            comments_on_post=[CommentOnPostDTOFactory()],
+            replies=[],
+            reactions_on_comments=[]
+        )
+        presenter = GetUserPostsPresenterImplementation()
+        actual_output = presenter.get_all_posts_of_user(
+            posts_details_dto=user_posts_details_dto
+        )
 
+        snapshot.assert_match(actual_output)
 
-def test_get_all_posts_of_user_for_user_having_posts_only_comments_and_replies(
-        get_posts_with_only_comments_with_reply, snapshot):
-    presenter = GetUserPostsPresenterImplementation()
-    actual_output = presenter.get_all_posts_of_user(
-        posts_details_dto=get_posts_with_only_comments_with_reply
-    )
+    def test_get_all_posts_of_user_for_user_having_posts_only_comments_and_replies(
+            self, snapshot):
+        user_posts_details_dto = PostDetailsDto(
+            users=[UserDTOFactory()],
+            posts=[PostDTOFactory()],
+            reactions_on_posts=[],
+            comments_on_post=[CommentOnPostDTOFactory()],
+            replies=[CommentOnCommentDTOFactory()],
+            reactions_on_comments=[]
+        )
+        presenter = GetUserPostsPresenterImplementation()
+        actual_output = presenter.get_all_posts_of_user(
+            posts_details_dto=user_posts_details_dto
+        )
 
-    snapshot.assert_match(actual_output)
+        snapshot.assert_match(actual_output)
 
+    def test_get_all_posts_of_user_for_user_having_posts_only_comments_with_reaction_and_replies(
+            self, snapshot):
+        user_posts_details_dto = PostDetailsDto(
+            users=[UserDTOFactory()],
+            posts=[PostDTOFactory()],
+            reactions_on_posts=[],
+            comments_on_post=[CommentOnPostDTOFactory()],
+            replies=[CommentOnCommentDTOFactory()],
+            reactions_on_comments=[ReactOnCommentDTOFactory()]
+        )
+        presenter = GetUserPostsPresenterImplementation()
+        actual_output = presenter.get_all_posts_of_user(
+            posts_details_dto=user_posts_details_dto
+        )
 
-def test_get_all_posts_of_user_for_user_having_posts_only_comments_with_reaction_and_replies(
-        get_posts_with_only_comments_with_reaction, snapshot):
-    presenter = GetUserPostsPresenterImplementation()
-    actual_output = presenter.get_all_posts_of_user(
-        posts_details_dto=get_posts_with_only_comments_with_reaction
-    )
+        snapshot.assert_match(actual_output)
 
-    snapshot.assert_match(actual_output)
+    def test_get_all_posts_of_user_return_posts_dict(self, snapshot):
+        user_posts_details_dto = PostDetailsDto(
+            users=[UserDTOFactory()],
+            posts=[PostDTOFactory()],
+            reactions_on_posts=[ReactOnPostDTOFactory()],
+            comments_on_post=[CommentOnPostDTOFactory()],
+            replies=[CommentOnCommentDTOFactory()],
+            reactions_on_comments=[ReactOnCommentDTOFactory()]
+        )
+        presenter = GetUserPostsPresenterImplementation()
+        actual_output = presenter.get_all_posts_of_user(
+            posts_details_dto=user_posts_details_dto
+        )
 
+        snapshot.assert_match(actual_output)
 
-def test_get_all_posts_of_user_return_posts_dict(
-        get_posts_details, snapshot):
-    presenter = GetUserPostsPresenterImplementation()
-    actual_output = presenter.get_all_posts_of_user(
-        posts_details_dto=get_posts_details
-    )
+    def test_raise_exception_for_user_not_exists(self):
+        exception_messages = INVALID_USER_ID[0]
+        exception_res_status = INVALID_USER_ID[1]
+        presenter = GetUserPostsPresenterImplementation()
 
-    snapshot.assert_match(actual_output)
+        with pytest.raises(BadRequest) as exception:
+            presenter.raise_exception_for_user_not_exist()
 
+        assert exception.value.message == exception_messages
+        assert exception.value.res_status == exception_res_status
 
-def test_raise_exception_for_user_not_exists():
-    exception_messages = INVALID_USER_ID[0]
-    exception_res_status = INVALID_USER_ID[1]
-    presenter = GetUserPostsPresenterImplementation()
+    def test_raise_exception_for_invalid_limit_value(self):
+        exception_messages = INVALID_LIMIT_LENGTH[0]
+        exception_res_status = INVALID_LIMIT_LENGTH[1]
+        presenter = GetUserPostsPresenterImplementation()
 
-    with pytest.raises(BadRequest) as exception:
-        presenter.raise_exception_for_user_not_exist()
+        with pytest.raises(BadRequest) as exception:
+            presenter.raise_exception_for_invalid_limit_length()
 
-    assert exception.value.message == exception_messages
-    assert exception.value.res_status == exception_res_status
+        assert exception.value.message == exception_messages
+        assert exception.value.res_status == exception_res_status
 
+    def test_raise_exception_for_invalid_offset_value(self):
+        exception_messages = INVALID_OFFSET_LENGTH[0]
+        exception_res_status = INVALID_OFFSET_LENGTH[1]
+        presenter = GetUserPostsPresenterImplementation()
 
-def test_raise_exception_for_invalid_limit_value():
-    exception_messages = INVALID_LIMIT_LENGTH[0]
-    exception_res_status = INVALID_LIMIT_LENGTH[1]
-    presenter = GetUserPostsPresenterImplementation()
+        with pytest.raises(BadRequest) as exception:
+            presenter.raise_exception_for_invalid_offset_length()
 
-    with pytest.raises(BadRequest) as exception:
-        presenter.raise_exception_for_invalid_limit_length()
-
-    assert exception.value.message == exception_messages
-    assert exception.value.res_status == exception_res_status
-
-
-def test_raise_exception_for_invalid_offset_value():
-    exception_messages = INVALID_OFFSET_LENGTH[0]
-    exception_res_status = INVALID_OFFSET_LENGTH[1]
-    presenter = GetUserPostsPresenterImplementation()
-
-    with pytest.raises(BadRequest) as exception:
-        presenter.raise_exception_for_invalid_offset_length()
-
-    assert exception.value.message == exception_messages
-    assert exception.value.res_status == exception_res_status
+        assert exception.value.message == exception_messages
+        assert exception.value.res_status == exception_res_status

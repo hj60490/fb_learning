@@ -22,18 +22,19 @@ class TestGetUserPostsInteractor:
 
     @pytest.fixture
     def presenter_mock(self):
-
         return mock.create_autospec(CreatePostPresenterInterface)
 
     @pytest.fixture
     def interactor(self, post_storage_mock, user_storage_mock, presenter_mock):
-
         return CreatePostInteractor(
             post_storage=post_storage_mock,
             user_storage=user_storage_mock,
             presenter=presenter_mock)
 
-    def test_create_post_interactor_when_user_not_found_raise_exception(self,user_storage_mock,interactor,presenter_mock):
+    def test_create_post_interactor_when_user_not_found_raise_exception(self,
+                                                                        user_storage_mock,
+                                                                        interactor,
+                                                                        presenter_mock):
         content = "hello"
         user_id = 1
 
@@ -49,11 +50,13 @@ class TestGetUserPostsInteractor:
             user_id=user_id)
         presenter_mock.raise_exception_for_user_not_exist.assert_called_once()
 
-    def test_create_post_interactor_with_valid_details_creates_post(self, interactor,presenter_mock,user_storage_mock,post_storage_mock):
+    def test_create_post_interactor_with_valid_details_creates_post(self,
+                                                                    interactor,
+                                                                    presenter_mock,
+                                                                    user_storage_mock,
+                                                                    post_storage_mock):
         user_id = 1
         content = "hello"
-
-
 
         user_storage_mock.check_is_user_exists.return_value = True
 
@@ -65,5 +68,3 @@ class TestGetUserPostsInteractor:
             user_id=user_id,
             content=content
         )
-
-

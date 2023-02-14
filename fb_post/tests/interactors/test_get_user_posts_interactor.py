@@ -113,7 +113,7 @@ class TestGetUserPostsInteractor:
         post_storage_mock.get_reactions_on_comments.assert_called_once_with(
             [post_comments[0].comment_id, comment_replies[0].comment_id])
         user_storage_mock.get_users_details.assert_called_once_with(
-            [users_dtos[0].user_id, users_dtos[1].user_id])
+            [users_dtos[0].user_id, users_dtos[1].user_id,])
         presenter_mock.get_all_posts_of_user.assert_called_once_with(
             posts_details_dto=posts_details_dto)
 

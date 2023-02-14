@@ -12,7 +12,7 @@ from fb_post.tests.factories.storage_dtos import ReactOnPostDTOFactory, \
     CommentOnPostDTOFactory, ReactOnCommentDTOFactory
 
 
-class TestGetUserPostsInteractor:
+class TestGetUserPostsStorage:
 
     @pytest.fixture
     def user_storage_mock(self):
@@ -146,10 +146,11 @@ class TestGetUserPostsInteractor:
         comments_id = [1]
         UserFactory.create_batch(size=3)
         CommentFactory()
-        ReactFactory(comment_id=1, reacted_by_id=1)
+        ReactFactory(comment_id=1, reacted_by_id=1, reaction="HAHA")
         comments_details_dto = [ReactOnCommentDTOFactory(
             reacted_by_id=1,
             comment_id=1,
+            reaction="HAHA"
 
         )]
         expected_output = comments_details_dto
