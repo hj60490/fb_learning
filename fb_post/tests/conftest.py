@@ -1,7 +1,7 @@
 import pytest
 from fb_post.interactors.storage_interfaces.dtos import RequestsParametersDTO, \
     UserDto, PostDto, ReactOnPostDto, CommentOnPostDto, CommentOnCommentDto, \
-    ReactionOnCommentDto, PostsCountDTO
+    ReactionOnCommentDto
 from fb_post.interactors.presenter_interfaces.dtos import PostDetailsDto
 from datetime import datetime
 from freezegun import freeze_time
@@ -26,9 +26,9 @@ def posts():
 def request_parameters_dto():
     request_parameters_dto = RequestsParametersDTO(
         offset=0,
-        limit=1,
+        limit=0,
         sort_order="ASC",
-        post_content="Hello"
+        post_content=""
     )
     return request_parameters_dto
 
@@ -105,17 +105,13 @@ def reaction_details_dto():
 
 @pytest.fixture()
 def user_details_dto():
-    users_list = [UserDto(user_id=1,
-                          name="User 1",
-                          profile_pic="www.google.com"
-                          )]
+    users_list = [UserDTOFactory()]
     return users_list
 
 
 @pytest.fixture()
 def user():
-    user_obj = User.objects.create(name="User 1", profile_pic="www.google.com")
-    return user_obj
+    return UserFactory()
 
 
 @pytest.fixture()

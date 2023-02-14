@@ -42,8 +42,7 @@ def test_get_user_details_with_users_id_return_users_details_dto(
 
 
 @pytest.mark.django_db
-def test_get_user_details_with_users_id_not_exists_return_empty(
-        user):
+def test_get_user_details_with_users_id_not_exists_return_empty():
     # Arrange
     user_ids = [8]
     expected_user_details_dto = []
