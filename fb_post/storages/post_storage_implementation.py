@@ -137,6 +137,7 @@ class PostStorageImplementation(PostInterface):
         )
         return react_on_comment_dto
 
+    # todo: tests
     def get_replies_on_comment(self, list_of_comment_id) -> \
             List[CommentOnCommentDto]:
         comment_on_comment_obj = Comment.objects.filter(

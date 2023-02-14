@@ -1,5 +1,5 @@
 """
-# wrong user_id is given
+# content field may not be blank.'
 """
 import pytest
 from django_swagger_utils.utils.test_utils import TestUtils

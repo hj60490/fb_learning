@@ -14,7 +14,7 @@ class TestCase04GetPostsOfUserIdAPITestCase(TestUtils):
     SECURITY = {}
 
     @pytest.mark.django_db
-    def test_case(self, snapshot, users):
+    def test_case(self, snapshot, users, posts):
         body = {}
         path_params = {"user_id": "1"}
         query_params = {"limit": "10", "offset": 0}

@@ -13,11 +13,12 @@ class TestsUserStorage:
 
     @pytest.mark.django_db
     def test_get_user_details_with_users_id_return_users_details_dto(
-            self, user):
+            self):
         # Arrange
-        user_ids = [1]
-        UserFactory(name='User_1')
-        users_list = [UserDTOFactory(user_id=1, name='User_1')]
+        user_ids = [1, 2]
+        UserFactory()
+        UserFactory()
+        users_list = [UserDTOFactory(), UserDTOFactory()]
         expected_user_details_dto = users_list
         storage = UserStorageImplementation()
 
@@ -51,7 +52,7 @@ class TestsUserStorage:
         assert expected_output == actual_output
 
     @pytest.mark.django_db
-    def test_get_user_details_with_users_id_not_exists_return_empty(self):
+    def test_get_user_details_when_users_not_exists_return_empty(self):
         # Arrange
         user_ids = [8]
         expected_user_details_dto = []

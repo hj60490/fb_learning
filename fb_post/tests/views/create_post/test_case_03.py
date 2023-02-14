@@ -1,5 +1,5 @@
 """
-# wrong user_id is given
+# valid case
 """
 import pytest
 from django_swagger_utils.utils.test_utils import TestUtils
@@ -50,4 +50,4 @@ class TestCase03CreatePostAPITestCase(TestUtils):
                                       query_params=query_params,
                                       headers=headers,
                                       snapshot=snapshot)
-        return response
+

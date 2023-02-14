@@ -48,14 +48,12 @@ class TestGetUserPostsInteractor:
             post_content="Hello"
         )
         users_dtos = [
-            storage_dtos.UserDTOFactory(user_id=1),
-            storage_dtos.UserDTOFactory(user_id=2)
+            storage_dtos.UserDTOFactory(),
+            storage_dtos.UserDTOFactory()
         ]
         post_dtos = [
             storage_dtos.PostDTOFactory(
-                post_id=1,
-                content="Hello",
-                posted_by_id=1)
+                content="Hello")
         ]
         post_reactions_dtos = [
             storage_dtos.ReactOnPostDTOFactory(
@@ -154,11 +152,8 @@ class TestGetUserPostsInteractor:
 
         presenter_mock.raise_exception_for_invalid_limit_length.assert_called_once()
 
-    def test_get_user_posts_interactor_when_user_not_found_raise_exception(self,
-                                                                           presenter_mock,
-                                                                           interactor,
-                                                                           user_storage_mock
-                                                                           ):
+    def test_get_user_posts_interactor_when_user_not_found_raise_exception(
+            self, presenter_mock, interactor, user_storage_mock):
         user_id = 1
         requests_parameters_dto = storage_dtos.RequestsParametersDTOFactory(
             offset=0,

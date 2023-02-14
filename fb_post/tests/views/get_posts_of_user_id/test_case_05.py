@@ -14,11 +14,11 @@ class TestCase05GetPostsOfUserIdAPITestCase(TestUtils):
     SECURITY = {}
 
     @pytest.mark.django_db
-    def test_case(self, snapshot, users):
+    def test_case(self, snapshot, users, posts):
         body = {}
         path_params = {"user_id": "1"}
         query_params = {"limit": "10", "offset": 0, "sort_order": "ASC",
-                        "post_content": "string"}
+                        "post_content": "Harsh"}
         headers = {}
         response = self.make_api_call(body=body,
                                       path_params=path_params,

@@ -48,12 +48,13 @@ class TestGetUserPostsStorage:
         content = "Hello"
         UserFactory.create_batch(size=3)
         post_storage = PostStorageImplementation()
+
         post_storage.create_post(content=content, user_id=user_id)
+
         assert Post.objects.filter(content=content, posted_by_id=1).exists()
 
     @pytest.mark.django_db
-    def test_get_all_posts_with_limit_offset_posts_return_posts_dto(self,
-                                                                    posts):
+    def test_get_all_posts_with_limit_offset_posts_return_posts_dto(self, posts):
         user_id = 1
         UserFactory.create_batch(size=3)
         post_dtos = [

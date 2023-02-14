@@ -1,12 +1,8 @@
-import pytest
-from fb_post.interactors.storage_interfaces.dtos import RequestsParametersDTO, \
-    UserDto, PostDto, ReactOnPostDto, CommentOnPostDto, CommentOnCommentDto, \
-    ReactionOnCommentDto
-from fb_post.interactors.presenter_interfaces.dtos import PostDetailsDto
-from datetime import datetime
-from freezegun import freeze_time
-from fb_post.models import User, Post, React, Comment
 import datetime
+from datetime import datetime
+
+import pytest
+
 from fb_post.tests.factories.models import UserFactory, PostFactory, \
     ReactFactory, CommentFactory
 from fb_post.tests.factories.storage_dtos import PostDTOFactory, UserDTOFactory, \
@@ -35,11 +31,6 @@ def posts():
                     posted_by_id=1,
                     posted_at=datetime.datetime(2023, 2, 13, 11, 20, 25))
     ]
-
-
-@pytest.fixture()
-def user():
-    return UserFactory()
 
 
 @pytest.fixture(autouse=True)
