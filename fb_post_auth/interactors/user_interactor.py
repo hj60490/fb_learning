@@ -5,7 +5,7 @@ from fb_post_auth.interactors.storage_interfaces.user_interface import UserInter
 
 
 class UserInteractor:
-    def __init__(self, user_storage: UserInterface,):
+    def __init__(self, user_storage: UserInterface):
         self.user_storage = user_storage
 
     def check_user_exists_or_not(self, user_id: int) -> bool:

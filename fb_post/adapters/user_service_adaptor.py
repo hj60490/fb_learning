@@ -15,3 +15,6 @@ class UserServiceAdaptor:
 
     def get_users_dtos(self, list_of_users_id: List[int]) -> List[UserDto]:
         return self.interface.get_users_details(list_of_users_id)
+
+
+

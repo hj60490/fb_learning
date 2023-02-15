@@ -51,3 +51,4 @@ class TestCase01CreatePostAPITestCase(TestUtils):
                                       headers=headers,
                                       snapshot=snapshot)
 
+

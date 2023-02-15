@@ -8,10 +8,9 @@ from fb_post.adapters.service_adapter import get_service_adapter
 
 
 class CreatePostInteractor:
-    def __init__(self, post_storage: PostInterface, user_storage: UserInterface,
+    def __init__(self, post_storage: PostInterface,
                  presenter: CreatePostPresenterInterface):
         self.post_storage = post_storage
-        self.user_storage = user_storage
         self.presenter = presenter
 
     def create_post_wrapper(self, content: str, user_id: int):
