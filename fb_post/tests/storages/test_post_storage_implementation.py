@@ -9,7 +9,8 @@ from fb_post.tests.factories import storage_dtos
 from fb_post.tests.factories.models import UserFactory, ReactFactory, \
     CommentFactory
 from fb_post.tests.factories.storage_dtos import ReactOnPostDTOFactory, \
-    CommentOnPostDTOFactory, ReactOnCommentDTOFactory
+    CommentOnPostDTOFactory, ReactOnCommentDTOFactory, \
+    CommentOnCommentDTOFactory
 
 
 class TestGetUserPostsStorage:
@@ -54,7 +55,8 @@ class TestGetUserPostsStorage:
         assert Post.objects.filter(content=content, posted_by_id=1).exists()
 
     @pytest.mark.django_db
-    def test_get_all_posts_with_limit_offset_posts_return_posts_dto(self, posts):
+    def test_get_all_posts_with_limit_offset_posts_return_posts_dto(self,
+                                                                    posts):
         user_id = 1
         UserFactory.create_batch(size=3)
         post_dtos = [
@@ -161,6 +163,33 @@ class TestGetUserPostsStorage:
         assert actual_output == expected_output
 
     @pytest.mark.django_db
+    def test_get_replies_on_comments_return_replies(self, posts):
+        comments_id = [1]
+        UserFactory.create_batch(size=3)
+        CommentFactory()
+        CommentFactory(parent_comment_id=1, post_id=None)
+        CommentOnCommentDTOFactory()
+        comments_details_dto = [
+            CommentOnCommentDTOFactory(parent_comment_id=1, commented_by_id=10)]
+        expected_output = comments_details_dto
+        post_storage = PostStorageImplementation()
+        actual_output = post_storage.get_replies_on_comment(
+            list_of_comment_id=comments_id)
+        assert actual_output == expected_output
+
+    @pytest.mark.django_db
+    def test_get_replies_on_comments_no_replies_return_empty(self, posts):
+        comments_id = [1]
+        UserFactory.create_batch(size=3)
+        CommentFactory()
+        comments_details_dto = []
+        expected_output = comments_details_dto
+        post_storage = PostStorageImplementation()
+        actual_output = post_storage.get_replies_on_comment(
+            list_of_comment_id=comments_id)
+        assert actual_output == expected_output
+
+    @pytest.mark.django_db
     def test_get_reactions_on_comments_return_empty(self, posts):
         comments_id = [1]
         UserFactory.create_batch(size=3)
@@ -170,6 +199,3 @@ class TestGetUserPostsStorage:
         actual_output = post_storage.get_reactions_on_comments(
             list_of_comment_id=comments_id)
         assert actual_output == expected_output
-
-
-
