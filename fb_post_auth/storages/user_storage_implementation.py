@@ -1,17 +1,17 @@
 from fb_post_auth.interactors.storage_interfaces.user_interface import \
-    UserInterface
-from fb_post_auth.models.models import User
+    UserStorageInterface
+from fb_post_auth.models.user import User
 from typing import List
 from fb_post_auth.interactors.storage_interfaces.dtos import UserDto
 
 
-class UserStorageImplementation(UserInterface):
+class UserStorageImplementation(UserStorageInterface):
 
     def check_is_user_exists(self, user_id: int) -> bool:
         return User.objects.filter(id=user_id).exists()
 
-    def get_users_details(self, user_union_list: List[int]) -> List[UserDto]:
-        users = User.objects.filter(id__in=user_union_list)
+    def get_users_details(self, user_ids: List[int]) -> List[UserDto]:
+        users = User.objects.filter(id__in=user_ids)
         users = [
             self._convert_user_object_to_dto(user)
             for user in users

@@ -1,7 +1,7 @@
 
 from fb_post.interactors.presenter_interfaces.presenter_interface import\
     CreatePostPresenterInterface
-from fb_post.interactors.storage_interfaces.post_interface import PostInterface
+from fb_post.interactors.storage_interfaces.post_storage_interface import PostInterface
 from fb_post.exceptions.custom_exceptions import InvalidUserException
 from fb_post.adapters.service_adapter import get_service_adapter
 

@@ -3,12 +3,12 @@ from typing import List
 from fb_post_auth.interactors.storage_interfaces.dtos import UserDto
 
 
-class UserInterface(ABC):
+class UserStorageInterface(ABC):
 
     def check_is_user_exists(self, user_id: int) -> bool:
         pass
 
-    def get_users_details(self, user_union_list: List[int]) -> List[UserDto]:
+    def get_users_details(self, user_ids: List[int]) -> List[UserDto]:
         pass
 
 

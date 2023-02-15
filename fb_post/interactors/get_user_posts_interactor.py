@@ -1,4 +1,4 @@
-from fb_post.interactors.storage_interfaces.post_interface import PostInterface
+from fb_post.interactors.storage_interfaces.post_storage_interface import PostInterface
 from fb_post.exceptions.custom_exceptions import InvalidUserException, InvalidOffsetValue , InvalidLimitValue
 from fb_post.interactors.presenter_interfaces.get_user_posts_presenter_interface \
     import GetPostsPresenterInterface
@@ -33,7 +33,8 @@ class GetUserPostsInteractor:
         except InvalidLimitValue:
             self.presenter.raise_exception_for_invalid_limit_length()
 
-    def _validate_user(self, user_id: int):
+    @staticmethod
+    def _validate_user(user_id: int):
         adaptor = get_service_adapter()
         is_user_exists = adaptor.fb_post_auth.check_user_exists_or_not(user_id)
 

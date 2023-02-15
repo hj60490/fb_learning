@@ -21,7 +21,7 @@ class TestsUserStorage:
 
         # Act
         actual_user_details_dto = storage.get_users_details(
-            user_union_list=user_ids)
+            user_ids=user_ids)
 
         # Assert
         assert expected_user_details_dto == actual_user_details_dto
@@ -57,7 +57,7 @@ class TestsUserStorage:
 
         # Act
         actual_user_details_dto = storage.get_users_details(
-            user_union_list=user_ids)
+            user_ids=user_ids)
 
         # Assert
         assert expected_user_details_dto == actual_user_details_dto

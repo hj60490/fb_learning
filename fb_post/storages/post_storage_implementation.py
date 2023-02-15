@@ -1,6 +1,7 @@
-from fb_post.interactors.storage_interfaces.post_interface import PostInterface
+from fb_post.interactors.storage_interfaces.post_storage_interface import \
+    PostInterface
 from fb_post.interactors.storage_interfaces.dtos import PostDto, ReactOnPostDto, \
-    CommentOnPostDto, ReactionOnCommentDto, CommentOnCommentDto, UserDto, \
+    CommentOnPostDto, ReactionOnCommentDto, CommentOnCommentDto, \
     RequestsParametersDTO
 from typing import List
 from fb_post.models.models import Post, Comment, React
@@ -29,7 +30,7 @@ class PostStorageImplementation(PostInterface):
             else:
                 posts_objs = posts_objs.order_by('-posted_at')
 
-        posts_objs = posts_objs[offset: limit+offset]
+        posts_objs = posts_objs[offset: limit + offset]
 
         post_dtos = [
             self._convert_post_obj_to_dto(post)
@@ -46,7 +47,6 @@ class PostStorageImplementation(PostInterface):
             posted_at=post.posted_at
         )
         return post_dto
-
 
     def get_all_reactions(self, list_of_post_id: List[int]) -> \
             List[ReactOnPostDto]:
@@ -144,4 +144,3 @@ class PostStorageImplementation(PostInterface):
             parent_comment_id=comment.parent_comment_id
         )
         return reply_dto
-

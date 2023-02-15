@@ -12,7 +12,7 @@ class TestGetUserPostsInteractor:
 
     @pytest.fixture
     def post_storage_mock(self):
-        from fb_post.interactors.storage_interfaces.post_interface import \
+        from fb_post.interactors.storage_interfaces.post_storage_interface import \
             PostInterface
         return mock.create_autospec(PostInterface)
 
