@@ -1,20 +1,19 @@
 from fb_post.interactors.storage_interfaces.post_interface import PostInterface
-from fb_post.interactors.storage_interfaces.user_interface import UserInterface
 from fb_post.exceptions.custom_exceptions import InvalidUserException, InvalidOffsetValue , InvalidLimitValue
 from fb_post.interactors.presenter_interfaces.get_user_posts_presenter_interface \
     import GetPostsPresenterInterface
 from fb_post.interactors.presenter_interfaces.dtos import PostDetailsDto
 from fb_post.interactors.storage_interfaces.dtos import ReactOnPostDto, \
     CommentOnPostDto, ReactionOnCommentDto, CommentOnCommentDto, UserDto, RequestsParametersDTO
+from fb_post.adapters.service_adapter import get_service_adapter
 from typing import List, Dict, Any
 
 
 class GetUserPostsInteractor:
 
-    def __init__(self, post_storages: PostInterface, user_storage: UserInterface
+    def __init__(self, post_storages: PostInterface
                  , presenter: GetPostsPresenterInterface):
         self.post_storage = post_storages
-        self.user_storage = user_storage
         self.presenter = presenter
 
     def get_user_posts_wrapper(
@@ -35,7 +34,8 @@ class GetUserPostsInteractor:
             self.presenter.raise_exception_for_invalid_limit_length()
 
     def _validate_user(self, user_id: int):
-        is_user_exists = self.user_storage.check_is_user_exists(user_id)
+        adaptor = get_service_adapter()
+        is_user_exists = adaptor.fb_post_auth.check_user_exists_or_not(user_id)
 
         if not is_user_exists:
             raise InvalidUserException
@@ -73,8 +73,8 @@ class GetUserPostsInteractor:
                 reactions_on_comments_dtos))
 
         # user dtos
-        user_dtos = self.user_storage.get_users_details(
-            list(set(user_ids)))
+        adaptor = get_service_adapter()
+        user_dtos = adaptor.fb_post_auth.get_users_dtos(list(set(user_ids)))
 
         user_posts_details_dto = PostDetailsDto(
             users=user_dtos,

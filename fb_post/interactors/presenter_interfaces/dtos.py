@@ -1,8 +1,16 @@
 from dataclasses import dataclass
 from typing import List
+import typing
 
 from fb_post.interactors.storage_interfaces.dtos import PostDto, ReactOnPostDto,\
-    CommentOnPostDto, CommentOnCommentDto, ReactionOnCommentDto, UserDto
+    CommentOnPostDto, CommentOnCommentDto, ReactionOnCommentDto
+
+
+@dataclass
+class UserDto:
+    user_id: int
+    name: str
+    profile_pic: typing.Optional[str]
 
 
 @dataclass

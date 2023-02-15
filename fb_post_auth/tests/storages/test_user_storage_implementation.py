@@ -1,12 +1,9 @@
 import pytest
-from fb_post.storages.user_storage_implementation import \
-    UserStorageImplementation
-import datetime
-import pytest
-from unittest import mock
 
-from fb_post.tests.factories.models import UserFactory
-from fb_post.tests.factories.storage_dtos import UserDTOFactory
+from fb_post_auth.storages.user_storage_implementation import \
+    UserStorageImplementation
+from fb_post_auth.tests.factories.models import UserFactory
+from fb_post_auth.tests.factories.storage_dtos import UserDTOFactory
 
 
 class TestsUserStorage:

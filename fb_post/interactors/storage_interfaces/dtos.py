@@ -3,11 +3,11 @@ from dataclasses import dataclass
 from datetime import datetime
 
 
-# @dataclass
-# class UserDto:
-#     user_id: int
-#     name: str
-#     profile_pic: typing.Optional[str]
+@dataclass
+class UserDto:
+    user_id: int
+    name: str
+    profile_pic: typing.Optional[str]
 
 
 @dataclass

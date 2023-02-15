@@ -40,7 +40,7 @@ class TestCase02CreatePostAPITestCase(TestUtils):
     SECURITY = {}
 
     @pytest.mark.django_db
-    def test_case(self, snapshot, users):
+    def test_case(self, snapshot):
         body = {'content': '', 'user_id': 1}
         path_params = {}
         query_params = {}

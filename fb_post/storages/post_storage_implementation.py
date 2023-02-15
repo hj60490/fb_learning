@@ -3,7 +3,7 @@ from fb_post.interactors.storage_interfaces.dtos import PostDto, ReactOnPostDto,
     CommentOnPostDto, ReactionOnCommentDto, CommentOnCommentDto, UserDto, \
     RequestsParametersDTO
 from typing import List
-from fb_post.models.models import Post, Comment, React, User
+from fb_post.models.models import Post, Comment, React
 
 
 class PostStorageImplementation(PostInterface):
@@ -47,14 +47,6 @@ class PostStorageImplementation(PostInterface):
         )
         return post_dto
 
-    @staticmethod
-    def _get_user_dto_for_post(posted_by: User) -> UserDto:
-        user = UserDto(
-            user_id=posted_by.id,
-            name=posted_by.name,
-            profile_pic=posted_by.profile_pic
-        )
-        return user
 
     def get_all_reactions(self, list_of_post_id: List[int]) -> \
             List[ReactOnPostDto]:
@@ -102,15 +94,6 @@ class PostStorageImplementation(PostInterface):
             post_id=comment.post_id
         )
         return comment_dto
-
-    @staticmethod
-    def _get_user_dto_for_comment(commented_by: User) -> UserDto:
-        user = UserDto(
-            user_id=commented_by.id,
-            name=commented_by.name,
-            profile_pic=commented_by.profile_pic
-        )
-        return user
 
     def get_reactions_on_comments(self, list_of_comment_id: List[int]) -> \
             List[ReactionOnCommentDto]:

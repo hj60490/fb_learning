@@ -3,8 +3,6 @@ from django_swagger_utils.drf_server.utils.decorator.interface_decorator \
 from .validator_class import ValidatorClass
 from fb_post.storages.post_storage_implementation import \
     PostStorageImplementation
-from fb_post.storages.user_storage_implementation import \
-    UserStorageImplementation
 from fb_post.presenters.get_user_posts_presenter_implementation import \
     GetUserPostsPresenterImplementation
 from fb_post.interactors.get_user_posts_interactor import GetUserPostsInteractor
@@ -30,7 +28,7 @@ def api_wrapper(*args, **kwargs):
     )
 
     # storge implementation
-    user_storage = UserStorageImplementation()
+    # user_storage = UserStorageImplementation()
     post_storage = PostStorageImplementation()
 
     # presenters Implementation
@@ -39,7 +37,7 @@ def api_wrapper(*args, **kwargs):
     # interactor implementation
     interactor = GetUserPostsInteractor(
         post_storages=post_storage,
-        user_storage=user_storage,
+        # user_storage=user_storage,
         presenter=presenter
     )
 

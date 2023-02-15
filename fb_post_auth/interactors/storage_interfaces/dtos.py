@@ -16,6 +16,7 @@ class TokensDTO:
     refresh_token: str
     expires_in: int
 
+
 @dataclass
 class UserDto:
     user_id: int

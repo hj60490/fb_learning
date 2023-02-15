@@ -23,7 +23,7 @@ class PostDTOFactory(factory.Factory):
     post_id = factory.sequence(lambda n: n + 1)
     content = factory.sequence(lambda n: f"post_{n + 1}")
     posted_at = datetime.datetime(2023, 2, 13, 11, 20, 0)
-    posted_by_id = factory.sequence((lambda n: n + 1))
+    posted_by_id = factory.sequence(lambda n: n + 1)
 
 
 class CommentOnPostDTOFactory(factory.Factory):

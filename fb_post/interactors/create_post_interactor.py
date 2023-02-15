@@ -2,7 +2,6 @@
 from fb_post.interactors.presenter_interfaces.presenter_interface import\
     CreatePostPresenterInterface
 from fb_post.interactors.storage_interfaces.post_interface import PostInterface
-from fb_post.interactors.storage_interfaces.user_interface import UserInterface
 from fb_post.exceptions.custom_exceptions import InvalidUserException
 from fb_post.adapters.service_adapter import get_service_adapter
 
@@ -24,7 +23,8 @@ class CreatePostInteractor:
 
     def create_post(self, content: str, user_id: int):
         adaptor = get_service_adapter()
-        is_user_exists_adaptor = adaptor.users.check_user_exists_or_not(user_id)
+        is_user_exists_adaptor = adaptor.fb_post_auth.check_user_exists_or_not(
+            user_id)
 
         if not is_user_exists_adaptor:
             raise InvalidUserException

@@ -1,20 +1,14 @@
 import datetime
-from datetime import datetime
 
 import pytest
 
-from fb_post.tests.factories.models import UserFactory, PostFactory, \
+from fb_post.tests.factories.models import PostFactory, \
     ReactFactory, CommentFactory
 from fb_post.tests.factories.storage_dtos import PostDTOFactory, UserDTOFactory, \
     ReactOnPostDTOFactory, ReactOnCommentDTOFactory, CommentOnCommentDTOFactory, \
     CommentOnPostDTOFactory, RequestsParametersDTOFactory, \
     PostDetailsDtoFactory, PostReactionCommentDtoFactory, \
     ReactionAndCommentDtoFactory
-
-
-@pytest.fixture()
-def users():
-    return UserFactory.create_batch(size=3)
 
 
 @pytest.fixture()
@@ -35,7 +29,6 @@ def posts():
 
 @pytest.fixture(autouse=True)
 def reset_storage_dto_factory_sequences():
-    UserFactory.reset_sequence()
     PostFactory.reset_sequence()
     ReactFactory.reset_sequence()
     CommentFactory.reset_sequence()

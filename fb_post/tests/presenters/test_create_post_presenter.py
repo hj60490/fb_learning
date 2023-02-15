@@ -3,7 +3,6 @@ from fb_post.constants.exception_messages import INVALID_USER_ID
 from django_swagger_utils.drf_server.exceptions import BadRequest
 from fb_post.presenters.create_post_presenter_implementation import \
     CreatePostPresenterImplementation
-from unittest import mock
 
 
 class TestsCreatePostPresenter:
@@ -18,3 +17,4 @@ class TestsCreatePostPresenter:
 
         assert exception.value.message == exception_messages
         assert exception.value.res_status == exception_res_status
+

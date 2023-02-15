@@ -2,7 +2,6 @@ from abc import ABC
 from .dtos import PostDto, ReactOnPostDto, CommentOnPostDto, \
     ReactionOnCommentDto, CommentOnCommentDto, RequestsParametersDTO
 from typing import List
-from fb_post.interactors.presenter_interfaces.dtos import PostDetailsDto
 
 
 class PostInterface(ABC):
