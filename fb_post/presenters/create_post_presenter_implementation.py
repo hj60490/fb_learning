@@ -3,7 +3,7 @@ from fb_post.interactors.presenter_interfaces.presenter_interface import \
 from django_swagger_utils.drf_server.exceptions import (
     BadRequest
 )
-from fb_post.constants.exception_messages import INVALID_USER_ID,INVALID_CONTENT
+from fb_post.constants.exception_messages import INVALID_USER_ID
 
 
 class CreatePostPresenterImplementation(CreatePostPresenterInterface):

@@ -1,6 +1,5 @@
 from abc import ABC
 from fb_post.interactors.presenter_interfaces.dtos import PostDetailsDto
-from django.http import response
 
 
 class GetPostsPresenterInterface(ABC):

@@ -4,11 +4,8 @@ from .validator_class import ValidatorClass
 from fb_post.interactors.create_post_interactor import CreatePostInteractor
 from fb_post.storages.post_storage_implementation import \
     PostStorageImplementation
-# from fb_post.storages.user_storage_implementation import  \
-#     UserStorageImplementation
 from fb_post.presenters.create_post_presenter_implementation import \
     CreatePostPresenterImplementation
-import json
 from django.http import HttpResponse
 
 

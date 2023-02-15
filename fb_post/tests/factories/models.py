@@ -4,16 +4,6 @@ import factory
 from fb_post.models import Post, Comment, React
 
 
-class UserFactory(factory.django.DjangoModelFactory):
-    pass
-    # class Meta:
-    #     model = User
-    #
-    # name = factory.Sequence(lambda n: f"User_{n + 1}")
-    # profile_pic = factory.Sequence(
-    #     lambda n: f"https://profile_pic_url{n + 1}.com")
-
-
 class PostFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Post

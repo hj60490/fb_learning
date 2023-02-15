@@ -4,7 +4,7 @@ from fb_post.interactors.storage_interfaces.dtos import PostDto, ReactOnPostDto,
     CommentOnPostDto, ReactionOnCommentDto, CommentOnCommentDto, \
     RequestsParametersDTO
 from typing import List
-from fb_post.models.models import Post, Comment, React
+from fb_post.models.post_storage import Post, Comment, React
 
 
 class PostStorageImplementation(PostInterface):

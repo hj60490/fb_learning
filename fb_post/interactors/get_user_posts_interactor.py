@@ -1,18 +1,23 @@
-from fb_post.interactors.storage_interfaces.post_storage_interface import PostInterface
-from fb_post.exceptions.custom_exceptions import InvalidUserException, InvalidOffsetValue , InvalidLimitValue
+from fb_post.interactors.storage_interfaces.post_storage_interface import \
+    PostInterface
+from fb_post.exceptions.custom_exceptions import InvalidUserException, \
+    InvalidOffsetValue, InvalidLimitValue
 from fb_post.interactors.presenter_interfaces.get_user_posts_presenter_interface \
     import GetPostsPresenterInterface
 from fb_post.interactors.presenter_interfaces.dtos import PostDetailsDto
 from fb_post.interactors.storage_interfaces.dtos import ReactOnPostDto, \
-    CommentOnPostDto, ReactionOnCommentDto, CommentOnCommentDto, UserDto, RequestsParametersDTO
+    CommentOnPostDto, ReactionOnCommentDto, CommentOnCommentDto, UserDto, \
+    RequestsParametersDTO
 from fb_post.adapters.service_adapter import get_service_adapter
 from typing import List, Dict, Any
 
 
 class GetUserPostsInteractor:
 
-    def __init__(self, post_storages: PostInterface
-                 , presenter: GetPostsPresenterInterface):
+    def __init__(
+            self, post_storages: PostInterface,
+            presenter: GetPostsPresenterInterface
+    ):
         self.post_storage = post_storages
         self.presenter = presenter
 
@@ -69,6 +74,7 @@ class GetUserPostsInteractor:
         # reaction on comments dtos
         reactions_on_comments_dtos = self.post_storage.get_reactions_on_comments(
             list(set(dict_of_comments_and_replies["post_comment_ids"])))
+
         user_ids.extend(
             self._get_user_id_from_reaction_on_comment(
                 reactions_on_comments_dtos))
@@ -154,4 +160,3 @@ class GetUserPostsInteractor:
             "post_comment_ids": post_comment_ids,
             "replies_on_comment_dtos": replies_on_comment_dtos
         }
-

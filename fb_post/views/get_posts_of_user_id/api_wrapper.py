@@ -28,7 +28,6 @@ def api_wrapper(*args, **kwargs):
     )
 
     # storge implementation
-    # user_storage = UserStorageImplementation()
     post_storage = PostStorageImplementation()
 
     # presenters Implementation
@@ -37,7 +36,6 @@ def api_wrapper(*args, **kwargs):
     # interactor implementation
     interactor = GetUserPostsInteractor(
         post_storages=post_storage,
-        # user_storage=user_storage,
         presenter=presenter
     )
 

@@ -3,7 +3,8 @@ import datetime
 from fb_post.interactors.storage_interfaces.dtos import UserDto, PostDto, \
     CommentOnPostDto, CommentOnCommentDto, ReactOnPostDto, ReactionOnCommentDto, \
     RequestsParametersDTO
-from fb_post.interactors.presenter_interfaces.dtos import PostDetailsDto, PostReactionCommentDto, ReactionAndCommentDto
+from fb_post.interactors.presenter_interfaces.dtos import PostDetailsDto, \
+    PostReactionCommentDto, ReactionAndCommentDto
 
 
 class UserDTOFactory(factory.Factory):
@@ -83,6 +84,7 @@ class RequestsParametersDTOFactory(factory.Factory):
 class PostDetailsDtoFactory(factory.Factory):
     class Meta:
         model = PostDetailsDto
+
     users = factory.List([
         factory.SubFactory(UserDTOFactory) for i in range(2)
     ])
@@ -106,6 +108,7 @@ class PostDetailsDtoFactory(factory.Factory):
 class PostReactionCommentDtoFactory(factory.Factory):
     class Meta:
         model = PostReactionCommentDto
+
     posts = factory.List([
         factory.SubFactory(PostDTOFactory) for i in range(2)
     ])
@@ -140,5 +143,3 @@ class ReactionAndCommentDtoFactory(factory.Factory):
     reactions_on_comment = factory.List([
         factory.SubFactory(ReactionOnCommentDto) for i in range(2)
     ])
-
-
