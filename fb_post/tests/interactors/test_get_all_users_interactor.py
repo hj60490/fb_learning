@@ -48,24 +48,6 @@ class TestsGetAllUsersInteractor:
                              )
         return users_dto
 
-    @pytest.fixture()
-    def list_of_users_response(self):
-        users = [
-            {
-                "name": "User 1",
-                "user_id": 1
-            },
-            {
-                "name": "User 2",
-                "user_id": 2
-            },
-            {
-                "name": "User 3",
-                "user_id": 3
-            },
-        ]
-        return users
-
     def test_get_all_users_interactor_with_invalid_offset_raise_exception(
             self, presenter_mock, interactor
     ):
@@ -101,8 +83,7 @@ class TestsGetAllUsersInteractor:
         presenter_mock.raise_exception_for_invalid_limit_length.assert_called_once()
 
     def test_get_all_users_interactor_with_users_return_users_details(
-           self, presenter_mock, user_storage_mock, interactor, users_dto):
-
+            self, presenter_mock, user_storage_mock, interactor, users_dto):
         # Arrange
         offset = 0
         limit = 10
@@ -118,7 +99,3 @@ class TestsGetAllUsersInteractor:
         presenter_mock.get_response_for_get_all_users.assert_called_once_with(
             users_dto=users_dto
         )
-
-
-
-
