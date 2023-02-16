@@ -107,7 +107,31 @@
       "required": [
         "count"
       ]
-    }
+    },
+    "ListofUsers": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "job_role": {
+                    "type": "string"
+                },
+                "department": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer",
+                    "format": "int64"
+                }
+            },
+            "required": [
+                "name",
+                "job_role",
+                "department",
+                "user_id"
+            ]
+        }
   },
   "parameters": {
     "CreatePost": {
@@ -138,7 +162,15 @@
       "description": "id of user",
       "type": "integer",
       "format": "int64"
-    }
+    },
+    "LimitRequest": {
+            "name": "limit",
+            "in": "query",
+            "description": "limit value",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+        }
   },
   "responses": {
     "UserPostsDescription": {
@@ -193,7 +225,25 @@
           ]
         }
       }
-    }
+    },
+    "ListOfUsersResponse": {
+            "description": "user details",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "total_users": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "users_details": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/ListofUsers"
+                        }
+                    }
+                }
+            }
+        }
   },
   "paths": {
     "/post/": {
@@ -238,6 +288,26 @@
           }
         }
       }
-    }
+    },
+     "/users/": {
+            "get": {
+                "operationId": "get_all_users",
+                "summary": "get all users",
+                "description": "All users",
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/LimitRequest"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/responses/ListOfUsersResponse"
+                    },
+                    "400": {
+                        "description": "Invalid Limit Or Offset Value"
+                    }
+                }
+            }
+        }
   }
 }
