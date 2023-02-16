@@ -1,6 +1,9 @@
 import pytest
+from django_swagger_utils.drf_server.exceptions import BadRequest
 
-from fb_post.presenters.get_users_presenter_implementation import \
+from fb_post.constants.exception_messages import INVALID_LIMIT_LENGTH, \
+    INVALID_OFFSET_LENGTH
+from fb_post.presenters.get_all_users_presenter_implementation import \
     GetUsersPresenterImplementation
 from fb_post.tests.factories.storage_dtos import UserDTOFactory, \
     UsersDTOFactory, UsersCountDTOFactory
@@ -38,3 +41,26 @@ class TestsGetUsersPresenterImplementation:
 
         # Assert
         snapshot.assert_match(actual_output)
+
+    def test_raise_exception_for_invalid_limit_value(self):
+        exception_messages = INVALID_LIMIT_LENGTH[0]
+        exception_res_status = INVALID_LIMIT_LENGTH[1]
+        presenter = GetUsersPresenterImplementation()
+
+        with pytest.raises(BadRequest) as exception:
+            presenter.raise_exception_for_invalid_limit_length()
+
+        assert exception.value.message == exception_messages
+        assert exception.value.res_status == exception_res_status
+
+    def test_raise_exception_for_invalid_offset_value(self):
+        exception_messages = INVALID_OFFSET_LENGTH[0]
+        exception_res_status = INVALID_OFFSET_LENGTH[1]
+        presenter = GetUsersPresenterImplementation()
+
+        with pytest.raises(BadRequest) as exception:
+            presenter.raise_exception_for_invalid_offset_length()
+
+        assert exception.value.message == exception_messages
+        assert exception.value.res_status == exception_res_status
+

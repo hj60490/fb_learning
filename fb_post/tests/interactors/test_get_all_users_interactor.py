@@ -25,7 +25,7 @@ class TestsGetAllUsersInteractor:
 
     @pytest.fixture
     def interactor(self, user_storage_mock, presenter_mock):
-        from fb_post.interactors.get_users_interactor import GetUsersInteractor
+        from fb_post.interactors.get_all_users_interactor import GetUsersInteractor
 
         return GetUsersInteractor(
             user_storage=user_storage_mock,

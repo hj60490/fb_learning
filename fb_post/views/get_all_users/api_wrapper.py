@@ -4,9 +4,9 @@ from django.http import HttpResponse
 from django_swagger_utils.drf_server.utils.decorator.interface_decorator \
     import validate_decorator
 from .validator_class import ValidatorClass
-from fb_post.interactors.get_users_interactor import GetUsersInteractor
+from fb_post.interactors.get_all_users_interactor import GetUsersInteractor
 
-from ...presenters.get_users_presenter_implementation import \
+from ...presenters.get_all_users_presenter_implementation import \
     GetUsersPresenterImplementation
 from ...storages.user_storage_implementation import UserStorageImplementation
 
