@@ -7,8 +7,6 @@ RESPONSE_200_JSON = """
     "users_details": [
         {
             "name": "string",
-            "job_role": "string",
-            "department": "string",
             "user_id": 1
         }
     ]

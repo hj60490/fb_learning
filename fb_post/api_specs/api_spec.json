@@ -114,12 +114,6 @@
                 "name": {
                     "type": "string"
                 },
-                "job_role": {
-                    "type": "string"
-                },
-                "department": {
-                    "type": "string"
-                },
                 "user_id": {
                     "type": "integer",
                     "format": "int64"
@@ -127,8 +121,6 @@
             },
             "required": [
                 "name",
-                "job_role",
-                "department",
                 "user_id"
             ]
         }
@@ -167,6 +159,14 @@
             "name": "limit",
             "in": "query",
             "description": "limit value",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+        },
+    "OffsetRequest": {
+            "name": "offset",
+            "in": "query",
+            "description": "offset value",
             "required": true,
             "type": "integer",
             "format": "int64"
@@ -297,6 +297,9 @@
                 "parameters": [
                     {
                         "$ref": "#/parameters/LimitRequest"
+                    },
+                  {
+                        "$ref": "#/parameters/OffsetRequest"
                     }
                 ],
                 "responses": {
