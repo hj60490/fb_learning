@@ -107,7 +107,52 @@
       "required": [
         "count"
       ]
-    }
+    },
+    "Post": {
+      "type": "object",
+      "properties": {
+        "post_id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "content": {
+          "type": "string"
+        },
+        "posted_by": {
+          "$ref": "#/definitions/User"
+        }
+      },
+      "required": [
+        "post_id",
+        "content",
+        "posted_by"
+      ]
+    },
+    "ReactionComment":  {
+                  "type": "object",
+                  "properties": {
+                    "comment_id": {
+                      "type": "integer",
+                      "format": "int64"
+                    },
+                    "content": {
+                      "type": "string"
+                    },
+                    "commented_by": {
+                      "$ref": "#/definitions/User"
+                    },
+                    "post": {
+                      "$ref": "#/definitions/Post"
+                    }
+                  },
+      "required": [
+        "comment_id",
+        "content",
+        "commented_by",
+        "post"
+      ]
+
+                }
   },
   "parameters": {
     "CreatePost": {
@@ -173,6 +218,66 @@
     }
   },
   "responses": {
+    "ReactionsResponse": {
+      "description": "reaction details",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "reactions_details": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "reaction_id": {
+                  "type": "integer"
+                },
+                "reaction": {
+                  "type": "string"
+                },
+                "post": {
+                  "$ref": "#/definitions/Post"
+                },
+                "comment": {
+                    "$ref": "#/definitions/ReactionComment"
+                },
+                "reply": {
+                  "type": "object",
+                  "properties": {
+                    "reply_id": {
+                      "type": "integer"
+                    },
+                    "content": {
+                      "type": "string"
+                    },
+                    "commented_by": {
+                      "$ref": "#/definitions/User"
+                    },
+                    "comment": {
+                      "$ref": "#/definitions/ReactionComment"
+                    }
+                  },
+                  "required": [
+                    "reply_id",
+                    "content",
+                    "commented_by",
+                    "comment"
+                  ]
+
+                }
+                },
+              "required": [
+                "reaction_id",
+                "reaction"
+
+              ]
+            }
+          }
+        },
+        "required": [
+          "reactions_details"
+        ]
+      }
+    },
     "UserPostsDescription": {
       "description": "Details of all Posts",
       "schema": {
@@ -284,6 +389,29 @@
           },
           "401": {
             "description": "no user exist with this id"
+          }
+        }
+      }
+    },
+    "/reactions/": {
+      "get": {
+        "operationId": "get_all_reactions",
+        "summary": "get all reactions",
+        "description": "All reactions",
+        "parameters": [
+          {
+            "$ref": "#/parameters/OffsetRequest"
+          },
+          {
+            "$ref": "#/parameters/LimitRequest"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/ReactionsResponse"
+          },
+          "400": {
+            "description": "Invalid Limit Or Offset Value"
           }
         }
       }
