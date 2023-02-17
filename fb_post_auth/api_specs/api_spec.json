@@ -31,6 +31,22 @@
   },
   "security": [],
   "definitions": {
+    "ListofUsers": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "user_id": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "required": [
+        "name",
+        "user_id"
+      ]
+    },
     "HttpResponseAndStatusCodeDefinition": {
       "type": "object",
       "properties": {
@@ -135,6 +151,22 @@
     }
   },
   "parameters": {
+     "LimitRequest": {
+      "name": "limit",
+      "in": "query",
+      "description": "limit value",
+      "required": true,
+      "type": "integer",
+      "format": "int64"
+    },
+    "OffsetRequest": {
+      "name": "offset",
+      "in": "query",
+      "description": "offset value",
+      "required": true,
+      "type": "integer",
+      "format": "int64"
+    },
     "LoginWithCodeParameter": {
       "name": "LoginWithCode",
       "description": "Login With Code",
@@ -194,6 +226,24 @@
     }
   },
   "responses": {
+     "ListOfUsersResponse": {
+      "description": "user details",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "total_users": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "users_details": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/ListofUsers"
+            }
+          }
+        }
+      }
+    },
     "LoginWithCodeResponse": {
       "description": "Success response for login with code",
       "schema": {
@@ -444,6 +494,29 @@
           },
           "400": {
             "$ref": "#/responses/GetUserProfileBadRequestResponses"
+          }
+        }
+      }
+    },
+     "/users/": {
+      "get": {
+        "operationId": "get_all_users",
+        "summary": "get all users",
+        "description": "All users",
+        "parameters": [
+          {
+            "$ref": "#/parameters/LimitRequest"
+          },
+          {
+            "$ref": "#/parameters/OffsetRequest"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/ListOfUsersResponse"
+          },
+          "400": {
+            "description": "Invalid Limit Or Offset Value"
           }
         }
       }

@@ -1,4 +1,10 @@
-__all__ = []
+from fb_post.models.post_storage import Post, Comment, React
+
+__all__ = [
+    "Post",
+    "Comment",
+    "React"
+]
 
 # class DummyModel(AbstractDateTimeModel):
 #     """
