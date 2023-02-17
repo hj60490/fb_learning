@@ -1,5 +1,5 @@
 """
-# invalid offset
+# invalid limit
 """
 import pytest
 from django_swagger_utils.utils.test_utils import TestUtils

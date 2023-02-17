@@ -47,4 +47,4 @@ class UsersCountDTO:
 @dataclass
 class UsersDTO:
     user_dtos: typing.List[UserDTO]
-    users_count_dto: UsersCountDTO
+    users_count: int

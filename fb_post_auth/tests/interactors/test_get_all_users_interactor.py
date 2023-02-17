@@ -43,7 +43,7 @@ class TestsGetAllUsersInteractor:
     @pytest.fixture()
     def users_dto(self, list_of_user_dtos):
         users_dto = UsersDTO(user_dtos=list_of_user_dtos,
-                             users_count_dto=UsersCountDTO(users_count=3)
+                             users_count=UsersCountDTO(users_count=3)
                              )
         return users_dto
 

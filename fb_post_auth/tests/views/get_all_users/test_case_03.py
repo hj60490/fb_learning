@@ -1,5 +1,5 @@
 """
-# limit is not given
+# invalid offset
 """
 import pytest
 from django_swagger_utils.utils.test_utils import TestUtils
@@ -17,7 +17,7 @@ class TestCase03GetAllUsersAPITestCase(TestUtils):
     def test_case(self, snapshot):
         body = {}
         path_params = {}
-        query_params = {'limit': -1, 'offset': 0}
+        query_params = {'limit': 10, 'offset': -1}
         headers = {}
         response = self.make_api_call(body=body,
                                       path_params=path_params,

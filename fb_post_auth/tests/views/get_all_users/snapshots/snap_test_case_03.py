@@ -11,6 +11,6 @@ snapshots['TestCase03GetAllUsersAPITestCase.test_case status_code'] = '400'
 
 snapshots['TestCase03GetAllUsersAPITestCase.test_case body'] = {
     'http_status_code': 400,
-    'res_status': 'INVALID_LIMIT_LENGTH',
-    'response': 'Limit should be greater than or equal to zero'
+    'res_status': 'INVALID_OFFSET_LENGTH',
+    'response': 'Offset should be greater than or equal to zero'
 }
