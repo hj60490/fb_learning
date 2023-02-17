@@ -62,3 +62,14 @@ class RequestsParametersDTO:
     post_content: typing.Optional[str]
 
 
+@dataclass
+class ReactionDTO:
+    reaction_id: int
+    comment_id: typing.Optional[int]
+    post_id: typing.Optional[int]
+    reaction: str
+    reacted_at: datetime
+    reacted_by_id: int
+
+
+
