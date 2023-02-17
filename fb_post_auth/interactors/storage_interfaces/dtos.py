@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 import typing
+from datetime import datetime
 
 
 @dataclass
@@ -23,3 +24,27 @@ class UserDto:
     name: str
     profile_pic: typing.Optional[str]
 
+
+@dataclass
+class Post:
+    content: str
+    posted_by: int
+    posted_at: datetime
+
+
+@dataclass
+class UserDTO:
+    name: str
+    profile_pic: str
+    user_id: int
+
+
+@dataclass
+class UsersCountDTO:
+    users_count: int
+
+
+@dataclass
+class UsersDTO:
+    user_dtos: typing.List[UserDTO]
+    users_count_dto: UsersCountDTO

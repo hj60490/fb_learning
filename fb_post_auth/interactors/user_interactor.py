@@ -14,4 +14,5 @@ class UserInteractor:
     def get_users_details_dtos(self, user_ids: List[int]) -> \
             List[UserDto]:
         return self.user_storage.get_users_details(user_ids)
+    
 
