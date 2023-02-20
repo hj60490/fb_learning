@@ -1,9 +1,10 @@
+import abc
 from typing import List
 
 from fb_post.exceptions.custom_exceptions import InvalidLimitValue, \
     InvalidOffsetValue
 from fb_post.interactors.storage_interfaces.dtos import ReactionDTO, CommentDTO, \
-    PostDto
+    PostDto, ReactionDetailsDTO
 from fb_post.interactors.storage_interfaces.reaction_storage_interface import \
     ReactionStorageInterface
 from fb_post.interactors.storage_interfaces.comment_storage_interface import \
@@ -12,6 +13,7 @@ from fb_post.interactors.storage_interfaces.post_storage_interface import \
     PostInterface
 from fb_post.interactors.presenter_interfaces.get_all_reaction_presenter_interface import \
     GetAllReactionsPresenterInterface
+from fb_post.adapters.service_adapter import get_service_adapter
 
 
 class GetAllReactionsInteractor:
@@ -52,39 +54,42 @@ class GetAllReactionsInteractor:
         reactions_comments_ids = self._get_reactions_on_comments(reactions)
 
         # 2nd db hit
-        comments = self.comment_storage.get_comments_on_reactions(
+        comments = self.comment_storage.get_comments(
             reactions_comments_ids
         )
 
         # comment on comment
-        parent_comment_ids_for_reply = self._get_parent_comment_ids_for_reply(
+        parent_comment_ids_for_replies = self._get_parent_comment_ids_for_reply(
             comments
         )
 
         # 3rd db hit
-        parent_comments = self.comment_storage.get_comments_on_reactions(
-            parent_comment_ids_for_reply
+        parent_comments = self.comment_storage.get_comments(
+            parent_comment_ids_for_replies
         )
 
         # finding posts
         posts_ids = self._post_ids_from_reaction(reactions)
         posts_ids.extend(self._post_ids_from_comments(parent_comments))
+        posts_ids.extend(self._post_ids_from_comments(comments))
+        comments.extend(parent_comments)
 
+        # 4th db hit
         posts = self.post_storage.get_all_posts(posts_ids)
+        user_ids = self._get_all_user_ids(
+            reactions, comments, parent_comments, posts)
+        adaptor = get_service_adapter()
 
+        # 5th db hit
+        users = adaptor.fb_post_auth.get_users_dtos(user_ids)
 
-
-
-
-        return reactions
-
-    @staticmethod
-    def _get_reactions_on_posts(reactions: List[ReactionDTO]) -> List[int]:
-        reactions_on_posts = [
-            reaction.reaction_id
-            for reaction in reactions if reaction.post_id
-        ]
-        return reactions_on_posts
+        reactions_details_dto = ReactionDetailsDTO(
+            reactions=reactions,
+            users=users,
+            posts=posts,
+            comments=comments
+        )
+        return reactions_details_dto
 
     @staticmethod
     def _get_reactions_on_comments(reactions: List[ReactionDTO]) -> List[int]:
@@ -104,23 +109,6 @@ class GetAllReactionsInteractor:
             raise InvalidOffsetValue
 
     @staticmethod
-    def _get_reactions_on_reply(comments: List[CommentDTO]) -> List[int]:
-        reactions_on_reply_ids = [
-            comment.comment_id
-            for comment in comments if comment.parent_comment_id
-        ]
-        return reactions_on_reply_ids
-
-    @staticmethod
-    def _get_reactions_on_parent_comments(comments: List[CommentDTO]) ->\
-            List[int]:
-        reactions_on_posts_comments_ids = [
-            comment.comment_id
-            for comment in comments if comment.post_id
-        ]
-        return reactions_on_posts_comments_ids
-
-    @staticmethod
     def _get_parent_comment_ids_for_reply(comments: List[CommentDTO]) -> \
             List[int]:
         parent_comment_ids = [
@@ -138,10 +126,26 @@ class GetAllReactionsInteractor:
         return post_ids
 
     @staticmethod
-    def _post_ids_from_comments(parent_comments: List[CommentDTO]) -> List[int]:
+    def _post_ids_from_comments(comments: List[CommentDTO]) -> List[int]:
         post_ids = [
             comment.post_id
-            for comment in parent_comments
+            for comment in comments
         ]
         return post_ids
+
+    @staticmethod
+    def _get_all_user_ids(
+            reactions: List[ReactionDTO], comments: List[CommentDTO],
+            parent_comments: List[CommentDTO], posts: List[PostDto]) -> List[int]:
+        users_id = []
+        for reaction in reactions:
+            users_id.append(reaction.reacted_by_id)
+        for comment in comments:
+            users_id.append(comment.commented_by_id)
+        for parent_comment in parent_comments:
+            users_id.append(parent_comment.commented_by_id)
+        for post in posts:
+            users_id.append(post.posted_by_id)
+        return list(set(users_id))
+
 

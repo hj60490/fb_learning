@@ -39,6 +39,14 @@ class PostStorageImplementation(PostInterface):
         ]
         return post_dtos
 
+    def get_all_posts(self, post_ids: List[int]) -> List[PostDto]:
+        posts = Post.objects.filter(post_id__in=post_ids)
+        posts_dtos = [
+            self._convert_post_obj_to_dto(post)
+            for post in posts
+        ]
+        return posts_dtos
+
     @staticmethod
     def _convert_post_obj_to_dto(post: Post) -> PostDto:
         post_dto = PostDto(

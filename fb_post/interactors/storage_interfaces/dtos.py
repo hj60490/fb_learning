@@ -82,5 +82,13 @@ class CommentDTO:
     commented_by_id: int
 
 
+@dataclass
+class ReactionDetailsDTO:
+    reactions: typing.List[ReactionDTO]
+    users: typing.List[UserDto]
+    posts: typing.List[PostDto]
+    comments: typing.List[CommentDTO]
+
+
 
 
