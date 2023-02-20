@@ -8,7 +8,7 @@ from fb_post.tests.factories.storage_dtos import PostDTOFactory, UserDTOFactory,
     ReactOnPostDTOFactory, ReactOnCommentDTOFactory, CommentOnCommentDTOFactory, \
     CommentOnPostDTOFactory, RequestsParametersDTOFactory, \
     PostDetailsDtoFactory, PostReactionCommentDtoFactory, \
-    ReactionAndCommentDtoFactory
+    ReactionAndCommentDtoFactory, CommentDTOFactory, ReactDTOFactory
 
 
 @pytest.fixture()
@@ -46,6 +46,8 @@ def reset_storage_dto_factory_sequences():
     ReactOnCommentDTOFactory.reaction.reset()
     RequestsParametersDTOFactory.offset.reset()
     RequestsParametersDTOFactory.limit.reset()
+    CommentDTOFactory.reset_sequence()
+    ReactDTOFactory.reset_sequence()
 
 
 

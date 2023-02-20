@@ -40,11 +40,11 @@ class GetAllReactionsInteractor:
         except InvalidLimitValue:
             self.presenter.raise_exception_for_invalid_limit_length()
         except InvalidOffsetValue:
-            self.presenter.raise_exception_for_invalid_limit_length()
+            self.presenter.raise_exception_for_invalid_offset_length()
 
     def get_all_reactions(
             self, limit: int, offset: int
-    ):
+    ) -> ReactionDetailsDTO:
         self._validate_limit_and_offset(limit=limit, offset=offset)
         # 1st db hit
         reactions = self.reaction_storage.get_all_reactions(
@@ -74,8 +74,10 @@ class GetAllReactionsInteractor:
         posts_ids.extend(self._post_ids_from_comments(comments))
         comments.extend(parent_comments)
 
+        post_ids = [id for id in posts_ids if id is not None]
+
         # 4th db hit
-        posts = self.post_storage.get_all_posts(posts_ids)
+        posts = self.post_storage.get_all_posts(list(set(post_ids)))
         user_ids = self._get_all_user_ids(
             reactions, comments, parent_comments, posts)
         adaptor = get_service_adapter()

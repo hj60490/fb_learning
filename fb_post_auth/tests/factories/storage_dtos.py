@@ -29,6 +29,4 @@ class UsersDTOFactory(factory.Factory):
     user_dtos = factory.List([
         factory.SubFactory(UserDTOFactory) for i in range(1)
     ])
-    users_count_dto = factory.List([
-        factory.SubFactory(UsersCountDTOFactory) for i in range(1)
-    ])
+    users_count = factory.sequence(lambda n: n + 1)

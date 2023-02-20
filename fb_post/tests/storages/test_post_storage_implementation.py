@@ -9,10 +9,10 @@ from fb_post.tests.factories import storage_dtos
 from fb_post.tests.factories.models import ReactFactory, \
     CommentFactory
 from fb_post.tests.factories.storage_dtos import ReactOnPostDTOFactory, \
-    CommentOnPostDTOFactory, ReactOnCommentDTOFactory
+    CommentOnPostDTOFactory, ReactOnCommentDTOFactory, PostDTOFactory
 
 
-class TestGetUserPostsStorage:
+class TestGetReactionsCommentStorage:
 
     @pytest.fixture
     def post_storage_mock(self):
@@ -162,6 +162,19 @@ class TestGetUserPostsStorage:
         post_storage = PostStorageImplementation()
         actual_output = post_storage.get_reactions_on_comments(
             list_of_comment_id=comments_id)
+        assert actual_output == expected_output
+
+    @pytest.mark.django_db
+    def test_get_all_posts_return_posts_dtos(self, posts):
+        post_ids = [1, 2]
+        expected_output = [
+            PostDTOFactory(content="Hello"),
+            PostDTOFactory(content="Hello", posted_by_id=1,
+                           posted_at=datetime.datetime(2023, 2, 13, 11, 20, 15))
+
+        ]
+        post_storage = PostStorageImplementation()
+        actual_output = post_storage.get_all_posts(post_ids)
         assert actual_output == expected_output
 
 

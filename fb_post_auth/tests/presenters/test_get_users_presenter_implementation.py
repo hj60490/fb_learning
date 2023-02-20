@@ -24,7 +24,8 @@ class TestsGetUsersPresenterImplementation:
     def users_dto(self, list_of_user_dtos):
         users_dto = UsersDTOFactory(
             user_dtos=list_of_user_dtos,
-            users_count_dto=UsersCountDTOFactory(users_count=3)
+            users_count=3
+
         )
         return users_dto
 

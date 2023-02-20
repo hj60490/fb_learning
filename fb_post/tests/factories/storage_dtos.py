@@ -2,7 +2,7 @@ import factory
 import datetime
 from fb_post.interactors.storage_interfaces.dtos import UserDto, PostDto, \
     CommentOnPostDto, CommentOnCommentDto, ReactOnPostDto, ReactionOnCommentDto, \
-    RequestsParametersDTO
+    RequestsParametersDTO, ReactionDTO, CommentDTO
 from fb_post.interactors.presenter_interfaces.dtos import PostDetailsDto, \
     PostReactionCommentDto, ReactionAndCommentDto
 
@@ -143,3 +143,27 @@ class ReactionAndCommentDtoFactory(factory.Factory):
     reactions_on_comment = factory.List([
         factory.SubFactory(ReactionOnCommentDto) for i in range(2)
     ])
+
+
+class ReactDTOFactory(factory.Factory):
+    class Meta:
+        model = ReactionDTO
+
+    reaction_id = factory.sequence(lambda n: n + 1)
+    reacted_at = datetime.datetime(2023, 2, 13, 11, 20, 0)
+    post_id = None
+    comment_id = None
+    reacted_by_id = factory.sequence(lambda n: n + 1)
+    reaction = factory.Iterator(["HAHA", "SAD", "WOW"])
+
+
+class CommentDTOFactory(factory.Factory):
+    class Meta:
+        model = CommentDTO
+
+    comment_id = factory.sequence(lambda n: n + 1)
+    commented_at = datetime.datetime(2023, 2, 13, 11, 20, 0)
+    commented_by_id = factory.sequence(lambda n: n + 1)
+    parent_comment_id = None
+    post_id = factory.sequence(lambda n: n + 1)
+    content = factory.sequence(lambda n: f"comment_{n + 1}")
