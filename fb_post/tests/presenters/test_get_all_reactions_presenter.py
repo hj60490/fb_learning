@@ -39,7 +39,7 @@ class TestsGetAllReactionsPresenter:
     def test_get_response_for_all_reactions_on_post(self, snapshot):
         user = [UserDTOFactory()]
         post = [PostDTOFactory()]
-        react = [ReactDTOFactory(post_id=1)]
+        react = [ReactDTOFactory(post_id=1, reaction="SAD")]
         reaction_details_dto = ReactionDetailsDTO(
             users=user,
             posts=post,
@@ -57,7 +57,7 @@ class TestsGetAllReactionsPresenter:
         user = [UserDTOFactory()]
         post = [PostDTOFactory()]
         comment = [CommentDTOFactory()]
-        react = [ReactDTOFactory(comment_id=1)]
+        react = [ReactDTOFactory(comment_id=1, reaction="SAD")]
         reaction_details_dto = ReactionDetailsDTO(
             users=user,
             posts=post,
@@ -75,7 +75,7 @@ class TestsGetAllReactionsPresenter:
         user = [UserDTOFactory()]
         post = [PostDTOFactory()]
         comments = [CommentDTOFactory(), CommentDTOFactory(post_id=None, parent_comment_id=1, commented_by_id=1)]
-        react = [ReactDTOFactory(comment_id=2)]
+        react = [ReactDTOFactory(comment_id=2, reaction="SAD")]
         reaction_details_dto = ReactionDetailsDTO(
             users=user,
             posts=post,

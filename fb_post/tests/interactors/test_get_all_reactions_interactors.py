@@ -133,7 +133,7 @@ class TestGetUserPostsInteractor:
 
         reaction_storage_mock.get_all_reactions.assert_called_once()
         comment_storage_mock.get_comments.assert_has_calls([call([1, 2]), call([1])], any_order=False)
-        post_storage_mock.get_all_posts.assert_called_once_with([1])
+        post_storage_mock.get_all_posts.assert_called_once_with([1, 2])
         get_users_dtos_mock.assert_called_once_with([1, 2, 3])
         presenter_mock.get_response_for_all_reactions(reactions_details_dto)
 

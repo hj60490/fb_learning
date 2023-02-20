@@ -19,7 +19,7 @@ snapshots['TestsGetAllReactionsPresenter.test_get_response_for_all_reactions_on_
                     'user_id': 1
                 }
             },
-            'reaction': 'HAHA',
+            'reaction': 'SAD',
             'reaction_id': 1
         }
     ]
@@ -46,7 +46,7 @@ snapshots['TestsGetAllReactionsPresenter.test_get_response_for_all_reactions_on_
                     }
                 }
             },
-            'reaction': 'HAHA',
+            'reaction': 'SAD',
             'reaction_id': 1
         }
     ]
@@ -55,7 +55,7 @@ snapshots['TestsGetAllReactionsPresenter.test_get_response_for_all_reactions_on_
 snapshots['TestsGetAllReactionsPresenter.test_get_response_for_all_reactions_on_reply 1'] = {
     'reactions_details': [
         {
-            'reaction': 'HAHA',
+            'reaction': 'SAD',
             'reaction_id': 1,
             'reply': {
                 'comment': {

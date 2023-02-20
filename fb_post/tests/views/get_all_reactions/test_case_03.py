@@ -1,12 +1,12 @@
 """
-# valid limit and offset is given
+# Invalid offset is given
 """
 import pytest
 from django_swagger_utils.utils.test_utils import TestUtils
 from . import APP_NAME, OPERATION_NAME, REQUEST_METHOD, URL_SUFFIX
 
 
-class TestCase01GetAllReactionsAPITestCase(TestUtils):
+class TestCase03GetAllReactionsAPITestCase(TestUtils):
     APP_NAME = APP_NAME
     OPERATION_NAME = OPERATION_NAME
     REQUEST_METHOD = REQUEST_METHOD
@@ -17,7 +17,7 @@ class TestCase01GetAllReactionsAPITestCase(TestUtils):
     def test_case(self, snapshot):
         body = {}
         path_params = {}
-        query_params = {'offset': 0, 'limit': 2}
+        query_params = {'offset': -1, 'limit': 2}
         headers = {}
         response = self.make_api_call(body=body,
                                       path_params=path_params,

@@ -46,12 +46,12 @@ class TestGetReactionsReactStorage:
         PostFactory()
         CommentFactory()
         CommentFactory(post_id=None, parent_comment_id=1)
-        ReactFactory(post_id=1)
-        ReactFactory(comment_id=1, post_id=None)
-        ReactFactory(comment_id=2, post_id=None)
+        ReactFactory(post_id=1, reaction="SAD")
+        ReactFactory(comment_id=1, post_id=None, reaction="SAD")
+        ReactFactory(comment_id=2, post_id=None, reaction="SAD")
         excepted_output = [
-            ReactDTOFactory(post_id=1),
-            ReactDTOFactory(comment_id=1)
+            ReactDTOFactory(post_id=1, reaction="SAD"),
+            ReactDTOFactory(comment_id=1, reaction="SAD")
         ]
 
         react_storage = ReactionStorageImplementation()
