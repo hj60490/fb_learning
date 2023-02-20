@@ -87,7 +87,7 @@ class GetAllReactionsInteractor:
             reactions=reactions,
             users=users,
             posts=posts,
-            comments=comments
+            comments=comments,
         )
         return reactions_details_dto
 

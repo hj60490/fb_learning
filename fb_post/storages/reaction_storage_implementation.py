@@ -25,7 +25,8 @@ class ReactionStorageImplementation(ReactionStorageInterface):
                 reaction=reaction.reaction,
                 post_id=reaction.post_id,
                 reaction_id=reaction.id,
-                reacted_at=reaction.reacted_at
+                reacted_at=reaction.reacted_at,
+                comment_id=None
             )
             return reaction_dto
         else:
@@ -34,6 +35,7 @@ class ReactionStorageImplementation(ReactionStorageInterface):
                 reaction=reaction.reaction,
                 comment_id=reaction.comment_id,
                 reaction_id=reaction.id,
-                reacted_at=reaction.reacted_at
+                reacted_at=reaction.reacted_at,
+                post_id=None
             )
             return reaction_dto

@@ -10,7 +10,7 @@ class CommentStorageImplementation(CommentStorageInterface):
 
     def get_comments(self, comments_ids: List[int]) -> \
             List[CommentDTO]:
-        comments = Comment.objects.filter(comment_id__in=comments_ids)
+        comments = Comment.objects.filter(id__in=comments_ids)
         comment_dtos = [
             self._convert_comment_to_comment_dto(comment)
             for comment in comments
@@ -25,7 +25,8 @@ class CommentStorageImplementation(CommentStorageInterface):
                 content=comment.content,
                 parent_comment_id=comment.parent_comment_id,
                 commented_by_id=comment.commented_by_id,
-                commented_at=comment.commented_at
+                commented_at=comment.commented_at,
+                post_id=None
             )
             return comment_dto
         else:
@@ -34,7 +35,8 @@ class CommentStorageImplementation(CommentStorageInterface):
                 content=comment.content,
                 post_id=comment.post_id,
                 commented_by_id=comment.commented_by_id,
-                commented_at=comment.commented_at
+                commented_at=comment.commented_at,
+                parent_comment_id=None
             )
             return comment_dto
 
