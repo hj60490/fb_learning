@@ -1,18 +1,23 @@
+import abc
 from abc import ABC
 from fb_post.interactors.presenter_interfaces.dtos import PostDetailsDto
 
 
 class GetPostsPresenterInterface(ABC):
 
+    @abc.abstractmethod
     def raise_exception_for_user_not_exist(self):
         pass
 
+    @abc.abstractmethod
     def raise_exception_for_invalid_offset_length(self):
         pass
 
+    @abc.abstractmethod
     def raise_exception_for_invalid_limit_length(self):
         pass
 
+    @abc.abstractmethod
     def get_all_posts_of_user(self, posts_details_dto: PostDetailsDto):
         pass
 

@@ -46,29 +46,25 @@ class GetAllReactionsInteractor:
             self, limit: int, offset: int
     ) -> ReactionDetailsDTO:
         self._validate_limit_and_offset(limit=limit, offset=offset)
-        # 1st db hit
+
         reactions = self.reaction_storage.get_all_reactions(
             limit=limit, offset=offset
         )
 
         reactions_comments_ids = self._get_reactions_on_comments(reactions)
 
-        # 2nd db hit
         comments = self.comment_storage.get_comments(
             reactions_comments_ids
         )
 
-        # comment on comment
         parent_comment_ids_for_replies = self._get_parent_comment_ids_for_reply(
             comments
         )
 
-        # 3rd db hit
         parent_comments = self.comment_storage.get_comments(
             parent_comment_ids_for_replies
         )
 
-        # finding posts
         posts_ids = self._post_ids_from_reaction(reactions)
         posts_ids.extend(self._post_ids_from_comments(parent_comments))
         posts_ids.extend(self._post_ids_from_comments(comments))
@@ -76,13 +72,11 @@ class GetAllReactionsInteractor:
 
         post_ids = [id for id in posts_ids if id is not None]
 
-        # 4th db hit
         posts = self.post_storage.get_all_posts(list(set(post_ids)))
         user_ids = self._get_all_user_ids(
             reactions, comments, parent_comments, posts)
         adaptor = get_service_adapter()
 
-        # 5th db hit
         users = adaptor.fb_post_auth.get_users_dtos(user_ids)
 
         reactions_details_dto = ReactionDetailsDTO(
