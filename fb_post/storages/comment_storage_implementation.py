@@ -19,24 +19,12 @@ class CommentStorageImplementation(CommentStorageInterface):
 
     @staticmethod
     def _convert_comment_to_comment_dto(comment: Comment) -> CommentDTO:
-        if comment.parent_comment:
-            comment_dto = CommentDTO(
-                comment_id=comment.id,
-                content=comment.content,
-                parent_comment_id=comment.parent_comment_id,
-                commented_by_id=comment.commented_by_id,
-                commented_at=comment.commented_at,
-                post_id=None
-            )
-            return comment_dto
-        else:
-            comment_dto = CommentDTO(
-                comment_id=comment.id,
-                content=comment.content,
-                post_id=comment.post_id,
-                commented_by_id=comment.commented_by_id,
-                commented_at=comment.commented_at,
-                parent_comment_id=None
-            )
-            return comment_dto
-
+        comment_dto = CommentDTO(
+            comment_id=comment.id,
+            content=comment.content,
+            parent_comment_id=comment.parent_comment_id,
+            commented_by_id=comment.commented_by_id,
+            commented_at=comment.commented_at,
+            post_id=comment.post_id
+        )
+        return comment_dto

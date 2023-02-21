@@ -19,23 +19,12 @@ class ReactionStorageImplementation(ReactionStorageInterface):
 
     @staticmethod
     def _convert_reaction_to_reaction_dto(reaction: React) -> ReactionDTO:
-        if reaction.post:
-            reaction_dto = ReactionDTO(
-                reacted_by_id=reaction.reacted_by_id,
-                reaction=reaction.reaction,
-                post_id=reaction.post_id,
-                reaction_id=reaction.id,
-                reacted_at=reaction.reacted_at,
-                comment_id=None
-            )
-            return reaction_dto
-        else:
-            reaction_dto = ReactionDTO(
-                reacted_by_id=reaction.reacted_by_id,
-                reaction=reaction.reaction,
-                comment_id=reaction.comment_id,
-                reaction_id=reaction.id,
-                reacted_at=reaction.reacted_at,
-                post_id=None
-            )
-            return reaction_dto
+        reaction_dto = ReactionDTO(
+            reacted_by_id=reaction.reacted_by_id,
+            reaction=reaction.reaction,
+            post_id=reaction.post_id,
+            reaction_id=reaction.id,
+            reacted_at=reaction.reacted_at,
+            comment_id=reaction.comment_id
+        )
+        return reaction_dto
