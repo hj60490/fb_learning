@@ -12,4 +12,3 @@ class CreatePostPresenterImplementation(CreatePostPresenterInterface):
         raise BadRequest(*INVALID_USER_ID)
 
 
-

@@ -1,35 +1,9 @@
 """
-# wrong user_id is given
+# TODO: Update test case description
 """
 import pytest
 from django_swagger_utils.utils.test_utils import TestUtils
 from . import APP_NAME, OPERATION_NAME, REQUEST_METHOD, URL_SUFFIX
-
-REQUEST_BODY = """"
-{
-   "content":"string",
-   "user_id":"integer"
-}
-"""
-TEST_CASE = {
-    "request": {
-        "path_params": {},
-        "query_params": {},
-        "header_params": {},
-        "securities": {"oauth": {
-            "tokenUrl": "http://auth.ibtspl.com/oauth2/",
-            "flow": "password",
-            "scopes": {
-                "read": "read users",
-                "write": "create users",
-                "update": "update users",
-                "delete": "delete users"
-            },
-            "type": "oauth2"
-        }},
-        "body": REQUEST_BODY,
-    },
-}
 
 
 class TestCase01CreatePostAPITestCase(TestUtils):
@@ -41,7 +15,7 @@ class TestCase01CreatePostAPITestCase(TestUtils):
 
     @pytest.mark.django_db
     def test_case(self, snapshot):
-        body = {'content': 'string', 'user_id': 7}
+        body = {'content': 'string', 'user_id': 1}
         path_params = {}
         query_params = {}
         headers = {}
@@ -50,5 +24,3 @@ class TestCase01CreatePostAPITestCase(TestUtils):
                                       query_params=query_params,
                                       headers=headers,
                                       snapshot=snapshot)
-
-

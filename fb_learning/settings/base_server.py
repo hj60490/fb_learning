@@ -11,6 +11,6 @@ from fb_learning.settings.base_aws_s3 import *
 SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 LOG_DSU_OLD_VERSION_LOGS = False
