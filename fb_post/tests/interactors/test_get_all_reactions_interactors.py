@@ -13,25 +13,29 @@ class TestGetUserPostsInteractor:
 
     @pytest.fixture
     def post_storage_mock(self):
-        from fb_post.interactors.storage_interfaces.post_storage_interface import \
+        from fb_post.interactors.storage_interfaces.\
+            post_storage_interface import \
             PostInterface
         return mock.create_autospec(PostInterface)
 
     @pytest.fixture
     def comment_storage_mock(self):
-        from fb_post.interactors.storage_interfaces.comment_storage_interface import \
+        from fb_post.interactors.storage_interfaces.\
+            comment_storage_interface import \
             CommentStorageInterface
         return mock.create_autospec(CommentStorageInterface)
 
     @pytest.fixture
     def reaction_storage_mock(self):
-        from fb_post.interactors.storage_interfaces.reaction_storage_interface import \
+        from fb_post.interactors.storage_interfaces.\
+            reaction_storage_interface import \
             ReactionStorageInterface
         return mock.create_autospec(ReactionStorageInterface)
 
     @pytest.fixture
     def presenter_mock(self):
-        from fb_post.interactors.presenter_interfaces.get_all_reaction_presenter_interface import \
+        from fb_post.interactors.presenter_interfaces.\
+            get_all_reaction_presenter_interface import \
             GetAllReactionsPresenterInterface
         return mock.create_autospec(GetAllReactionsPresenterInterface)
 
@@ -132,7 +136,9 @@ class TestGetUserPostsInteractor:
         )
 
         reaction_storage_mock.get_all_reactions.assert_called_once()
-        comment_storage_mock.get_comments.assert_has_calls([call([1, 2]), call([1])], any_order=False)
+        comment_storage_mock.get_comments.assert_has_calls(
+            [call([1, 2]), call([1])], any_order=False
+        )
         post_storage_mock.get_all_posts.assert_called_once_with([1, 2])
         get_users_dtos_mock.assert_called_once_with([1, 2, 3])
         presenter_mock.get_response_for_all_reactions(reactions_details_dto)

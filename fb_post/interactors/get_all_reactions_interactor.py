@@ -46,13 +46,13 @@ class GetAllReactionsInteractor:
             self, limit: int, offset: int
     ) -> ReactionDetailsDTO:
         self._validate_limit_and_offset(limit=limit, offset=offset)
-
+        # 1st db hit
         reactions = self.reaction_storage.get_all_reactions(
             limit=limit, offset=offset
         )
 
         reactions_comments_ids = self._get_reactions_on_comments(reactions)
-
+        # 2nd db hit
         comments = self.comment_storage.get_comments(
             reactions_comments_ids
         )
@@ -60,7 +60,7 @@ class GetAllReactionsInteractor:
         parent_comment_ids_for_replies = self._get_parent_comment_ids_for_reply(
             comments
         )
-
+        # 3rd db hit
         parent_comments = self.comment_storage.get_comments(
             parent_comment_ids_for_replies
         )
@@ -68,15 +68,16 @@ class GetAllReactionsInteractor:
         posts_ids = self._post_ids_from_reaction(reactions)
         posts_ids.extend(self._post_ids_from_comments(parent_comments))
         posts_ids.extend(self._post_ids_from_comments(comments))
+
         comments.extend(parent_comments)
 
-        post_ids = [id for id in posts_ids if id is not None]
-
+        post_ids = [post_id for post_id in posts_ids if post_id is not None]
+        # 4th db hit
         posts = self.post_storage.get_all_posts(list(set(post_ids)))
         user_ids = self._get_all_user_ids(
             reactions, comments, parent_comments, posts)
+        # 5th db hit
         adaptor = get_service_adapter()
-
         users = adaptor.fb_post_auth.get_users_dtos(user_ids)
 
         reactions_details_dto = ReactionDetailsDTO(
@@ -132,7 +133,8 @@ class GetAllReactionsInteractor:
     @staticmethod
     def _get_all_user_ids(
             reactions: List[ReactionDTO], comments: List[CommentDTO],
-            parent_comments: List[CommentDTO], posts: List[PostDto]) -> List[int]:
+            parent_comments: List[CommentDTO], posts: List[PostDto]
+    ) -> List[int]:
         users_id = []
         for reaction in reactions:
             users_id.append(reaction.reacted_by_id)

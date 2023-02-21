@@ -33,3 +33,4 @@ class ReactFactory(factory.django.DjangoModelFactory):
     comment = None
     reacted_by_id = factory.sequence(lambda n: n + 1)
     reaction = factory.Iterator(["HAHA", "SAD", "WOW"])
+
