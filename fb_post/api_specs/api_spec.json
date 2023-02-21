@@ -69,6 +69,12 @@
         },
         "reactions": {
           "$ref": "#/definitions/Reaction"
+        },
+        "replies_ids": {
+          "type": "array",
+          "items": {
+           "type": "integer"
+          }
         }
       },
       "required": [
@@ -311,9 +317,6 @@
                     "allOf": [
                       {
                         "$ref": "#/definitions/Comment"
-                      },
-                      {
-                        "$ref": "#/definitions/Replies"
                       }
                     ]
                   }
