@@ -55,18 +55,17 @@ class TestGetUserPostsInteractor:
             storage_dtos.ReactOnPostDTOFactory(
                 post_id=1)
         ]
-        post_comments = [
-            storage_dtos.CommentOnPostDTOFactory(
+        comments = [
+            storage_dtos.CommentDTOFactory(
                 post_id=post_dtos[0].post_id,
-                comment_id=1)
+                comment_id=1),
+            storage_dtos.CommentDTOFactory(
+                post_id=post_dtos[0].post_id,
+                parent_comment_id=1,
+                comment_id=2)
+
         ]
-        comment_replies = [
-            storage_dtos.CommentOnCommentDTOFactory(
-                comment_id=2,
-                commented_by_id=2,
-                parent_comment_id=1
-            )
-        ]
+
         reactions_on_comments = [
             storage_dtos.ReactOnCommentDTOFactory(comment_id=1),
             storage_dtos.ReactOnCommentDTOFactory(comment_id=2)
@@ -76,8 +75,7 @@ class TestGetUserPostsInteractor:
             users=users_dtos,
             posts=post_dtos,
             reactions_on_posts=post_reactions_dtos,
-            comments_on_post=post_comments,
-            replies=comment_replies,
+            comments=comments,
             reactions_on_comments=reactions_on_comments
 
         )
@@ -87,8 +85,7 @@ class TestGetUserPostsInteractor:
         check_user_exists_or_not_mock.return_value = True
         post_storage_mock.get_posts.return_value = post_dtos
         post_storage_mock.get_all_reactions.return_value = post_reactions_dtos
-        post_storage_mock.get_comments.return_value = post_comments
-        post_storage_mock.get_replies_on_comment.return_value = comment_replies
+        post_storage_mock.get_comments.return_value = comments
         post_storage_mock.get_reactions_on_comments.return_value = reactions_on_comments
         get_users_dtos_mock.return_value = users_dtos
 
@@ -103,10 +100,8 @@ class TestGetUserPostsInteractor:
             list_of_post_id=[post_dtos[0].post_id])
         post_storage_mock.get_comments.assert_called_once_with(
             [post_dtos[0].post_id])
-        post_storage_mock.get_replies_on_comment.assert_called_once_with(
-            [post_comments[0].comment_id])
         post_storage_mock.get_reactions_on_comments.assert_called_once_with(
-            [post_comments[0].comment_id, comment_replies[0].comment_id])
+            [comments[0].comment_id, comments[1].comment_id])
         get_users_dtos_mock.assert_called_once_with(
             [users_dtos[0].user_id, users_dtos[1].user_id])
         presenter_mock.get_all_posts_of_user.assert_called_once_with(

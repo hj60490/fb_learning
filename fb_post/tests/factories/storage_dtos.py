@@ -94,11 +94,8 @@ class PostDetailsDtoFactory(factory.Factory):
     reactions_on_posts = factory.List([
         factory.SubFactory(ReactOnPostDto) for i in range(2)
     ])
-    comments_on_post = factory.List([
+    comments = factory.List([
         factory.SubFactory(CommentOnPostDto) for i in range(2)
-    ])
-    replies = factory.List([
-        factory.SubFactory(CommentOnCommentDto) for i in range(2)
     ])
     reactions_on_comments = factory.List([
         factory.SubFactory(ReactionOnCommentDto) for i in range(2)
