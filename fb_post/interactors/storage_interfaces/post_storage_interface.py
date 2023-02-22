@@ -32,11 +32,6 @@ class PostInterface(ABC):
         pass
 
     @abc.abstractmethod
-    def get_replies_on_comment(self, list_of_comment_id) -> \
-            List[CommentOnCommentDto]:
-        pass
-
-    @abc.abstractmethod
     def get_all_posts(self, post_ids: List[int]) -> List[PostDto]:
         pass
 

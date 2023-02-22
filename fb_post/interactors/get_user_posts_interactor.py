@@ -114,24 +114,6 @@ class GetUserPostsInteractor:
         return list_of_user_ids
 
     @staticmethod
-    def _get_user_id_from_comments(
-            comments: List[CommentOnPostDto]) -> List[int]:
-        list_of_user_ids = [
-            comment.commented_by_id
-            for comment in comments
-        ]
-        return list_of_user_ids
-
-    @staticmethod
-    def _get_user_id_from_replies(
-            replies_on_comment: List[CommentOnCommentDto]) -> List[int]:
-        list_of_user_ids = [
-            comment.commented_by_id
-            for comment in replies_on_comment
-        ]
-        return list_of_user_ids
-
-    @staticmethod
     def _get_user_id_from_reaction_on_comment(
             reactions: List[ReactionOnCommentDto]) -> \
             List[int]:
@@ -141,21 +123,3 @@ class GetUserPostsInteractor:
         ]
         return list_of_user_ids
 
-    def _get_comments_for_posts(
-            self, post_ids: List[int]) -> Dict[str, Any]:
-        comments_dtos = self.post_storage.get_comments(post_ids)
-        post_comment_ids = [
-            comment.comment_id for comment in comments_dtos]
-
-        replies_on_comment_dtos = self.post_storage.get_replies_on_comment(
-            list(set(post_comment_ids)))
-
-        replies_ids = [comment.comment_id for comment in
-                       replies_on_comment_dtos]
-        post_comment_ids.extend(replies_ids)
-        return {
-            "comments": comments_dtos,
-            "replies_for_comments": replies_on_comment_dtos,
-            "post_comment_ids": post_comment_ids,
-            "replies_on_comment_dtos": replies_on_comment_dtos
-        }

@@ -183,19 +183,3 @@ class GetUserPostsPresenterImplementation(GetPostsPresenterInterface):
 
         return list_of_replies
 
-    @staticmethod
-    def _get_reactions_dict_of_replies(
-            reaction_on_comments, comment_on_comment
-    ):
-        reaction_type_list = []
-        reactions_count = 0
-        for reaction_dto in reaction_on_comments:
-            if reaction_dto.comment_id == comment_on_comment.comment_id:
-                reactions_count += 1
-                reaction_type_list.append(reaction_dto.reaction)
-        list_of_types = list(set(reaction_type_list))
-        reactions_dict = {
-            "count": reactions_count,
-            "types": list_of_types
-        }
-        return reactions_dict
