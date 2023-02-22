@@ -1,7 +1,7 @@
 import abc
 from abc import ABC
 from .dtos import PostDto, ReactOnPostDto, CommentOnPostDto, \
-    ReactionOnCommentDto, CommentOnCommentDto, RequestsParametersDTO
+    ReactionOnCommentDto, CommentOnCommentDto, RequestsParametersDTO, CommentDTO
 from typing import List
 
 
@@ -23,7 +23,7 @@ class PostInterface(ABC):
 
     @abc.abstractmethod
     def get_comments(self, list_of_post_id: List[int]) -> \
-            List[CommentOnPostDto]:
+            List[CommentDTO]:
         pass
 
     @abc.abstractmethod

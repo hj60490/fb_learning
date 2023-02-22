@@ -35,23 +35,8 @@ RESPONSE_200_JSON = """
                             "string"
                         ]
                     },
-                    "replies": [
-                        {
-                            "comment_id": 1,
-                            "commentator": {
-                                "name": "string",
-                                "user_id": 1,
-                                "profile_pic": "string"
-                            },
-                            "commented_at": "2099-12-31 00:00:00",
-                            "comment_content": "string",
-                            "reactions": {
-                                "count": 1,
-                                "types": [
-                                    "string"
-                                ]
-                            }
-                        }
+                    "replies_ids": [
+                        1
                     ]
                 }
             ],

@@ -11,7 +11,8 @@ from fb_post.interactors.presenter_interfaces.dtos import PostDetailsDto, \
     PostReactionCommentDto, ReactionAndCommentDto
 from typing import List
 from fb_post.interactors.storage_interfaces.dtos import PostDto, ReactOnPostDto, \
-    CommentOnPostDto, CommentOnCommentDto, ReactionOnCommentDto, UserDto
+    CommentOnPostDto, CommentOnCommentDto, ReactionOnCommentDto, UserDto, \
+    CommentDTO
 from fb_post.constants.constants import DEFAULT_DATETIME_FORMAT
 
 
@@ -33,8 +34,7 @@ class GetUserPostsPresenterImplementation(GetPostsPresenterInterface):
         posts_comments_and_reactions_dto = PostReactionCommentDto(
             posts=posts_details_dto.posts,
             reactions_on_post=posts_details_dto.reactions_on_posts,
-            comments_on_post=posts_details_dto.comments_on_post,
-            comments_on_comment=posts_details_dto.replies,
+            comments=posts_details_dto.comments,
             reactions_on_comment=posts_details_dto.reactions_on_comments
         )
 
@@ -53,10 +53,8 @@ class GetUserPostsPresenterImplementation(GetPostsPresenterInterface):
                 post=post,
                 reactions_on_post=
                 posts_comments_and_reactions_dto.reactions_on_post,
-                comments_on_post=
-                posts_comments_and_reactions_dto.comments_on_post,
-                comments_on_comment=
-                posts_comments_and_reactions_dto.comments_on_comment,
+                comments=
+                posts_comments_and_reactions_dto.comments,
                 reactions_on_comment=
                 posts_comments_and_reactions_dto.reactions_on_comment,
 
@@ -95,8 +93,7 @@ class GetUserPostsPresenterImplementation(GetPostsPresenterInterface):
                 reactions_and_comments_dto.reactions_on_post,
                 reactions_and_comments_dto.post),
             "comments": self._get_comments_list(
-                reactions_and_comments_dto.comments_on_post,
-                reactions_and_comments_dto.comments_on_comment,
+                reactions_and_comments_dto.comments,
                 reactions_and_comments_dto.reactions_on_comment,
                 reactions_and_comments_dto.post,
                 users_details_dict),
@@ -105,24 +102,23 @@ class GetUserPostsPresenterImplementation(GetPostsPresenterInterface):
         return post_dict
 
     def _get_comments_list(
-            self, comments_on_post: List[CommentOnPostDto],
-            comment_on_comment: List[CommentOnCommentDto],
+            self, comments: List[CommentDTO],
             reactions_on_comments: List[ReactionOnCommentDto],
             post_dto, users_details_dict
     ):
 
         list_of_comments = [
             self._prepare_comments_list_of_dict(
-                comment_dto, reactions_on_comments, comment_on_comment,
-                users_details_dict
+                comment_dto, reactions_on_comments,
+                users_details_dict, comments
             )
-            for comment_dto in comments_on_post if
+            for comment_dto in comments if
             comment_dto.post_id == post_dto.post_id
         ]
         return list_of_comments
 
     def _prepare_comments_list_of_dict(self, comment_dto, reaction_on_comments,
-                                       replies, users_details_list):
+                                      users_details_list, comments):
         comment_dict = {
             "comment_id": comment_dto.comment_id,
             "commentator": users_details_list[comment_dto.commented_by_id],
@@ -132,9 +128,8 @@ class GetUserPostsPresenterImplementation(GetPostsPresenterInterface):
             "comment_content": comment_dto.content,
             "reactions": self._get_reactions_dict_of_comments(
                 reaction_on_comments, comment_dto),
-            "replies": self._get_list_of_replies(replies, comment_dto,
-                                                 reaction_on_comments,
-                                                 users_details_list)
+            "replies_ids": self._get_list_of_replies(
+                comment_dto, comments )
         }
 
         return comment_dict
@@ -177,34 +172,16 @@ class GetUserPostsPresenterImplementation(GetPostsPresenterInterface):
             reactions_dict['types'] = []
         return reactions_dict
 
+    @staticmethod
     def _get_list_of_replies(
-            self, replies, comment_dto, reaction_on_comment, users_details_list
+            comment_dto, comments
     ):
         list_of_replies = [
-            self._prepare_replies_list_of_dict(
-                reply, reaction_on_comment, users_details_list)
-            for reply in replies if
-            reply.parent_comment_id == comment_dto.comment_id
+            comment.comment_id
+            for comment in comments if comment.parent_comment_id == comment_dto.comment_id
         ]
 
         return list_of_replies
-
-    def _prepare_replies_list_of_dict(
-            self, reply: CommentOnCommentDto, reaction_on_comments,
-            users_details_list
-    ):
-        reply_dict = {
-            "comment_id": reply.comment_id,
-            "commentator": users_details_list[
-                reply.commented_by_id],
-            "commented_at": datetime.strftime(
-                reply.commented_at,
-                DEFAULT_DATETIME_FORMAT),
-            "comment_content": reply.content,
-            "reactions": self._get_reactions_dict_of_replies(
-                reaction_on_comments, reply)
-        }
-        return reply_dict
 
     @staticmethod
     def _get_reactions_dict_of_replies(

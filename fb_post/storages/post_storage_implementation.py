@@ -2,7 +2,7 @@ from fb_post.interactors.storage_interfaces.post_storage_interface import \
     PostInterface
 from fb_post.interactors.storage_interfaces.dtos import PostDto, ReactOnPostDto, \
     CommentOnPostDto, ReactionOnCommentDto, CommentOnCommentDto, \
-    RequestsParametersDTO
+    RequestsParametersDTO, CommentDTO
 from typing import List
 
 from fb_post.models import React, Comment, Post
@@ -82,7 +82,7 @@ class PostStorageImplementation(PostInterface):
         return react_dto
 
     def get_comments(self, list_of_post_id: List[int]) -> \
-            List[CommentOnPostDto]:
+            List[CommentDTO]:
         comment_objs = Comment.objects.filter(post_id__in=list_of_post_id)
 
         comment_dtos = [
@@ -94,13 +94,14 @@ class PostStorageImplementation(PostInterface):
 
     @staticmethod
     def _convert_comment_obj_to_dto(comment: Comment) -> \
-            CommentOnPostDto:
-        comment_dto = CommentOnPostDto(
+            CommentDTO:
+        comment_dto = CommentDTO(
             comment_id=comment.id,
             content=comment.content,
             commented_at=comment.commented_at,
             commented_by_id=comment.commented_by_id,
-            post_id=comment.post_id
+            post_id=comment.post_id,
+            parent_comment_id=comment.parent_comment_id
         )
         return comment_dto
 
