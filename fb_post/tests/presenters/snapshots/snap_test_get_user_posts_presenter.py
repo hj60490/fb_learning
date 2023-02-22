@@ -77,7 +77,7 @@ snapshots['TestsCreatePostPresenter.test_get_all_posts_of_user_for_user_having_p
                         'types': [
                         ]
                     },
-                    'replies': [
+                    'replies_ids': [
                     ]
                 }
             ],
@@ -117,22 +117,8 @@ snapshots['TestsCreatePostPresenter.test_get_all_posts_of_user_for_user_having_p
                         'types': [
                         ]
                     },
-                    'replies': [
-                        {
-                            'comment_content': 'comment_1',
-                            'comment_id': 1,
-                            'commentator': {
-                                'name': 'User_1',
-                                'profile_pic': 'https://profile_pic_url1.com',
-                                'user_id': 1
-                            },
-                            'commented_at': '2023-02-13 11:20:00',
-                            'reactions': {
-                                'count': 0,
-                                'types': [
-                                ]
-                            }
-                        }
+                    'replies_ids': [
+                        2
                     ]
                 }
             ],
@@ -173,23 +159,8 @@ snapshots['TestsCreatePostPresenter.test_get_all_posts_of_user_for_user_having_p
                             'HAHA'
                         ]
                     },
-                    'replies': [
-                        {
-                            'comment_content': 'comment_1',
-                            'comment_id': 1,
-                            'commentator': {
-                                'name': 'User_1',
-                                'profile_pic': 'https://profile_pic_url1.com',
-                                'user_id': 1
-                            },
-                            'commented_at': '2023-02-13 11:20:00',
-                            'reactions': {
-                                'count': 1,
-                                'types': [
-                                    'HAHA'
-                                ]
-                            }
-                        }
+                    'replies_ids': [
+                        2
                     ]
                 }
             ],
@@ -230,23 +201,8 @@ snapshots['TestsCreatePostPresenter.test_get_all_posts_of_user_return_posts_dict
                             'HAHA'
                         ]
                     },
-                    'replies': [
-                        {
-                            'comment_content': 'comment_1',
-                            'comment_id': 1,
-                            'commentator': {
-                                'name': 'User_1',
-                                'profile_pic': 'https://profile_pic_url1.com',
-                                'user_id': 1
-                            },
-                            'commented_at': '2023-02-13 11:20:00',
-                            'reactions': {
-                                'count': 1,
-                                'types': [
-                                    'HAHA'
-                                ]
-                            }
-                        }
+                    'replies_ids': [
+                        2
                     ]
                 }
             ],

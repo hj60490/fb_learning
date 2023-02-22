@@ -13,7 +13,7 @@ from django_swagger_utils.drf_server.exceptions import (
 
 from fb_post.tests.factories.storage_dtos import UserDTOFactory, PostDTOFactory, \
     ReactOnPostDTOFactory, CommentOnPostDTOFactory, CommentOnCommentDTOFactory, \
-    ReactOnCommentDTOFactory
+    ReactOnCommentDTOFactory, CommentDTOFactory
 
 
 class TestsCreatePostPresenter:
@@ -24,8 +24,7 @@ class TestsCreatePostPresenter:
             users=[UserDTOFactory()],
             posts=[],
             reactions_on_posts=[],
-            comments_on_post=[],
-            replies=[],
+            comments=[],
             reactions_on_comments=[]
         )
         presenter = GetUserPostsPresenterImplementation()
@@ -41,8 +40,7 @@ class TestsCreatePostPresenter:
             users=[UserDTOFactory()],
             posts=[PostDTOFactory()],
             reactions_on_posts=[],
-            comments_on_post=[],
-            replies=[],
+            comments=[],
             reactions_on_comments=[]
         )
         presenter = GetUserPostsPresenterImplementation()
@@ -58,8 +56,7 @@ class TestsCreatePostPresenter:
             users=[UserDTOFactory()],
             posts=[PostDTOFactory()],
             reactions_on_posts=[ReactOnPostDTOFactory()],
-            comments_on_post=[],
-            replies=[],
+            comments=[],
             reactions_on_comments=[]
         )
         presenter = GetUserPostsPresenterImplementation()
@@ -75,8 +72,7 @@ class TestsCreatePostPresenter:
             users=[UserDTOFactory()],
             posts=[PostDTOFactory()],
             reactions_on_posts=[],
-            comments_on_post=[CommentOnPostDTOFactory()],
-            replies=[],
+            comments=[CommentDTOFactory()],
             reactions_on_comments=[]
         )
         presenter = GetUserPostsPresenterImplementation()
@@ -92,8 +88,7 @@ class TestsCreatePostPresenter:
             users=[UserDTOFactory()],
             posts=[PostDTOFactory()],
             reactions_on_posts=[],
-            comments_on_post=[CommentOnPostDTOFactory()],
-            replies=[CommentOnCommentDTOFactory()],
+            comments=[CommentDTOFactory(), CommentDTOFactory(commented_by_id=1,parent_comment_id=1)],
             reactions_on_comments=[]
         )
         presenter = GetUserPostsPresenterImplementation()
@@ -109,8 +104,8 @@ class TestsCreatePostPresenter:
             users=[UserDTOFactory()],
             posts=[PostDTOFactory()],
             reactions_on_posts=[],
-            comments_on_post=[CommentOnPostDTOFactory()],
-            replies=[CommentOnCommentDTOFactory()],
+            comments=[CommentDTOFactory(), CommentDTOFactory(commented_by_id=1,
+                                                             parent_comment_id=1)],
             reactions_on_comments=[ReactOnCommentDTOFactory()]
         )
         presenter = GetUserPostsPresenterImplementation()
@@ -125,8 +120,9 @@ class TestsCreatePostPresenter:
             users=[UserDTOFactory()],
             posts=[PostDTOFactory()],
             reactions_on_posts=[ReactOnPostDTOFactory()],
-            comments_on_post=[CommentOnPostDTOFactory()],
-            replies=[CommentOnCommentDTOFactory()],
+            comments=[CommentDTOFactory(), CommentDTOFactory(commented_by_id=1,
+                                                             parent_comment_id=1)],
+
             reactions_on_comments=[ReactOnCommentDTOFactory()]
         )
         presenter = GetUserPostsPresenterImplementation()

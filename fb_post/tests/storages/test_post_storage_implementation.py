@@ -9,7 +9,8 @@ from fb_post.tests.factories import storage_dtos
 from fb_post.tests.factories.models import ReactFactory, \
     CommentFactory
 from fb_post.tests.factories.storage_dtos import ReactOnPostDTOFactory, \
-    CommentOnPostDTOFactory, ReactOnCommentDTOFactory, PostDTOFactory
+    CommentOnPostDTOFactory, ReactOnCommentDTOFactory, PostDTOFactory, \
+    CommentDTOFactory
 
 
 class TestGetReactionsCommentStorage:
@@ -116,9 +117,9 @@ class TestGetReactionsCommentStorage:
         posts_id = [1]
         # UserFactory.create_batch(size=3)
         CommentFactory(post_id=1, commented_by_id=1)
-        comments_details_dto = [CommentOnPostDTOFactory(
+        comments_details_dto = [CommentDTOFactory(
             post_id=1,
-            commented_by_id=1,
+            commented_by_id=1
 
         )]
         expected_output = comments_details_dto

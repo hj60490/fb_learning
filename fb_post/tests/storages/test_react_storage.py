@@ -45,7 +45,7 @@ class TestGetReactionsReactStorage:
 
         PostFactory()
         CommentFactory()
-        CommentFactory(post_id=None, parent_comment_id=1)
+        CommentFactory(post_id=1, parent_comment_id=1)
         ReactFactory(post_id=1, reaction="SAD")
         ReactFactory(comment_id=1, post_id=None, reaction="SAD")
         ReactFactory(comment_id=2, post_id=None, reaction="SAD")
