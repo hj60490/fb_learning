@@ -75,7 +75,7 @@ class ReactionDTO:
 @dataclass
 class CommentDTO:
     comment_id: int
-    post_id: typing.Optional[int]
+    post_id: int
     parent_comment_id: typing.Optional[int]
     content: str
     commented_at: datetime
