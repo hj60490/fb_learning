@@ -60,20 +60,20 @@ class GetUserPostsInteractor:
         reactions_dtos = self.post_storage.get_all_reactions(post_ids)
         user_ids.extend(self._get_user_id_from_reaction(reactions_dtos))
 
-        dict_of_comments_and_replies = self._get_comments_for_posts(post_ids)
-        user_ids.extend(self._get_user_id_from_comments(
-            dict_of_comments_and_replies['comments']
-        ))
-
-        user_ids.extend(self._get_user_id_from_replies(
-            dict_of_comments_and_replies["replies_on_comment_dtos"]))
-        replies_ids = [comment.comment_id for comment in
-                       dict_of_comments_and_replies["replies_on_comment_dtos"]]
-        dict_of_comments_and_replies["post_comment_ids"].extend(replies_ids)
+        comments_dtos = self.post_storage.get_comments(post_ids)
+        user_ids.extend([
+            comment.commented_by_id
+            for comment in comments_dtos
+        ])
+        comments_ids = [
+            comment.comment_id
+            for comment in comments_dtos
+        ]
 
         # reaction on comments dtos
         reactions_on_comments_dtos = self.post_storage.get_reactions_on_comments(
-            list(set(dict_of_comments_and_replies["post_comment_ids"])))
+            comments_ids
+        )
 
         user_ids.extend(
             self._get_user_id_from_reaction_on_comment(
@@ -87,8 +87,7 @@ class GetUserPostsInteractor:
             users=user_dtos,
             posts=posts_dtos,
             reactions_on_posts=reactions_dtos,
-            comments_on_post=dict_of_comments_and_replies["comments"],
-            replies=dict_of_comments_and_replies["replies_for_comments"],
+            comments=comments_dtos,
             reactions_on_comments=reactions_on_comments_dtos
         )
         return user_posts_details_dto
